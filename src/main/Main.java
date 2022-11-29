@@ -62,6 +62,12 @@ public class Main extends Application {
     // configure the location label
     @FXML
     private Label login_location;
+    // configure the login button
+    @FXML
+    private Button btn_login;
+    // configure the exit button
+    @FXML
+    private Button btn_exit;
 
     /**
      * Use Zone ID to set the location label.
@@ -83,6 +89,22 @@ public class Main extends Application {
         primaryStage.setTitle(appTitle);
         primaryStage.setScene(new Scene(root, 640, 480));
         primaryStage.show();
+        // set the field labels to the user's language
+        if (userLanguage.equals("fr")) {
+            login_username_label.setText("Nom d'utilisateur");
+            login_password_label.setText("Mot de passe");
+        } else {
+            login_username_label.setText("Username");
+            login_password_label.setText("Password");
+        }
+        // set the buttons to the user's language
+        if (userLanguage.equals("fr")) {
+            btn_login.setText("Connexion");
+            btn_exit.setText("Sortie");
+        } else {
+            btn_login.setText("Login");
+            btn_exit.setText("Exit");
+        }
     }
 
     public static void main(String[] args) {
@@ -148,10 +170,20 @@ public class Main extends Application {
             String alertTitle = "";
             String alertHeader = "";
             String alertContext = "";
+            // translate the alert content based on system language //
+            if (userLanguage.equals("fr")) {
+                String alertTitle = "Erreur d'identification";
+                String alertHeader = "Erreur d'identification";
+                String alertContext = "Le nom d'utilisateur ou le mot de passe que vous avez tapé est incorrect.";
+            } else {
+                alertTitle = "Login Error";
+                alertHeader = "Login Error";
+                alertContext = "The username or password you entered is incorrect.";
+            }
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Login Error");
-            alert.setHeaderText("Login Error");
-            alert.setContentText("The username or password you entered is incorrect.");
+            alert.setTitle(alertTitle);
+            alert.setHeaderText(alertHeader);
+            alert.setContentText(alertContext);
             alert.initModality(Modality.APPLICATION_MODAL);
             alert.showAndWait();
             recordLoginAttempt(login_username.getText(), false, userZone, loginDate, loginTime);
