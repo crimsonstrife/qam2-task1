@@ -1,8 +1,5 @@
 package main;
 
-import javafx.scene.control.Label;
-import org.w3c.dom.Text;
-
 /**
  *
  * @author Patrick Barnhardt
@@ -16,17 +13,11 @@ import javafx.fxml.Initializable;
 import javafx.fxml.*;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Alert;
 import javafx.stage.Modality;
 import java.util.Optional;
 import java.io.FileWriter;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import javafx.scene.control.*;
 import main.JDBC;
 import java.time.ZoneId;
 
@@ -70,11 +61,31 @@ public class Main extends Application {
     private Button btn_exit;
 
     /**
+     * Configure the Application Fields
+     */
+
+    /**
      * Use Zone ID to set the location label.
      *
      */
     public void initialize() {
         login_location.setText(userZone);
+        // set the field labels to the user's language
+        if (userLanguage.equals("fr")) {
+            login_username_label.setText("Nom d'utilisateur: ");
+            login_password_label.setText("Mot de passe: ");
+        } else {
+            login_username_label.setText("Username: ");
+            login_password_label.setText("Password: ");
+        }
+        // set the buttons to the user's language
+        if (userLanguage.equals("fr")) {
+            btn_login.setText("Connexion");
+            btn_exit.setText("Sortie");
+        } else {
+            btn_login.setText("Login");
+            btn_exit.setText("Exit");
+        }
     }
 
     @Override
@@ -89,22 +100,6 @@ public class Main extends Application {
         primaryStage.setTitle(appTitle);
         primaryStage.setScene(new Scene(root, 640, 480));
         primaryStage.show();
-        // set the field labels to the user's language
-        if (userLanguage.equals("fr")) {
-            login_username_label.setText("Nom d'utilisateur");
-            login_password_label.setText("Mot de passe");
-        } else {
-            login_username_label.setText("Username");
-            login_password_label.setText("Password");
-        }
-        // set the buttons to the user's language
-        if (userLanguage.equals("fr")) {
-            btn_login.setText("Connexion");
-            btn_exit.setText("Sortie");
-        } else {
-            btn_login.setText("Login");
-            btn_exit.setText("Exit");
-        }
     }
 
     public static void main(String[] args) {
@@ -172,9 +167,9 @@ public class Main extends Application {
             String alertContext = "";
             // translate the alert content based on system language //
             if (userLanguage.equals("fr")) {
-                String alertTitle = "Erreur d'identification";
-                String alertHeader = "Erreur d'identification";
-                String alertContext = "Le nom d'utilisateur ou le mot de passe que vous avez tapé est incorrect.";
+                alertTitle = "Erreur d'identification";
+                alertHeader = "Erreur d'identification";
+                alertContext = "Le nom d'utilisateur ou le mot de passe que vous avez tapé est incorrect.";
             } else {
                 alertTitle = "Login Error";
                 alertHeader = "Login Error";
