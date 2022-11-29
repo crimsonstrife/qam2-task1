@@ -90,14 +90,14 @@
                                              <children>
                                                 <HBox prefHeight="73.0" prefWidth="223.0">
                                                    <children>
-                                                      <Label text="Username: " />
+                                                      <Label fx:id="login_username_label" text="Username: " />
                                                       <TextField fx:id="login_username" prefHeight="27.0" prefWidth="149.0" promptText="Username" />
                                                    </children>
                                                 </HBox>
                                                 <Separator prefHeight="60.0" prefWidth="223.0" />
                                                 <HBox prefHeight="78.0" prefWidth="223.0">
                                                    <children>
-                                                      <Label text="Password: " />
+                                                      <Label fx:id="login_password_label" text="Password: " />
                                                       <PasswordField fx:id="login_password" promptText="Password" />
                                                    </children>
                                                 </HBox>
