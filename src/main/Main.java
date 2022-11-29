@@ -42,7 +42,7 @@ public class Main extends Application {
     private static String userLoggedIn = "";
     private static Integer userLoggedInID = null;
     private static String userZone = ZoneId.systemDefault().toString();
-    private String userLanguage = "fr";
+    private static String userLanguage = System.getProperty("user.language");
 
     /**
      * Configure the Login Fields.
@@ -145,6 +145,9 @@ public class Main extends Application {
                 e.printStackTrace();
             }
         } else {
+            String alertTitle = "";
+            String alertHeader = "";
+            String alertContext = "";
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Login Error");
             alert.setHeaderText("Login Error");
