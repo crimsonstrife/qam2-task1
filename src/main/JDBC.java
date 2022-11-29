@@ -61,6 +61,7 @@ public class JDBC {
 
     /**
      * Login Method - Use the entered username and password to attempt login.
+     * Get the login_username and login_password fx:id in login.fxml for the values
      *
      * @param username entered username
      * @param password entered password
