@@ -13,6 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.fxml.*;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.Modality;
 import java.util.Optional;
@@ -101,73 +102,13 @@ public class Main extends Application {
      * Configure the Appointments Table
      */
     @FXML
-    private TableView<Appointments> table_appointments;
-
-    @FXML
-    private TableColumn<Appointments, String> col_appointment_ID;
-
-    @FXML
-    private TableColumn<Appointments, String> col_appointment_title;
-
-    @FXML
-    private TableColumn<Appointments, String> col_appointment_desc;
-
-    @FXML
-    private TableColumn<Appointments, String> col_appointment_location;
-
-    @FXML
-    private TableColumn<Appointments, String> col_appointment_contact;
-
-    @FXML
-    private TableColumn<Appointments, String> col_appointment_type;
-
-    @FXML
-    private TableColumn<Appointments, String> col_appointment_startdate;
-
-    @FXML
-    private TableColumn<Appointments, String> col_appointment_enddate;
-
-    @FXML
-    private TableColumn<Appointments, String> col_appointment_customerID;
-
-    @FXML
-    private TableColumn<Appointments, String> col_appointment_userID;
+    private TableView table_appointments;
 
     /**
      * Configure the Customers Table
      */
     @FXML
-    private TableView<Customers> table_customers;
-
-    @FXML
-    private TableColumn<Customers, String> col_customer_ID;
-
-    @FXML
-    private TableColumn<Customers, String> col_customer_name;
-
-    @FXML
-    private TableColumn<Customers, String> col_customer_address;
-
-    @FXML
-    private TableColumn<Customers, String> col_customer_postal;
-
-    @FXML
-    private TableColumn<Customers, String> col_customer_phone;
-
-    @FXML
-    private TableColumn<Customers, String> col_customer_creationdate;
-
-    @FXML
-    private TableColumn<Customers, String> col_customer_createdby;
-
-    @FXML
-    private TableColumn<Customers, String> col_customer_lastupdated;
-
-    @FXML
-    private TableColumn<Customers, String> col_customer_lastupdatedby;
-
-    @FXML
-    private TableColumn<Customers, String> col_customer_divisionID;
+    private TableView table_customers;
 
     /**
      * Use Zone ID to set the location label.
