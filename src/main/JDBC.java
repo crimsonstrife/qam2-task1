@@ -69,7 +69,7 @@ public class JDBC {
      */
     public static boolean login(String username, String password) {
         try {
-            makePreparedStatement("SELECT * FROM user WHERE User_Name = ? AND Password = ?", connection);
+            makePreparedStatement("SELECT * FROM users WHERE User_Name = ? AND Password = ?", connection);
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
             if (preparedStatement.executeQuery().next()) {
