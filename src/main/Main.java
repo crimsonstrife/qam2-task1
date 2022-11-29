@@ -40,4 +40,14 @@ public class Main extends Application {
     public void ExitBtnAction(ActionEvent event) {
         System.exit(0);
     }
+
+    /**
+     * Login Button Event Handler - Use the entered username and password to attempt
+     * login.
+     *
+     * @param event triggered by the login button
+     */
+    public void LoginBtnAction(ActionEvent event) {
+        System.out.println("Login Button Pressed");
+    }
 }
