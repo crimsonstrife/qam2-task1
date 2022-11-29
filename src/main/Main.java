@@ -96,8 +96,8 @@ public class Main extends Application {
      *
      */
     public void LoginBtnAction(ActionEvent event) {
-        String loginDate = "2020-01-01";
-        String loginTime = "08:00:00";
+        String loginDate = java.time.LocalDate.now().toString();
+        String loginTime = java.time.LocalTime.now().toString();
         if (JDBC.login(login_username.getText(), login_password.getText())) {
             try {
                 Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
@@ -118,8 +118,8 @@ public class Main extends Application {
             alert.setTitle("Login Error");
             alert.setHeaderText("Login Error");
             alert.setContentText("The username or password you entered is incorrect.");
-            alert.showAndWait();
             alert.initModality(Modality.APPLICATION_MODAL);
+            alert.showAndWait();
             recordLoginAttempt(login_username.getText(), false, userZone, loginDate, loginTime);
         }
     }
