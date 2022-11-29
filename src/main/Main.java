@@ -50,7 +50,7 @@ public class Main extends Application {
      *
      */
     public void LoginBtnAction(ActionEvent event) {
-        if (JDBC.login(login_username.getText(), login_password.getText())) {
+        if (JDBC.login(username.getText(), password.getText())) {
             try {
                 Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
                 Stage stage = new Stage();
