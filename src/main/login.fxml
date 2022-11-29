@@ -69,7 +69,7 @@
                               <Separator prefHeight="10.0" prefWidth="359.0" />
                               <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                  <children>
-                                    <VBox layoutX="70.0" prefHeight="158.0" prefWidth="223.0">
+                                    <VBox layoutX="6.0" prefHeight="158.0" prefWidth="348.0">
                                        <children>
                                           <HBox prefHeight="62.0" prefWidth="223.0">
                                              <children>
@@ -78,27 +78,31 @@
                                                       <Font size="14.0" />
                                                    </font>
                                                 </Label>
-                                                <Text fx:id="login_location" strokeType="OUTSIDE" strokeWidth="0.0" text="LOCATION" underline="true" wrappingWidth="89.9306640625">
+                                                <Label fx:id="login_location" text="LOCATION" underline="true">
                                                    <font>
                                                       <Font size="14.0" />
                                                    </font>
-                                                </Text>
+                                                </Label>
                                              </children>
                                           </HBox>
                                           <Separator prefHeight="21.0" prefWidth="223.0" />
-                                          <HBox prefHeight="73.0" prefWidth="223.0">
+                                          <VBox prefWidth="287.0">
                                              <children>
-                                                <Label text="Username: " />
-                                                <TextField fx:id="login_username" prefHeight="27.0" prefWidth="149.0" promptText="Username" />
+                                                <HBox prefHeight="73.0" prefWidth="223.0">
+                                                   <children>
+                                                      <Label text="Username: " />
+                                                      <TextField fx:id="login_username" prefHeight="27.0" prefWidth="149.0" promptText="Username" />
+                                                   </children>
+                                                </HBox>
+                                                <Separator prefHeight="60.0" prefWidth="223.0" />
+                                                <HBox prefHeight="78.0" prefWidth="223.0">
+                                                   <children>
+                                                      <Label text="Password: " />
+                                                      <PasswordField fx:id="login_password" promptText="Password" />
+                                                   </children>
+                                                </HBox>
                                              </children>
-                                          </HBox>
-                                          <Separator prefHeight="60.0" prefWidth="223.0" />
-                                          <HBox layoutX="10.0" layoutY="33.0" prefHeight="78.0" prefWidth="223.0">
-                                             <children>
-                                                <Label text="Password: " />
-                                                <PasswordField fx:id="login_password" promptText="Password" />
-                                             </children>
-                                          </HBox>
+                                          </VBox>
                                        </children>
                                     </VBox>
                                  </children>
