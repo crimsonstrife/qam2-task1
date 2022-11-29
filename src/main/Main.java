@@ -65,6 +65,111 @@ public class Main extends Application {
      */
 
     /**
+     * Configure the Application Buttons
+     */
+    @FXML
+    private Button btn_appointments;
+
+    @FXML
+    private Button btn_customers;
+
+    @FXML
+    private Button btn_users;
+
+    @FXML
+    private Button btn_signout;
+
+    @FXML
+    private Button btn_appointmentcreate;
+
+    @FXML
+    private Button btn_appointmentmodify;
+
+    @FXML
+    private Button btn_appointmentdelete;
+
+    /**
+     * Configure the Application Panes
+     */
+    @FXML
+    private Pane appointments_pane;
+
+    @FXML
+    private Pane customers_pane;
+
+    /**
+     * Configure the Appointments Table
+     */
+    @FXML
+    private TableView<Appointments> table_appointments;
+
+    @FXML
+    private TableColumn<Appointments, String> col_appointment_ID;
+
+    @FXML
+    private TableColumn<Appointments, String> col_appointment_title;
+
+    @FXML
+    private TableColumn<Appointments, String> col_appointment_desc;
+
+    @FXML
+    private TableColumn<Appointments, String> col_appointment_location;
+
+    @FXML
+    private TableColumn<Appointments, String> col_appointment_contact;
+
+    @FXML
+    private TableColumn<Appointments, String> col_appointment_type;
+
+    @FXML
+    private TableColumn<Appointments, String> col_appointment_startdate;
+
+    @FXML
+    private TableColumn<Appointments, String> col_appointment_enddate;
+
+    @FXML
+    private TableColumn<Appointments, String> col_appointment_customerID;
+
+    @FXML
+    private TableColumn<Appointments, String> col_appointment_userID;
+
+    /**
+     * Configure the Customers Table
+     */
+    @FXML
+    private TableView<Customers> table_customers;
+
+    @FXML
+    private TableColumn<Customers, String> col_customer_ID;
+
+    @FXML
+    private TableColumn<Customers, String> col_customer_name;
+
+    @FXML
+    private TableColumn<Customers, String> col_customer_address;
+
+    @FXML
+    private TableColumn<Customers, String> col_customer_postal;
+
+    @FXML
+    private TableColumn<Customers, String> col_customer_phone;
+
+    @FXML
+    private TableColumn<Customers, String> col_customer_creationdate;
+
+    @FXML
+    private TableColumn<Customers, String> col_customer_createdby;
+
+    @FXML
+    private TableColumn<Customers, String> col_customer_lastupdated;
+
+    @FXML
+    private TableColumn<Customers, String> col_customer_lastupdatedby;
+
+    @FXML
+    private TableColumn<Customers, String> col_customer_divisionID;
+
+    /**
      * Use Zone ID to set the location label.
      *
      */
@@ -207,5 +312,112 @@ public class Main extends Application {
         } finally {
             // System.out.println("Login attempt recorded."); - DEBUG
         }
+    }
+
+    /**
+     * Application Methods
+     */
+    /**
+     * Sign Out Button Event Handler - Close the application.
+     *
+     * @param event triggered by the sign out button
+     */
+    public void do_signout(ActionEvent event) {
+        System.exit(0);
+    }
+
+    /**
+     * Show the Appointments Pane and hide the Customers Pane
+     *
+     * @param event triggered by the appointments button
+     */
+    public void do_appointments(ActionEvent event) {
+        appointments_pane.setVisible(true);
+        appointments_pane.setDisable(false);
+        customers_pane.setVisible(false);
+        customers_pane.setDisable(true);
+    }
+
+    /**
+     * Show the Customers Pane and hide the Appointments Pane
+     *
+     * @param event triggered by the customers button
+     */
+    public void do_customers(ActionEvent event) {
+        appointments_pane.setVisible(false);
+        appointments_pane.setDisable(true);
+        customers_pane.setVisible(true);
+        customers_pane.setDisable(false);
+    }
+
+    /**
+     * Show the Reports Pane and hide the Appointments and Customers Panes
+     *
+     * @param event triggered by the reports button
+     */
+    public void do_reports(ActionEvent event) {
+        appointments_pane.setVisible(false);
+        appointments_pane.setDisable(true);
+        customers_pane.setVisible(false);
+        customers_pane.setDisable(true);
+    }
+
+    /**
+     * Open the Add Appointment window
+     *
+     * @param event triggered by the new appointment button
+     */
+    public void do_createappointment(ActionEvent event) {
+    }
+
+    /**
+     * Open the Modify Selected Appointment window
+     *
+     * @param event triggered by the modify appointment button
+     */
+    public void do_modifyappointment(ActionEvent event) {
+    }
+
+    /**
+     * Delete the selected appointment
+     *
+     * @param event triggered by the delete appointment button
+     */
+    public void do_deleteappointment(ActionEvent event) {
+    }
+
+    /**
+     * Filter the appointments table by month or week radio buttons
+     *
+     * @param event triggered by the month or week radio buttons
+     */
+    public void do_filterweekly(ActionEvent event) {
+    }
+
+    public void do_filtermonthly(ActionEvent event) {
+    }
+
+    /**
+     * Open the Add Customer window
+     *
+     * @param event triggered by the new customer button
+     */
+    public void do_createcustomer(ActionEvent event) {
+    }
+
+    /**
+     * Open the Modify Selected Customer window
+     *
+     * @param event triggered by the modify customer button
+     */
+    public void do_updatecustomer(ActionEvent event) {
+    }
+
+    /**
+     * Delete the selected customer
+     *
+     * @param event triggered by the delete customer button
+     */
+    public void do_deletecustomer(ActionEvent event) {
     }
 }
