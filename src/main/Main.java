@@ -28,6 +28,13 @@ import java.time.ZoneId;
 public class Main extends Application {
 
     /**
+     * Set Application Variables
+     *
+     */
+    public static String userLoggedIn = "";
+    public static Integer userLoggedInID = null;
+
+    /**
      * Configure the Login Fields.
      */
     // configure the username field
@@ -87,6 +94,8 @@ public class Main extends Application {
                 stage.setTitle("Scheduler");
                 stage.setScene(new Scene(root, 1920, 1080));
                 stage.show();
+                userLoggedIn = login_username.getText();
+                userLoggedInID = JDBC.getUserID(userLoggedIn);
             } catch (Exception e) {
                 e.printStackTrace();
             }
