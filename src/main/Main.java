@@ -43,11 +43,23 @@ public class Main extends Application {
 
     /**
      * Login Button Event Handler - Use the entered username and password to attempt
-     * login.
+     * login. If successful, open the main application window.
      *
      * @param event triggered by the login button
+     *
+     *
      */
     public void LoginBtnAction(ActionEvent event) {
-        System.out.println("Login Button Pressed");
+        if (JDBC.login(login_username.getText(), login_password.getText())) {
+            try {
+                Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
+                Stage stage = new Stage();
+                stage.setTitle("Scheduler");
+                stage.setScene(new Scene(root, 1920, 1080));
+                stage.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
