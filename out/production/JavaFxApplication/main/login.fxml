@@ -50,7 +50,7 @@
   <children>
       <ToolBar prefHeight="40.0" prefWidth="200.0">
          <items>
-            <Button fx:id="btn_exit" alignment="CENTER_RIGHT" cancelButton="true" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#do_quitProgram" text="Exit" />
+            <Button fx:id="btn_exit" alignment="CENTER_RIGHT" cancelButton="true" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#ExitBtnAction" text="Exit" />
          </items>
       </ToolBar>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
@@ -106,7 +106,7 @@
                               <Text fx:id="txt_loginMessage" strokeType="OUTSIDE" strokeWidth="0.0" text="System Message" textAlignment="CENTER" visible="false" wrappingWidth="357.13671875" />
                               <ButtonBar prefHeight="40.0" prefWidth="200.0">
                                 <buttons>
-                                  <Button fx:id="btn_login" mnemonicParsing="false" onAction="#do_login" text="Login" />
+                                  <Button fx:id="btn_login" mnemonicParsing="false" onAction="#LoginBtnAction" text="Login" />
                                 </buttons>
                               </ButtonBar>
                            </children>
