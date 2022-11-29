@@ -16,17 +16,20 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.Modality;
+import java.net.URL;
 import java.util.Optional;
 import java.io.FileWriter;
 import javafx.scene.control.*;
 import main.JDBC;
 import main.Utils;
 import java.time.ZoneId;
+import java.util.ResourceBundle;
+import static main.Utils.recordLoginAttempt;
 
 /**
  * The Login controller.
  */
-public class Login implements Initializable {
+public class Login extends Application implements Initializable {
     /**
      * Set Application Variables
      *
@@ -128,9 +131,12 @@ public class Login implements Initializable {
     /**
      * Constructor
      */
-    public Login(String[] args) {
+    public Login() {
+    }
+
+    public static void main(String[] args) {
         JDBC.makeConnection();
-        launch(args);
+        Application.launch(args);
     }
 
     public void start(Stage primaryStage) throws Exception {
@@ -151,7 +157,7 @@ public class Login implements Initializable {
      *
      */
     @Override
-    public void initialize() {
+    public void initialize(URL url, ResourceBundle rb) {
         // Use Zone ID to set the location label.
         login_location.setText(userZone);
         // set the field labels to the user's language
