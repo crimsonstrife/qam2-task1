@@ -73,13 +73,33 @@ public class JDBC {
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
             if (preparedStatement.executeQuery().next()) {
-                System.out.println("Login successful!");
+                // System.out.println("Logged In"); - DEBUG
                 return true;
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        System.out.println("Login failed!");
+        // System.out.println("Username or Password Incorrect"); - DEBUG
         return false;
+    }
+
+    /**
+     * Get User ID Method - Use the entered username to get the user ID.
+     *
+     * @param username entered username
+     */
+    public static int getUserID(String username) {
+        try {
+            makePreparedStatement("SELECT User_ID FROM users WHERE User_Name = ?", connection);
+            preparedStatement.setString(1, username);
+            if (preparedStatement.executeQuery().next()) {
+                // System.out.println("User ID was found"); - DEBUG
+                return preparedStatement.getResultSet().getInt("User_ID");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        // System.out.println("User ID not found"); - DEBUG
+        return 0;
     }
 }
