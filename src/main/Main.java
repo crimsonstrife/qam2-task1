@@ -19,7 +19,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Alert;
+import javafx.stage.Modality;
+import java.util.Optional;
 import java.io.FileWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -93,6 +96,8 @@ public class Main extends Application {
      *
      */
     public void LoginBtnAction(ActionEvent event) {
+        String loginDate = "2020-01-01";
+        String loginTime = "08:00:00";
         if (JDBC.login(login_username.getText(), login_password.getText())) {
             try {
                 Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
@@ -102,9 +107,20 @@ public class Main extends Application {
                 stage.show();
                 userLoggedIn = login_username.getText();
                 userLoggedInID = JDBC.getUserID(userLoggedIn);
+                loginDate = java.time.LocalDate.now().toString();
+                loginTime = java.time.LocalTime.now().toString();
+                recordLoginAttempt(userLoggedIn, true, userZone, loginDate, loginTime);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Login Error");
+            alert.setHeaderText("Login Error");
+            alert.setContentText("The username or password you entered is incorrect.");
+            alert.showAndWait();
+            alert.initModality(Modality.APPLICATION_MODAL);
+            recordLoginAttempt(login_username.getText(), false, userZone, loginDate, loginTime);
         }
     }
 
