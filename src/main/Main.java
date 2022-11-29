@@ -27,6 +27,16 @@ public class Main extends Application {
         primaryStage.show();
     }
 
+    /**
+     * Configure the Login Fields.
+     */
+    // configure the username field
+    @FXML
+    private TextField login_username;
+    // configure the password field
+    @FXML
+    private PasswordField login_password;
+
     public static void main(String[] args) {
         JDBC.makeConnection();
         launch(args);
@@ -44,13 +54,14 @@ public class Main extends Application {
     /**
      * Login Button Event Handler - Use the entered username and password to attempt
      * login. If successful, open the main application window.
+     * Get the login_username and login_password fx:id in login.fxml for the values
      *
      * @param event triggered by the login button
      *
      *
      */
     public void LoginBtnAction(ActionEvent event) {
-        if (JDBC.login(username.getText(), password.getText())) {
+        if (JDBC.login(login_username.getText(), login_password.getText())) {
             try {
                 Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
                 Stage stage = new Stage();
