@@ -42,6 +42,7 @@ public class Main extends Application {
     private static String userLoggedIn = "";
     private static Integer userLoggedInID = null;
     private static String userZone = ZoneId.systemDefault().toString();
+    private String userLanguage = "fr";
 
     /**
      * Configure the Login Fields.
@@ -49,9 +50,15 @@ public class Main extends Application {
     // configure the username field
     @FXML
     private TextField login_username;
+    // configure the username label
+    @FXML
+    private Label login_username_label;
     // configure the password field
     @FXML
     private PasswordField login_password;
+    // configure the password label
+    @FXML
+    private Label login_password_label;
     // configure the location label
     @FXML
     private Label login_location;
@@ -66,8 +73,14 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        String appTitle = "";
+        if (userLanguage.equals("fr")) {
+            appTitle = "Planificateur";
+        } else {
+            appTitle = "Scheduler";
+        }
         Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
-        primaryStage.setTitle("Scheduler");
+        primaryStage.setTitle(appTitle);
         primaryStage.setScene(new Scene(root, 640, 480));
         primaryStage.show();
     }
@@ -87,6 +100,19 @@ public class Main extends Application {
     }
 
     /**
+     * Set the language for the application based on the system language.
+     *
+     */
+    public static void setLanguage() {
+        String language = System.getProperty("user.language");
+        if (language.equals("fr")) {
+            userLanguage = "fr";
+        } else {
+            userLanguage = "en";
+        }
+    }
+
+    /**
      * Login Button Event Handler - Use the entered username and password to attempt
      * login. If successful, open the main application window.
      * Get the login_username and login_password fx:id in login.fxml for the values
@@ -98,17 +124,22 @@ public class Main extends Application {
     public void LoginBtnAction(ActionEvent event) {
         String loginDate = java.time.LocalDate.now().toString();
         String loginTime = java.time.LocalTime.now().toString();
+        // translate the app title based on system language //
+        String appTitle = "";
+        if (userLanguage.equals("fr")) {
+            appTitle = "Planificateur";
+        } else {
+            appTitle = "Scheduler";
+        }
         if (JDBC.login(login_username.getText(), login_password.getText())) {
             try {
                 Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
                 Stage stage = new Stage();
-                stage.setTitle("Scheduler");
+                stage.setTitle(appTitle);
                 stage.setScene(new Scene(root, 1920, 1080));
                 stage.show();
                 userLoggedIn = login_username.getText();
                 userLoggedInID = JDBC.getUserID(userLoggedIn);
-                loginDate = java.time.LocalDate.now().toString();
-                loginTime = java.time.LocalTime.now().toString();
                 recordLoginAttempt(userLoggedIn, true, userZone, loginDate, loginTime);
             } catch (Exception e) {
                 e.printStackTrace();
