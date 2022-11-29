@@ -1,5 +1,6 @@
 package main;
 
+import javafx.scene.control.Label;
 import org.w3c.dom.Text;
 
 /**
@@ -37,7 +38,7 @@ public class Main extends Application {
     private PasswordField login_password;
     // configure the location label
     @FXML
-    private Text login_location;
+    private Label login_location;
 
     /**
      * Use Zone ID to set the location label.
