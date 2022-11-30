@@ -18,10 +18,14 @@ import javafx.stage.Stage;
 import javafx.stage.Modality;
 
 import java.net.URL;
+import java.security.Timestamp;
+import java.sql.Time;
 import java.util.Optional;
+import java.beans.Statement;
 import java.io.FileWriter;
 import javafx.scene.control.*;
 import main.JDBC;
+import main.Utils;
 import java.time.ZoneId;
 import java.util.ResourceBundle;
 
@@ -67,6 +71,17 @@ public class Main extends Application implements Initializable {
     @FXML
     private Button btn_appointmentdelete;
 
+    @FXML
+    private RadioButton weekly_radio;
+
+    @FXML
+    private RadioButton monthly_radio;
+
+    @FXML
+    public ToggleGroup appointment_filter;
+
+    public ObservableList<appointments> allAppointments = FXCollections.observableArrayList();
+
     /**
      * Configure the Application Panes
      */
@@ -81,6 +96,26 @@ public class Main extends Application implements Initializable {
      */
     @FXML
     private TableView table_appointments;
+    @FXML
+    private TableColumn col_appointment_ID;
+    @FXML
+    private TableColumn col_appointment_title;
+    @FXML
+    private TableColumn col_appointment_desc;
+    @FXML
+    private TableColumn col_appointment_location;
+    @FXML
+    private TableColumn col_appointment_contact;
+    @FXML
+    private TableColumn col_appointment_type;
+    @FXML
+    private TableColumn col_appointment_startdate;
+    @FXML
+    private TableColumn col_appointment_enddate;
+    @FXML
+    private TableColumn col_appointment_customerID;
+    @FXML
+    private TableColumn col_appointment_userID;
 
     /**
      * Configure the Customers Table
@@ -138,6 +173,7 @@ public class Main extends Application implements Initializable {
      * @param event triggered by the appointments button
      */
     public void do_appointments(ActionEvent event) {
+        do_appointments_load();
         appointments_pane.setVisible(true);
         appointments_pane.setDisable(false);
         customers_pane.setVisible(false);
@@ -146,12 +182,69 @@ public class Main extends Application implements Initializable {
 
     /**
      * Load the Appointments Table with data from the database, sorted start date by
-     * month.
+     * week. Display the appointments in the table.
      *
      * @param event
      */
-    public void do_appointments_load(ActionEvent event) {
-        table_appointments.setItems(JDBC.getAppointments("Month"));
+    public void do_appointments_load() {
+        allAppointments = getAllAppointments();
+        populateAppointments();
+    }
+
+    /**
+     * Get all appointments from the database
+     *
+     * @return all appointments
+     * @throws SQLException
+     */
+    public ObservableList<appointments> getAllAppointments() throws SQLException {
+        allAppointments.clear();
+        JDBC.makeConnection();
+        Connection connection = JDBC.connection;
+
+        Statement statement = (Statement) connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM client_schedule.appointments");
+
+        while (resultSet.next()) {
+            int appointment_ID = resultSet.getInt("Appointment_ID");
+            String appointment_title = resultSet.getString("Title");
+            String appointment_desc = resultSet.getString("Description");
+            String appointment_location = resultSet.getString("Location");
+            int appointment_contact = resultSet.getString("Contact_ID");
+            String appointment_type = resultSet.getString("Type");
+            Timestamp appointment_startdate = resultSet.getTimeStamp("Start");
+            Timestamp appointment_enddate = resultSet.getTimeStamp("End");
+            int appointment_customerID = resultSet.getInt("Customer_ID");
+            int appointment_userID = resultSet.getInt("User_ID");
+
+            allAppointments.add(new appointments(appointment_ID, appointment_title, appointment_desc,
+                    appointment_location, appointment_contact, appointment_type, appointment_startdate,
+                    appointment_enddate, appointment_customerID, appointment_userID));
+        }
+        return allAppointments;
+    }
+
+    /**
+     * Method using a lambda stream to both populate the appointments table and
+     * update the appointments
+     *
+     * @throws SQLException
+     */
+    public void populateAppointments() throws SQLException {
+        getAllAppointments();
+        allAppointments.stream().forEach(appointments -> {
+            col_appointment_ID.setCellValueFactory(new PropertyValueFactory<>("appointment_ID"));
+            col_appointment_title.setCellValueFactory(new PropertyValueFactory<>("appointment_title"));
+            col_appointment_desc.setCellValueFactory(new PropertyValueFactory<>("appointment_desc"));
+            col_appointment_location.setCellValueFactory(new PropertyValueFactory<>("appointment_location"));
+            col_appointment_contact.setCellValueFactory(new PropertyValueFactory<>("appointment_contact"));
+            col_appointment_type.setCellValueFactory(new PropertyValueFactory<>("appointment_type"));
+            col_appointment_startdate.setCellValueFactory(new PropertyValueFactory<>("appointment_startdate"));
+            col_appointment_enddate.setCellValueFactory(new PropertyValueFactory<>("appointment_enddate"));
+            col_appointment_customerID.setCellValueFactory(new PropertyValueFactory<>("appointment_customerID"));
+            col_appointment_userID.setCellValueFactory(new PropertyValueFactory<>("appointment_userID"));
+            table_appointments.setItems(allAppointments);
+        });
     }
 
     /**
