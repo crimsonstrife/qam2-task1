@@ -30,12 +30,12 @@ public class NewAppointment {
     public TextField newapp_description;
     public TextField newapp_location;
     public TextField newapp_type;
-    public DatePicker newapp_startdate;
-    public DatePicker newapp_enddate;
-    public ChoiceBox newapp_starttime;
-    public ChoiceBox newapp_endtime;
-    public TextField newapp_customerid;
-    public TextField newapp_userid;
+    public DatePicker newapp_startDate;
+    public DatePicker newapp_endDate;
+    public ChoiceBox newapp_startTime;
+    public ChoiceBox newapp_endTime;
+    public TextField newapp_customerID;
+    public TextField newapp_userID;
     public ChoiceBox newapp_contactbox;
     public ObservableList<Appointments> appointments = FXCollections.observableArrayList();
 
@@ -63,7 +63,7 @@ public class NewAppointment {
                     resultSet.getTimestamp("Create_Date"), // Create date
                     resultSet.getString("Created_By"), // Created by
                     resultSet.getTimestamp("Last_Update"), // Last update
-                    resultSet.getString("Last_Update_By"), // Last update by
+                    resultSet.getString("Last_Updated_By"), // Last update by
                     resultSet.getInt("Customer_ID"), // Customer ID
                     resultSet.getInt("User_ID"), // User ID
                     resultSet.getInt("Contact_ID"))); // Contact ID
@@ -139,9 +139,9 @@ public class NewAppointment {
         try {
             if (newapp_title.getText().isEmpty() || newapp_description.getText().isEmpty()
                     || newapp_location.getText().isEmpty() || newapp_type.getText().isEmpty()
-                    || newapp_startdate.getValue() == null || newapp_enddate.getValue() == null
-                    || newapp_starttime.getValue() == null || newapp_endtime.getValue() == null
-                    || newapp_customerid.getText().isEmpty() || newapp_userid.getText().isEmpty()
+                    || newapp_startDate.getValue() == null || newapp_endDate.getValue() == null
+                    || newapp_startTime.getValue() == null || newapp_endTime.getValue() == null
+                    || newapp_customerID.getText().isEmpty() || newapp_userID.getText().isEmpty()
                     || newapp_contactbox.getValue() == null) {
                 Alert alert = new Alert(Alert.AlertType.ERROR); // Create alert
                 alert.setTitle("Error"); // Set alert title
@@ -154,15 +154,14 @@ public class NewAppointment {
                 String location = newapp_location.getText(); // Get location
                 String type = newapp_type.getText(); // Get type
                 String contact = getContactID(newapp_contactbox.getValue().toString()); // Get contact ID
-                String start = newapp_startdate.getValue().toString() + " " + newapp_starttime.getValue().toString();
-                LocalTime localtimestart = LocalTime.parse(newapp_starttime.getValue().toString()); // Get start time
-                LocalDateTime localdatetimestart = LocalDateTime.of(newapp_startdate.getValue(), localtimestart);
+                LocalTime localtimestart = LocalTime.parse(newapp_startTime.getValue().toString()); // Get start time
+                LocalDateTime localdatetimestart = LocalDateTime.of(newapp_startDate.getValue(), localtimestart);
                 Timestamp startTimeStamp = Timestamp.valueOf(localdatetimestart); // Convert to timestamp
-                LocalTime localtimeend = LocalTime.parse(newapp_endtime.getValue().toString()); // Get end time
-                LocalDateTime localdatetimeend = LocalDateTime.of(newapp_enddate.getValue(), localtimeend);
+                LocalTime localtimeend = LocalTime.parse(newapp_endTime.getValue().toString()); // Get end time
+                LocalDateTime localdatetimeend = LocalDateTime.of(newapp_endDate.getValue(), localtimeend);
                 Timestamp endTimeStamp = Timestamp.valueOf(localdatetimeend); // Convert to timestamp
-                String customerID = newapp_customerid.getText(); // Get customer ID
-                String userID = newapp_userid.getText(); // Get user ID
+                String customerID = newapp_customerID.getText(); // Get customer ID
+                String userID = newapp_userID.getText(); // Get user ID
 
                 Appointments appointment = new Appointments(0, title, description, location, type, startTimeStamp,
                         endTimeStamp, Timestamp.valueOf(LocalDateTime.now()), JDBC.getUserName(Main.loggedInUserID),
@@ -203,9 +202,9 @@ public class NewAppointment {
      * @param event
      */
     public void do_StartTime(ActionEvent event) {
-        newapp_starttime.disableProperty().setValue(false); // Enable the start time
+        newapp_startTime.disableProperty().setValue(false); // Enable the start time
         ObservableList<LocalDateTime> times = FXCollections.observableArrayList(); // Create observable list
-        LocalDate startDate = newapp_startdate.getValue(); // Get start date
+        LocalDate startDate = newapp_startDate.getValue(); // Get start date
         for (int i = 8; i < 22; i++) {
             // add times in 15 minute increments
             times.add(LocalDateTime.of(startDate, LocalTime.of(i, 0))); // Add times to the list
@@ -214,11 +213,11 @@ public class NewAppointment {
             times.add(LocalDateTime.of(startDate, LocalTime.of(i, 45))); // Add times to the list
         } // end for loop
         for (int i = 0; i < times.size(); i++) { // Loop through the list
-            newapp_starttime.getItems() // Get the start time items
+            newapp_startTime.getItems() // Get the start time items
                     .add(times.get(i).atZone(ZoneId.of("US/Eastern")).withZoneSameInstant(ZoneId.systemDefault())
                             .toLocalDateTime().format(DateTimeFormatter.ofPattern("HH:mm")));
         } // end for loop
-        newapp_starttime.getSelectionModel().selectFirst(); // Select first item by default
+        newapp_startTime.getSelectionModel().selectFirst(); // Select first item by default
     }
 
     /**
@@ -227,9 +226,9 @@ public class NewAppointment {
      * @param event
      */
     public void do_EndTime(ActionEvent event) {
-        newapp_endtime.disableProperty().setValue(false); // Enable the end time
+        newapp_endTime.disableProperty().setValue(false); // Enable the end time
         ObservableList<LocalDateTime> times = FXCollections.observableArrayList(); // Create observable list
-        LocalDate endDate = newapp_enddate.getValue(); // Get end date
+        LocalDate endDate = newapp_endDate.getValue(); // Get end date
         for (int i = 8; i < 22; i++) {
             // add times in 15 minute increments
             times.add(LocalDateTime.of(endDate, LocalTime.of(i, 0))); // Add times to the list
@@ -238,11 +237,11 @@ public class NewAppointment {
             times.add(LocalDateTime.of(endDate, LocalTime.of(i, 45))); // Add times to the list
         } // end for loop
         for (int i = 0; i < times.size(); i++) { // Loop through the list
-            newapp_endtime.getItems() // Get the end time items
+            newapp_endTime.getItems() // Get the end time items
                     .add(times.get(i).atZone(ZoneId.of("US/Eastern")).withZoneSameInstant(ZoneId.systemDefault())
                             .toLocalDateTime().format(DateTimeFormatter.ofPattern("HH:mm")));
         } // end for loop
-        newapp_endtime.getSelectionModel().selectFirst(); // Select first item by default
+        newapp_endTime.getSelectionModel().selectFirst(); // Select first item by default
     }
 
     /**
@@ -258,7 +257,7 @@ public class NewAppointment {
             JDBC.makeConnection(); // Connect to database
             Connection connection = JDBC.connection; // Get connection
             PreparedStatement statement = connection.prepareStatement(query); // Create statement
-            statement.setString(1, newapp_customerid.getText()); // Set customer ID
+            statement.setString(1, newapp_customerID.getText()); // Set customer ID
             ResultSet resultSet = statement.executeQuery(); // Execute query
             while (resultSet.next()) {
                 Timestamp start = resultSet.getTimestamp("Start"); // Get start time
