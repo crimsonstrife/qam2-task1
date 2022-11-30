@@ -37,7 +37,6 @@ public class Main extends Application implements Initializable {
 
     /**
      * Set Application Variables
-     *
      */
     private static String userLoggedIn = "";
     private static Integer userLoggedInID = null;
@@ -148,7 +147,6 @@ public class Main extends Application implements Initializable {
 
     /**
      * Initialize method
-     *
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -207,7 +205,6 @@ public class Main extends Application implements Initializable {
     /**
      * Load the Appointments Table with data from the database, sorted start date by
      * week. Display the appointments in the table.
-     *
      */
     public void do_appointments_load() throws SQLException {
         allAppointments = getAllAppointments();
@@ -291,7 +288,6 @@ public class Main extends Application implements Initializable {
     /**
      * Load the Customers Table with data from the database.
      * Display the appointments in the table.
-     *
      */
     public void do_customers_load() throws SQLException {
         allCustomers = getAllCustomers();
@@ -515,66 +511,67 @@ public class Main extends Application implements Initializable {
             Statement statement = (Statement) connection.createStatement();
             ResultSet resultSet = statement.executeQuery(
                     "SELECT COUNT(*) FROM client_schedule.appointments WHERE Customer_ID = " + customerID);
-            while (rs.next()) {
+            while (resultSet.next()) {
                 appointmentCount = resultSet.getInt(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        return appointmentCount;
-    }
+        }
+            return appointmentCount;
+        }
 
-    /**
-     * Delete the selected customer
-     * Ensure that the customer has no remaining appointments before deleting
-     *
-     * @param event triggered by the delete customer button
-     */
-    public void do_deleteCustomer(ActionEvent event) {
-        if (table_customers.getSelectionModel().getSelectedItem() != null) {
-            Customers selectedCustomer = (Customers) table_customers.getSelectionModel().getSelectedItem();
-            int customerID = selectedCustomer.getCustomer_ID();
-            String customerIDString = Integer.toString(customerID);
-            String customerNameString = selectedCustomer.getCustomer_Name();
-            if (getCustomerAppointmetCount(customerID) > 0) {
-                String appointmentCountString = Integer.toString(getCustomerAppointmetCount(customerID));
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText("Customer has remaining Appointments");
-                alert.setContentText("The customer " + customerNameString + " with ID: " + customerIDString
-                        + " has " + appointmentCountString + " remaining appointments and cannot be deleted.");
-                alert.showAndWait();
-            } else {
-                Alert alert = new Alert(AlertType.CONFIRMATION);
-                alert.setTitle("Are you sure you want to delete customer: " + +"?");
-                alert.setHeaderText(null);
-                alert.setContentText("Please confirm you want to delete this customer.");
-                alert.showAndWait();
-                if (alert.getResult().getText().equals("OK")) {
-                    try {
-                        JDBC.makeConnection();
-                        Connection connection = JDBC.connection;
-                        Statement statement = (Statement) connection.createStatement();
-                        statement.executeUpdate(
-                                "DELETE FROM client_schedule.customers WHERE Customer_ID = " + customerID);
-                        populateCustomers();
-                        // prepare and alert to notify the user that the customer has been deleted
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Customer Deleted");
-                        alert.setHeaderText("Customer Deleted");
-                        alert.setContentText("The customer " + customerNameString + " with ID: " + customerIDString
-                                + " has been deleted.");
-                        alert.showAndWait();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
+        /**
+         * Delete the selected customer
+         * Ensure that the customer has no remaining appointments before deleting
+         *
+         * @param event triggered by the delete customer button
+         */
+        public void do_deleteCustomer(ActionEvent event){
+            if (table_customers.getSelectionModel().getSelectedItem() != null) {
+                Customers selectedCustomer = (Customers) table_customers.getSelectionModel().getSelectedItem();
+                int selectedCustomerID = selectedCustomer.getCustomer_ID();
+                String customerIDString = Integer.toString(selectedCustomerID);
+                String customerNameString = selectedCustomer.getCustomer_Name();
+                if (getCustomerAppointmetCount(selectedCustomerID) > 0) {
+                    String appointmentCountString = Integer.toString(getCustomerAppointmetCount(selectedCustomerID));
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("Customer has remaining Appointments");
+                    alert.setContentText("The customer " + customerNameString + " with ID: " + customerIDString
+                            + " has " + appointmentCountString + " remaining appointments and cannot be deleted.");
+                    alert.showAndWait();
+                } else {
+                    Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+                    confirm.setTitle("Are you sure you want to delete customer: " + customerNameString + "?");
+                    confirm.setHeaderText(null);
+                    confirm.setContentText("Please confirm you want to delete this customer.");
+                    confirm.showAndWait();
+                    if (confirm.getResult().getText().equals("OK")) {
+                        try {
+                            JDBC.makeConnection();
+                            Connection connection = JDBC.connection;
+                            Statement statement = (Statement) connection.createStatement();
+                            statement.executeUpdate(
+                                    "DELETE FROM client_schedule.customers WHERE Customer_ID = " + selectedCustomerID);
+                            populateCustomers();
+                            // prepare and alert to notify the user that the customer has been deleted
+                            Alert inform = new Alert(Alert.AlertType.INFORMATION);
+                            inform.setTitle("Customer Deleted");
+                            inform.setHeaderText("Customer Deleted");
+                            inform.setContentText("The customer " + customerNameString + " with ID: " + customerIDString
+                                    + " has been deleted.");
+                            inform.showAndWait();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("No Customer Selected");
+                alert.setContentText("Please select a customer to delete.");
+                alert.showAndWait();
             }
-        } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("No Customer Selected");
-            alert.setContentText("Please select a customer to delete.");
-            alert.showAndWait();
         }
     }
-}
