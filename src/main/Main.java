@@ -290,7 +290,7 @@ public class Main extends Application implements Initializable {
             stage.setScene(new Scene(root, 600, 400));
             stage.showAndWait();
             populateAppointments();
-        } catch (IOException e) {
+        } catch (IOException | SQLException e) {
             e.printStackTrace();
         }
     }
@@ -311,15 +311,15 @@ public class Main extends Application implements Initializable {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("updateAppointment.fxml"));
                 Parent root = loader.load();
-                ModifyAppointmentController controller = loader.getController();
-                controller.setAppointment(table_appointments.getSelectionModel().getSelectedItem());
+                UpdateAppointment controller = loader.getController();
+                controller.updateAppointment((Appointments) table_appointments.getSelectionModel().getSelectedItem());
                 controller.setAllAppointments(allAppointments);
                 Stage stage = new Stage();
                 stage.setTitle("Update Appointment");
                 stage.setScene(new Scene(root, 600, 400));
                 stage.showAndWait();
                 populateAppointments();
-            } catch (IOException e) {
+            } catch (IOException | SQLException e) {
                 e.printStackTrace();
             }
         }
@@ -332,7 +332,7 @@ public class Main extends Application implements Initializable {
      */
     public void do_deleteappointment(ActionEvent event) {
         if (table_appointments.getSelectionModel().getSelectedItem() != null) {
-            Appointments selectedAppointment = table_appointments.getSelectionModel().getSelectedItem();
+            Appointments selectedAppointment = (Appointments) table_appointments.getSelectionModel().getSelectedItem();
             int appointmentID = selectedAppointment.getAppointment_ID();
             try {
                 JDBC.makeConnection();
