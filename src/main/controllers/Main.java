@@ -155,18 +155,22 @@ public class Main extends Application implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        if (checkAppointmentTimes() == true) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Appointment Alert");
-            alert.setHeaderText("Appointment Alert");
-            alert.setContentText("There is an appointment due within the next 15 minutes.");
-            alert.showAndWait();
-        } else {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Appointment Alert");
-            alert.setHeaderText("Appointment Alert");
-            alert.setContentText("There are no appointments due within the next 15 minutes.");
-            alert.showAndWait();
+        try {
+            if (checkAppointmentTimes() == true) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Appointment Alert");
+                alert.setHeaderText("Appointment Alert");
+                alert.setContentText("There is an appointment due within the next 15 minutes.");
+                alert.showAndWait();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Appointment Alert");
+                alert.setHeaderText("Appointment Alert");
+                alert.setContentText("There are no appointments due within the next 15 minutes.");
+                alert.showAndWait();
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
     }
 
@@ -198,7 +202,7 @@ public class Main extends Application implements Initializable {
      * Check appointment times for any occurring within the next 15 minutes.
      * return true if there is an appointment within the next 15 minutes.
      */
-    public boolean checkAppointmentTimes() {
+    public boolean checkAppointmentTimes() throws SQLException {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime fifteenMinutesFromNow = now.plusMinutes(15);
         boolean appointmentWithin15Minutes = false;
