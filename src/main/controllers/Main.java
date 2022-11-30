@@ -155,6 +155,19 @@ public class Main extends Application implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        if (checkAppointmentTimes() == true) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Appointment Alert");
+            alert.setHeaderText("Appointment Alert");
+            alert.setContentText("There is an appointment due within the next 15 minutes.");
+            alert.showAndWait();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Appointment Alert");
+            alert.setHeaderText("Appointment Alert");
+            alert.setContentText("There are no appointments due within the next 15 minutes.");
+            alert.showAndWait();
+        }
     }
 
     public void start(Stage primaryStage) throws Exception {
@@ -179,6 +192,29 @@ public class Main extends Application implements Initializable {
     public static void main(String[] args) {
         JDBC.makeConnection();
         launch(args);
+    }
+
+    /**
+     * Check appointment times for any occurring within the next 15 minutes.
+     * return true if there is an appointment within the next 15 minutes.
+     */
+    public boolean checkAppointmentTimes() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime fifteenMinutesFromNow = now.plusMinutes(15);
+        boolean appointmentWithin15Minutes = false;
+        JDBC.makeConnection();
+        Connection connection = JDBC.getConnection();
+        Statement statement = (Statement) connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM client_schedule.appointments");
+        while (resultSet.next()) {
+            LocalDateTime appointmentStart = resultSet.getTimestamp("start").toLocalDateTime();
+            if (appointmentStart.isAfter(now) && appointmentStart.isBefore(fifteenMinutesFromNow)) {
+                appointmentWithin15Minutes = true;
+            } else {
+                appointmentWithin15Minutes = false;
+            }
+        }
+        return appointmentWithin15Minutes;
     }
 
     /**
