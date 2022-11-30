@@ -1,5 +1,7 @@
 package main;
 
+import javafx.collections.ObservableList;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -108,8 +110,9 @@ public class JDBC {
      *
      * @param sortedBy - either "Month" or "Week" to sort the appointments by start
      *                 date
+     * @return
      */
-    public static void getAppointments(String sortedBy) {
+    public static ObservableList getAppointments(String sortedBy) {
         try {
             makePreparedStatement("SELECT * FROM appointments ORDER BY Start " + sortedBy, connection);
             if (preparedStatement.executeQuery().next()) {
@@ -120,5 +123,6 @@ public class JDBC {
         }
         // System.out.println("Appointments not found"); - DEBUG
         // return 0;
+        return null;
     }
 }
