@@ -40,6 +40,7 @@ public class Main extends Application implements Initializable {
     private static Integer userLoggedInID = null;
     private static String userZone = ZoneId.systemDefault().toString();
     private static String userLanguage = System.getProperty("user.language");
+    public static Integer loggedInUserID = null;
 
     /**
      * Configure the Application Fields
@@ -219,7 +220,9 @@ public class Main extends Application implements Initializable {
             int appointment_userID = resultSet.getInt("User_ID");
 
             allAppointments.add(new Appointments(appointment_ID, appointment_title, appointment_desc,
-                    appointment_location, appointment_type, appointment_startdate, appointment_enddate, appointment_createdate, appointment_createdby, appointment_lastupdate, appointment_updatedby, appointment_customerID, appointment_userID, appointment_contact));
+                    appointment_location, appointment_type, appointment_startdate, appointment_enddate,
+                    appointment_createdate, appointment_createdby, appointment_lastupdate, appointment_updatedby,
+                    appointment_customerID, appointment_userID, appointment_contact));
         }
         return allAppointments;
     }
