@@ -145,6 +145,16 @@ public class Main extends Application implements Initializable {
     }
 
     /**
+     * Load the Appointments Table with data from the database, sorted start date by
+     * month.
+     *
+     * @param event
+     */
+    public void do_appointments_load(ActionEvent event) {
+        table_appointments.setItems(JDBC.getAppointments("Month"));
+    }
+
+    /**
      * Show the Customers Pane and hide the Appointments Pane
      *
      * @param event triggered by the customers button
