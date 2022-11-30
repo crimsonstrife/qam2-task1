@@ -284,9 +284,9 @@ public class NewAppointment {
             case THURSDAY:
             case FRIDAY:
                 if (appointment.getStart().toLocalDateTime().atZone(ZoneId.systemDefault())
-                        .withZoneSameInstant(ZoneId.of("US/Eastern")).getHour() > 8
+                        .withZoneSameInstant(ZoneId.of("US/Eastern")).getHour() < 8
                         || appointment.getEnd().toLocalDateTime().atZone(ZoneId.systemDefault())
-                                .withZoneSameInstant(ZoneId.of("US/Eastern")).getHour() < 22) {
+                                .withZoneSameInstant(ZoneId.of("US/Eastern")).getHour() > 22) {
                     valid.set(false); // Set valid to false
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error");
