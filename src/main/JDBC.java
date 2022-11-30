@@ -1,23 +1,22 @@
 package main;
 
 import javafx.collections.ObservableList;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class JDBC {
-    private static final String protocol = "jdbc";
-    private static final String vendor = ":mysql:";
-    private static final String location = "//localhost/";
-    private static final String databaseName = "client_schedule";
-    private static final String jdbcUrl = protocol + vendor + location + databaseName + "?connectionTimeZone = SERVER"; // LOCAL
-    private static final String driver = "com.mysql.cj.jdbc.Driver"; // Driver reference
-    private static final String userName = "sqlUser"; // Username
-    private static String password = "Passw0rd!"; // Password
-    private static Connection connection = null; // Connection Interface
-    private static PreparedStatement preparedStatement;
+    public static final String protocol = "jdbc";
+    public static final String vendor = ":mysql:";
+    public static final String location = "//localhost/";
+    public static final String databaseName = "client_schedule";
+    public static final String jdbcUrl = protocol + vendor + location + databaseName + "?connectionTimeZone = SERVER"; // LOCAL
+    public static final String driver = "com.mysql.cj.jdbc.Driver"; // Driver reference
+    public static final String userName = "sqlUser"; // Username
+    public static String password = "Passw0rd!"; // Password
+    public static Connection connection = null; // Connection Interface
+    public static PreparedStatement preparedStatement;
 
     public static void makeConnection() {
 
@@ -105,24 +104,4 @@ public class JDBC {
         return 0;
     }
 
-    /**
-     * Get all Appointments Method
-     *
-     * @param sortedBy - either "Month" or "Week" to sort the appointments by start
-     *                 date
-     * @return
-     */
-    public static ObservableList getAppointments(String sortedBy) {
-        try {
-            makePreparedStatement("SELECT * FROM appointments ORDER BY Start " + sortedBy, connection);
-            if (preparedStatement.executeQuery().next()) {
-                // System.out.println("Appointments were found"); - DEBUG
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        // System.out.println("Appointments not found"); - DEBUG
-        // return 0;
-        return null;
-    }
 }
