@@ -49,6 +49,16 @@ public class UpdateCustomer {
     }
 
     /**
+     * Cancels the Customer update
+     *
+     * @param event
+     */
+    public void do_modcusCancel(ActionEvent event) {
+        Stage stage = (Stage) modcus_customerID.getScene().getWindow(); // Get the stage
+        stage.close(); // Close the stage
+    }
+
+    /**
      * Populates the existing fields
      */
     public void populateExistingFields() {
@@ -60,6 +70,8 @@ public class UpdateCustomer {
         modcus_countryChoice.getItems().clear();
         modcus_divisionLevel.getItems().clear();
         determineCountryAndDivision();
+        modcus_countryChoice.getSelectionModel().select(get_Country().getCountry());
+        modcus_divisionLevel.getSelectionModel().select(get_Division().getDivision());
     }
 
     /**
@@ -108,6 +120,88 @@ public class UpdateCustomer {
             return country;
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Get the Division
+     *
+     * @return division
+     */
+    public Divisions get_Division() {
+        try {
+            JDBC.makeConnection();
+            Connection connection = JDBC.getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement
+                    .executeQuery("SELECT * FROM client_schedule.first_level_divisions WHERE Division_ID = '"
+                            + customer.getDivision_ID() + "'");
+            resultSet.next();
+            Divisions division = new Divisions(resultSet.getInt("Division_ID"), resultSet.getString("Division"),
+                    resultSet.getInt("COUNTRY_ID"));
+            return division;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Set the Division Level based on the Country selected
+     *
+     * @param event
+     */
+    public void do_modcusDivision(ActionEvent event) {
+        modcus_divisionLevel.getItems().clear();
+        try {
+            JDBC.makeConnection();
+            Connection connection = JDBC.getConnection();
+            Statement statement = connection.createStatement();
+            int selectedCountry = modcus_countryChoice.getSelectionModel().getSelectedIndex() + 1;
+            ResultSet resultSet = statement.executeQuery(
+                    "SELECT * FROM client_schedule.first_level_divisions WHERE COUNTRY_ID = " + selectedCountry);
+            while (resultSet.next()) {
+                modcus_divisionLevel.getItems().add(resultSet.getString("Division"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Save the new Customer
+     *
+     * @param event
+     */
+    public void do_modcusSave(ActionEvent event) {
+        try {
+            if (modcus_customerName.getText().isEmpty() || modcus_address.getText().isEmpty()
+                    || modcus_postalCode.getText().isEmpty() || modcus_phone.getText().isEmpty()
+                    || modcus_countryChoice.getSelectionModel().isEmpty()
+                    || modcus_divisionLevel.getSelectionModel().isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.ERROR); // Create alert
+                alert.setTitle("Error"); // Set alert title
+                alert.setHeaderText("Error"); // Set alert header
+                alert.setContentText("Please fill out all fields."); // Set alert content
+                alert.showAndWait(); // Show alert
+            } else {
+                JDBC.makeConnection();
+                Connection connection = JDBC.getConnection();
+                Statement statement = connection.createStatement();
+                ResultSet resultSet = statement
+                        .executeQuery("SELECT * FROM client_schedule.first_level_divisions WHERE Division = '"
+                                + modcus_divisionLevel.getValue() + "'");
+                resultSet.next();
+                int divisionID = resultSet.getInt("Division_ID");
+                statement.executeUpdate("UPDATE client_schedule.customers SET Customer_Name = '"
+                        + modcus_customerName.getText() + "', Address = '" + modcus_address.getText()
+                        + "', Postal_Code = '"
+                        + modcus_postalCode.getText() + "', Phone = '" + modcus_phone.getText() + "', Division_ID = '"
+                        + getDivisionID() + "' WHERE Customer_ID = " + modcus_customer.getCustomerID());
+                Stage stage = (Stage) modcus_customerID.getScene().getWindow(); // Get the stage
+                stage.close(); // Close the stage
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
     }
 }
