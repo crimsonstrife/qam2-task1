@@ -41,7 +41,7 @@ public class UpdateCustomer {
      *
      * @param customer
      */
-    public void updateCustomer(Customers customer) {
+    public void updateCustomer(Customers customer) throws SQLException {
         this.customer = customer;
         populateExistingFields();
     }
@@ -59,7 +59,7 @@ public class UpdateCustomer {
     /**
      * Populates the existing fields
      */
-    public void populateExistingFields() {
+    public void populateExistingFields() throws SQLException {
         modcus_customerID.setText(String.valueOf(customer.getCustomer_ID()));
         modcus_customerName.setText(customer.getCustomer_Name());
         modcus_address.setText(customer.getAddress());
@@ -101,7 +101,7 @@ public class UpdateCustomer {
      *
      * @return country
      */
-    public Countries get_Country() {
+    public Countries get_Country() throws SQLException {
         JDBC.makeConnection();
         Connection connection = JDBC.getConnection();
         Statement statement = connection.createStatement();
@@ -122,7 +122,7 @@ public class UpdateCustomer {
      *
      * @return Divisions division
      */
-    public Divisions get_Division() {
+    public Divisions get_Division() throws SQLException {
         JDBC.makeConnection();
         Connection connection = JDBC.getConnection();
         Statement statement = connection.createStatement();
