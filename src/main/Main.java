@@ -288,7 +288,8 @@ public class Main extends Application implements Initializable {
             Stage stage = new Stage();
             stage.setTitle("Add Appointment");
             stage.setScene(new Scene(root, 600, 400));
-            stage.show();
+            stage.showAndWait();
+            populateAppointments();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -300,6 +301,28 @@ public class Main extends Application implements Initializable {
      * @param event triggered by the modify appointment button
      */
     public void do_modifyappointment(ActionEvent event) {
+        if (table_appointments.getSelectionModel().getSelectedItem() == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("No Appointment Selected");
+            alert.setContentText("Please select an appointment to modify.");
+            alert.showAndWait();
+        } else {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("updateAppointment.fxml"));
+                Parent root = loader.load();
+                ModifyAppointmentController controller = loader.getController();
+                controller.setAppointment(table_appointments.getSelectionModel().getSelectedItem());
+                controller.setAllAppointments(allAppointments);
+                Stage stage = new Stage();
+                stage.setTitle("Update Appointment");
+                stage.setScene(new Scene(root, 600, 400));
+                stage.showAndWait();
+                populateAppointments();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -308,6 +331,26 @@ public class Main extends Application implements Initializable {
      * @param event triggered by the delete appointment button
      */
     public void do_deleteappointment(ActionEvent event) {
+        if (table_appointments.getSelectionModel().getSelectedItem() != null) {
+            Appointments selectedAppointment = table_appointments.getSelectionModel().getSelectedItem();
+            int appointmentID = selectedAppointment.getAppointment_ID();
+            try {
+                JDBC.makeConnection();
+                Connection connection = JDBC.connection;
+                Statement statement = (Statement) connection.createStatement();
+                statement.executeUpdate(
+                        "DELETE FROM client_schedule.appointments WHERE Appointment_ID = " + appointmentID);
+                populateAppointments();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("No Appointment Selected");
+            alert.setContentText("Please select an appointment to delete.");
+            alert.showAndWait();
+        }
     }
 
     /**
