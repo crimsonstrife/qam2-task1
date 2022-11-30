@@ -1,4 +1,4 @@
-package main;
+package main.controllers;
 
 /**
  *
@@ -8,16 +8,12 @@ package main;
  */
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import main.JDBC;
-import javafx.beans.value.ChangeListener;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import main.Divisions;
-import main.Countries;
+import main.utilities.JDBC;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -1,4 +1,4 @@
-package main;
+package main.utilities;
 
 /**
  *
@@ -6,20 +6,7 @@ package main;
  *
  * JAVADOC Location: in the Root of the Project folder - in a folder called JAVADOCS.
  */
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.event.ActionEvent;
-import javafx.fxml.Initializable;
-import javafx.fxml.*;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
-import javafx.stage.Modality;
-import java.util.Optional;
 import java.io.FileWriter;
-import javafx.scene.control.*;
-import main.JDBC;
 import java.time.ZoneId;
 
 public class Utils {

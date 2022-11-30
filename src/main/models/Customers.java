@@ -1,4 +1,4 @@
-package main;
+package main.models;
 
 /**
  *
@@ -8,7 +8,7 @@ package main;
  *         called JAVADOCS.
  */
 
-import main.JDBC;
+import main.utilities.JDBC;
 
 import java.sql.*;
 

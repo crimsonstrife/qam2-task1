@@ -1,4 +1,4 @@
-package main;
+package main.models;
 
 /**
  *
@@ -7,12 +7,7 @@ package main;
  * JAVADOC Location: in the Root of the Project folder - in a folder called JAVADOCS.
  */
 
-import javafx.collections.ObservableList;
 import java.sql.*;
-import main.JDBC;
-import main.Utils;
-import java.time.ZoneId;
-import static main.Utils.recordLoginAttempt;
 
 public class Appointments {
     private Integer appointment_ID;

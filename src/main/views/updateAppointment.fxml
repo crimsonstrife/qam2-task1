@@ -43,7 +43,7 @@
 <?import javafx.scene.layout.VBox?>
 
 
-<ScrollPane fitToWidth="true" hbarPolicy="ALWAYS" pannable="true" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.UpdateAppointment">
+<ScrollPane fitToWidth="true" hbarPolicy="ALWAYS" pannable="true" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.controllers.UpdateAppointment">
    <content>
       <VBox prefHeight="630.0" prefWidth="600.0" spacing="10.0">
          <children>

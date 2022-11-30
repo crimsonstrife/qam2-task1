@@ -1,4 +1,4 @@
-package main;
+package main.controllers;
 
 /**
  *
@@ -26,6 +26,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import javafx.scene.control.*;
+import main.controllers.UpdateAppointment;
+import main.models.Appointments;
+import main.models.Customers;
+import main.utilities.JDBC;
+
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ResourceBundle;
@@ -159,7 +164,7 @@ public class Main extends Application implements Initializable {
         } else {
             appTitle = "Scheduler";
         }
-        Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("views/main.fxml"));
         primaryStage.setTitle(appTitle);
         primaryStage.setScene(new Scene(root, 900, 600));
         primaryStage.show();
@@ -369,7 +374,7 @@ public class Main extends Application implements Initializable {
      */
     public void do_createappointment(ActionEvent event) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("newAppointment.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("views/newAppointment.fxml"));
             Stage stage = new Stage();
             stage.setTitle("Add Appointment");
             stage.setScene(new Scene(root, 600, 400));
@@ -394,7 +399,7 @@ public class Main extends Application implements Initializable {
             alert.showAndWait();
         } else {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("updateAppointment.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("views/updateAppointment.fxml"));
                 Parent root = loader.load();
                 UpdateAppointment controller = loader.getController();
                 controller.updateAppointment((Appointments) table_appointments.getSelectionModel().getSelectedItem());
@@ -487,7 +492,7 @@ public class Main extends Application implements Initializable {
      */
     public void do_createCustomer(ActionEvent event) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("newCustomer.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("views/newCustomer.fxml"));
             Stage stage = new Stage();
             stage.setTitle("Add a Customer");
             stage.setScene(new Scene(root, 600, 312));

@@ -1,4 +1,4 @@
-package main;
+package main.controllers;
 /**
  *
  * @author Patrick Barnhardt
@@ -6,9 +6,6 @@ package main;
  * JAVADOC Location: in the Root of the Project folder - in a folder called JAVADOCS.
  */
 import javafx.fxml.FXML;
-import main.JDBC;
-import main.Utils;
-import main.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,8 +14,10 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import main.Appointments;
-import main.Contacts;
+import main.models.Appointments;
+import main.models.Contacts;
+import main.utilities.JDBC;
+
 import java.sql.*;
 import java.time.*;
 import java.time.format.DateTimeFormatter;

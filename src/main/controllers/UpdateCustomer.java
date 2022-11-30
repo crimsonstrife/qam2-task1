@@ -1,4 +1,4 @@
-package main;
+package main.controllers;
 
 /**
  *
@@ -13,6 +13,10 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import main.models.Countries;
+import main.models.Customers;
+import main.models.Divisions;
+import main.utilities.JDBC;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

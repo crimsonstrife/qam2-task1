@@ -1,4 +1,4 @@
-package main;
+package main.utilities;
 
 import javafx.collections.ObservableList;
 import java.sql.Connection;
