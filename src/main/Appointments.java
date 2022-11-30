@@ -1,36 +1,32 @@
 package main;
 
 import javafx.collections.ObservableList;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Time;
+
+import java.sql.*;
 
 import main.JDBC;
 import main.Utils;
 import java.time.ZoneId;
 import static main.Utils.recordLoginAttempt;
 
-public abstract class Appointments {
+public class Appointments {
     private Integer appointment_ID;
     private String title;
     private String description;
     private String location;
     private String type;
-    private Date start;
-    private Date end;
-    private Date createDate;
+    private Timestamp start;
+    private Timestamp end;
+    private Timestamp createDate;
     private String createdBy;
-    private Time lastUpdate;
+    private Timestamp lastUpdate;
     private String lastUpdateBy;
     private Integer customer_ID;
     private Integer user_ID;
     private Integer contact_ID;
 
     public Appointments(Integer appointment_ID, String title, String description, String location, String type,
-            Date start, Date end, Date createDate, String createdBy, Time lastUpdate, String lastUpdateBy,
+                        Timestamp start, Timestamp end, Timestamp createDate, String createdBy, Timestamp lastUpdate, String lastUpdateBy,
             Integer customer_ID, Integer user_ID, Integer contact_ID) {
         this.appointment_ID = appointment_ID;
         this.title = title;
@@ -88,27 +84,27 @@ public abstract class Appointments {
         this.type = type;
     }
 
-    public Date getStart() {
+    public Timestamp getStart() {
         return start;
     }
 
-    public void setStart(Date start) {
+    public void setStart(Timestamp start) {
         this.start = start;
     }
 
-    public Date getEnd() {
+    public Timestamp getEnd() {
         return end;
     }
 
-    public void setEnd(Date end) {
+    public void setEnd(Timestamp end) {
         this.end = end;
     }
 
-    public Date getCreateDate() {
+    public Timestamp getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(Timestamp createDate) {
         this.createDate = createDate;
     }
 
@@ -120,11 +116,11 @@ public abstract class Appointments {
         this.createdBy = createdBy;
     }
 
-    public Time getLastUpdate() {
+    public Timestamp getLastUpdate() {
         return lastUpdate;
     }
 
-    public void setLastUpdate(Time lastUpdate) {
+    public void setLastUpdate(Timestamp lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 
@@ -158,25 +154,5 @@ public abstract class Appointments {
 
     public void setContact_ID(Integer contact_ID) {
         this.contact_ID = contact_ID;
-    }
-
-    /**
-     * Method to get appointments from the database and return them.
-     *
-     * @return
-     */
-    public static ObservableList<Appointments> getAppointments() {
-        ObservableList<Appointments> appointments = null;
-        try {
-            Connection conn = DriverManager.getConnection(JDBC.jdbcUrl, JDBC.userName, JDBC.password);
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM appointments");
-            ps.execute();
-            appointments = ps.getResultSet();
-            ps.close();
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return appointments;
     }
 }
