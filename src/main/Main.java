@@ -544,48 +544,30 @@ public class Main extends Application implements Initializable {
                         + " has " + appointmentCountString + " remaining appointments and cannot be deleted.");
                 alert.showAndWait();
             } else {
-                try {
-                    JDBC.makeConnection();
-                    Connection connection = JDBC.connection;
-                    Statement statement = (Statement) connection.createStatement();
-                    statement.executeUpdate(
-                            "DELETE FROM client_schedule.customers WHERE Customer_ID = " + customerID);
-                    populateCustomers();
-                    // prepare and alert to notify the user that the customer has been deleted
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Customer Deleted");
-                    alert.setHeaderText("Customer Deleted");
-                    alert.setContentText("The customer " + customerNameString + " with ID: " + customerIDString
-                            + " has been deleted.");
-                    alert.showAndWait();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            } else {
                 Alert alert = new Alert(AlertType.CONFIRMATION);
-            alert.setTitle("Are you sure you want to delete customer: " + +"?");
-            alert.setHeaderText(null);
-            alert.setContentText("Please confirm you want to delete this customer.");
-            alert.showAndWait();
-            if (alert.getResult().getText().equals("OK")) {
-                try {
-                    JDBC.makeConnection();
-                    Connection connection = JDBC.connection;
-                    Statement statement = (Statement) connection.createStatement();
-                    statement.executeUpdate(
-                            "DELETE FROM client_schedule.customers WHERE Customer_ID = " + customerID);
-                    populateCustomers();
-                    // prepare and alert to notify the user that the customer has been deleted
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Customer Deleted");
-                    alert.setHeaderText("Customer Deleted");
-                    alert.setContentText("The customer " + customerNameString + " with ID: " + customerIDString
-                            + " has been deleted.");
-                    alert.showAndWait();
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                alert.setTitle("Are you sure you want to delete customer: " + +"?");
+                alert.setHeaderText(null);
+                alert.setContentText("Please confirm you want to delete this customer.");
+                alert.showAndWait();
+                if (alert.getResult().getText().equals("OK")) {
+                    try {
+                        JDBC.makeConnection();
+                        Connection connection = JDBC.connection;
+                        Statement statement = (Statement) connection.createStatement();
+                        statement.executeUpdate(
+                                "DELETE FROM client_schedule.customers WHERE Customer_ID = " + customerID);
+                        populateCustomers();
+                        // prepare and alert to notify the user that the customer has been deleted
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Customer Deleted");
+                        alert.setHeaderText("Customer Deleted");
+                        alert.setContentText("The customer " + customerNameString + " with ID: " + customerIDString
+                                + " has been deleted.");
+                        alert.showAndWait();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
             }
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
