@@ -101,6 +101,8 @@ public class Login extends Application implements Initializable {
                 userLoggedIn = login_username.getText();
                 userLoggedInID = JDBC.getUserID(userLoggedIn);
                 recordLoginAttempt(userLoggedIn, true, userZone, loginDate, loginTime);
+                // store the logged in user ID
+                Main.loggedInUserID = userLoggedInID;
             } catch (Exception e) {
                 e.printStackTrace();
             }
