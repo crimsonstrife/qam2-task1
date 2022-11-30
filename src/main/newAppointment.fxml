@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="630.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="630.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.NewAppointment">
    <children>
       <Label text="Appointment ID" />
       <TextField fx:id="newapp_appointmentID" disable="true" promptText="Generated" />
