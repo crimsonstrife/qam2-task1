@@ -169,7 +169,7 @@ public class NewAppointment {
                         Integer.parseInt(customerID), Integer.parseInt(userID), Integer.parseInt(contact));
 
                 if (validateNewAppointment(appointment)) {
-                    String query = "INSERT INTO client_schedule.appointments (Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Last_Update_By, Customer_ID, User_ID, Contact_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    String query = "INSERT INTO client_schedule.appointments (Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                     JDBC.makeConnection(); // Connect to database
                     Connection connection = JDBC.connection; // Get connection
                     PreparedStatement statement = connection.prepareStatement(query); // Create statement
