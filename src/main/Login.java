@@ -96,7 +96,7 @@ public class Login extends Application implements Initializable {
                 Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
                 Stage stage = new Stage();
                 stage.setTitle(appTitle);
-                stage.setScene(new Scene(root, 1920, 1080));
+                stage.setScene(new Scene(root, 900, 600));
                 stage.show();
                 userLoggedIn = login_username.getText();
                 userLoggedInID = JDBC.getUserID(userLoggedIn);
