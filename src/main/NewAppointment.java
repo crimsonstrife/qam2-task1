@@ -26,17 +26,28 @@ import java.time.format.DateTimeFormatter;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class NewAppointment {
-    public TextField newapp_title;
-    public TextField newapp_description;
-    public TextField newapp_location;
-    public TextField newapp_type;
-    public DatePicker newapp_startDate;
-    public DatePicker newapp_endDate;
-    public ChoiceBox newapp_startTime;
-    public ChoiceBox newapp_endTime;
-    public TextField newapp_customerID;
-    public TextField newapp_userID;
-    public ChoiceBox newapp_contactbox;
+    @FXML
+    private TextField newapp_title;
+    @FXML
+    private TextField newapp_description;
+    @FXML
+    private TextField newapp_location;
+    @FXML
+    private TextField newapp_type;
+    @FXML
+    private DatePicker newapp_startDate;
+    @FXML
+    private DatePicker newapp_endDate;
+    @FXML
+    private ChoiceBox newapp_startTime;
+    @FXML
+    private ChoiceBox newapp_endTime;
+    @FXML
+    private TextField newapp_customerID;
+    @FXML
+    private TextField newapp_userID;
+    @FXML
+    private ChoiceBox newapp_contactbox;
     public ObservableList<Appointments> appointments = FXCollections.observableArrayList();
 
     /**
@@ -248,10 +259,10 @@ public class NewAppointment {
      * Validate the appointment
      *
      * @param appointment
-     * @return
+     * @return isValid
      */
     public boolean validateNewAppointment(Appointments appointment) {
-        AtomicBoolean valid = new AtomicBoolean(true); // Initialize boolean
+        AtomicBoolean isValid = new AtomicBoolean(true); // Initialize boolean
         try {
             String query = "SELECT * FROM client_schedule.appointments WHERE Customer_ID = ?";
             JDBC.makeConnection(); // Connect to database
@@ -263,7 +274,7 @@ public class NewAppointment {
                 Timestamp start = resultSet.getTimestamp("Start"); // Get start time
                 Timestamp end = resultSet.getTimestamp("End"); // Get end time
                 if (appointment.getStart().before(end) && appointment.getEnd().after(start)) {
-                    valid.set(false); // Set valid to false
+                    isValid.set(false); // Set valid to false
                     Alert alert = new Alert(Alert.AlertType.ERROR); // Create alert
                     alert.setTitle("Error"); // Set alert title
                     alert.setHeaderText("Invalid Times"); // Set alert header
@@ -287,7 +298,7 @@ public class NewAppointment {
                         .withZoneSameInstant(ZoneId.of("US/Eastern")).getHour() < 8
                         || appointment.getEnd().toLocalDateTime().atZone(ZoneId.systemDefault())
                                 .withZoneSameInstant(ZoneId.of("US/Eastern")).getHour() > 22) {
-                    valid.set(false); // Set valid to false
+                    isValid.set(false); // Set valid to false
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error");
                     alert.setHeaderText("Invalid Appointment Time");
@@ -297,7 +308,7 @@ public class NewAppointment {
                 break;
             case SATURDAY:
             case SUNDAY:
-                valid.set(false); // Set valid to false
+                isValid.set(false); // Set valid to false
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setHeaderText("Invalid Appointment Day");
@@ -305,6 +316,6 @@ public class NewAppointment {
                 alert.showAndWait();
                 break;
         }
-        return valid.get(); // Return valid
+        return isValid.get(); // Return valid
     }
 }
