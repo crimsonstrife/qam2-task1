@@ -138,7 +138,7 @@ public class Main extends Application implements Initializable {
     @FXML
     private TableColumn col_customer_divisionID;
     @FXML
-    private TableColumn col_customer_creationDate;
+    private TableColumn col_customer_creationdate;
     @FXML
     private TableColumn col_customer_createdby;
     @FXML
@@ -280,7 +280,7 @@ public class Main extends Application implements Initializable {
      *
      * @param event triggered by the customers button
      */
-    public void do_customers(ActionEvent event) {
+    public void do_customers(ActionEvent event) throws SQLException {
         do_customers_load();
         appointments_pane.setVisible(false);
         appointments_pane.setDisable(true);
@@ -316,7 +316,7 @@ public class Main extends Application implements Initializable {
             int customer_ID = resultSet.getInt("Customer_ID");
             String customer_name = resultSet.getString("Customer_Name");
             String customer_address = resultSet.getString("Address");
-            String customer_postalcode = resultSet.getString("Postal_Code");
+            String customer_postal = resultSet.getString("Postal_Code");
             String customer_phone = resultSet.getString("Phone");
             Timestamp customer_createdate = resultSet.getTimestamp("Create_Date");
             String customer_createdby = resultSet.getString("Created_By");
@@ -324,7 +324,7 @@ public class Main extends Application implements Initializable {
             String customer_updatedby = resultSet.getString("Last_Updated_By");
             int customer_divisionID = resultSet.getInt("Division_ID");
 
-            allCustomers.add(new Customers(customer_ID, customer_name, customer_address, customer_postalcode,
+            allCustomers.add(new Customers(customer_ID, customer_name, customer_address, customer_postal,
                     customer_phone, customer_divisionID, customer_createdate, customer_createdby, customer_lastupdate,
                     customer_updatedby));
         }
@@ -343,13 +343,13 @@ public class Main extends Application implements Initializable {
             col_customer_ID.setCellValueFactory(new PropertyValueFactory<>("Customer_ID"));
             col_customer_name.setCellValueFactory(new PropertyValueFactory<>("Customer_Name"));
             col_customer_address.setCellValueFactory(new PropertyValueFactory<>("Address"));
-            col_customer_postalcode.setCellValueFactory(new PropertyValueFactory<>("Postal_Code"));
+            col_customer_postal.setCellValueFactory(new PropertyValueFactory<>("Postal"));
             col_customer_phone.setCellValueFactory(new PropertyValueFactory<>("Phone"));
             col_customer_divisionID.setCellValueFactory(new PropertyValueFactory<>("Division_ID"));
-            col_customer_creationDate.setCellValueFactory(new PropertyValueFactory<>("Create_Date"));
-            col_customer_createdBy.setCellValueFactory(new PropertyValueFactory<>("Created_By"));
-            col_customer_lastUpdate.setCellValueFactory(new PropertyValueFactory<>("Last_Update"));
-            col_customer_lastUpdatedBy.setCellValueFactory(new PropertyValueFactory<>("Last_Updated_By"));
+            col_customer_creationdate.setCellValueFactory(new PropertyValueFactory<>("Created_Date"));
+            col_customer_createdby.setCellValueFactory(new PropertyValueFactory<>("Created_By"));
+            col_customer_lastupdated.setCellValueFactory(new PropertyValueFactory<>("Updated_Date"));
+            col_customer_lastupdatedby.setCellValueFactory(new PropertyValueFactory<>("Updated_By"));
             table_customers.setItems(allCustomers);
         });
     }
