@@ -8,6 +8,7 @@ package main;
  *         called JAVADOCS.
  */
 
+import javafx.fxml.FXML;
 import main.JDBC;
 import main.Utils;
 import main.Main;
@@ -48,9 +49,9 @@ public class UpdateAppointment {
     @FXML
     private ChoiceBox modapp_endTime;
     @FXML
-    private TextField modapp_customerID;
+    private TextField modapp_CustomerID;
     @FXML
-    private TextField modapp_userID;
+    private TextField modapp_UserID;
     private Appointments appointment;
 
     public ObservableList<Appointments> appointments = FXCollections.observableArrayList();
@@ -59,10 +60,10 @@ public class UpdateAppointment {
      * Initialize the Update Appointment Form.
      *
      */
-    public void initialize() {
+    public void initialize() throws SQLException {
         modapp_contactbox.getItems().clear();
         for (int i = 0; i < getAllContacts().size(); i++) {
-            modapp_contactbox.getItems().add(getAllContacts().get(i).getContactName());
+            modapp_contactbox.getItems().add(getAllContacts().get(i).getContact_Name());
         }
     }
 
@@ -77,6 +78,22 @@ public class UpdateAppointment {
     }
 
     /**
+     * Get the Contact ID from the contact name
+     *
+     * @param contact_Name
+     * @return
+     */
+    public String getContactID(String contact_Name) throws SQLException {
+        String contact_ID = ""; // Initialize the contact ID
+        for (int i = 0; i < getAllContacts().size(); i++) { // Loop through all contacts
+            if (getAllContacts().get(i).getContact_Name().equals(contact_Name)) { // If the contact name matches
+                contact_ID = String.valueOf(getAllContacts().get(i).getContact_ID()); // Set the contact ID
+            }
+        } // end for loop
+        return contact_ID;
+    }
+
+    /**
      * Update the appointment (Save)
      *
      * @param event triggered by the Update button
@@ -87,7 +104,7 @@ public class UpdateAppointment {
                     || modapp_location.getText().isEmpty() || modapp_type.getText().isEmpty()
                     || modapp_startDate.getValue() == null || modapp_endDate.getValue() == null
                     || modapp_startTime.getValue() == null || modapp_endTime.getValue() == null
-                    || modapp_customerID.getText().isEmpty() || modapp_userID.getText().isEmpty()
+                    || modapp_CustomerID.getText().isEmpty() || modapp_UserID.getText().isEmpty()
                     || modapp_contactbox.getValue() == null) {
                 Alert alert = new Alert(Alert.AlertType.ERROR); // Create alert
                 alert.setTitle("Error"); // Set alert title
@@ -106,8 +123,8 @@ public class UpdateAppointment {
                 LocalTime localtimeend = LocalTime.parse(modapp_endTime.getValue().toString()); // Get end time
                 LocalDateTime localdatetimeend = LocalDateTime.of(modapp_endDate.getValue(), localtimeend);
                 Timestamp endTimeStamp = Timestamp.valueOf(localdatetimeend); // Convert to timestamp
-                String customerID = modapp_customerID.getText();
-                String userID = modapp_userID.getText();
+                String customerID = modapp_CustomerID.getText();
+                String userID = modapp_UserID.getText();
 
                 Appointments appointment = new Appointments(0, title, description, location, type, startTimeStamp,
                         endTimeStamp, Timestamp.valueOf(LocalDateTime.now()), JDBC.getUserName(Main.loggedInUserID),
@@ -128,7 +145,7 @@ public class UpdateAppointment {
                     statement.setInt(7, Integer.parseInt(customerID));
                     statement.setInt(8, Integer.parseInt(userID));
                     statement.setInt(9, Integer.parseInt(contact));
-                    statement.setInt(10, modapp_appointmentID.getText());
+                    statement.setInt(10, Integer.parseInt(modapp_appointmentID.getText()));
                     statement.executeUpdate();
                     Stage stage = (Stage) modapp_title.getScene().getWindow(); // Get the stage
                     stage.close(); // Close the stage
@@ -154,7 +171,7 @@ public class UpdateAppointment {
      *
      * @param appointment
      */
-    public void updateAppointment(Appointments appointment) {
+    public void updateAppointment(Appointments appointment) throws SQLException {
         this.appointment = appointment;
         populateExistingFields();
         addUpdateTime();
@@ -163,14 +180,14 @@ public class UpdateAppointment {
     /**
      * Populate Existing Fields
      */
-    public void populateExistingFields() {
+    public void populateExistingFields() throws SQLException {
         modapp_appointmentID.setText(String.valueOf(appointment.getAppointment_ID()));
         modapp_title.setText(appointment.getTitle());
         modapp_description.setText(appointment.getDescription());
         modapp_location.setText(appointment.getLocation());
         for (int i = 0; i < modapp_contactbox.getItems().size(); i++) {
-            if (getAllContacts().get(i).getContactID() == appointment.getContact_ID()) {
-                modapp_contactbox.getSelectionModel().select(getAllContacts().get(i).getContactName());
+            if (getAllContacts().get(i).getContact_ID() == appointment.getContact_ID()) {
+                modapp_contactbox.getSelectionModel().select(getAllContacts().get(i).getContact_Name());
             }
         }
         modapp_type.setText(appointment.getType());
@@ -178,8 +195,8 @@ public class UpdateAppointment {
         modapp_endDate.setValue(appointment.getEnd().toLocalDateTime().toLocalDate());
         modapp_startTime.setValue(appointment.getStart().toLocalDateTime().toLocalTime());
         modapp_endTime.setValue(appointment.getEnd().toLocalDateTime().toLocalTime());
-        modapp_customerID.setText(String.valueOf(appointment.getCustomer_ID()));
-        modapp_userID.setText(String.valueOf(appointment.getUser_ID()));
+        modapp_CustomerID.setText(String.valueOf(appointment.getCustomer_ID()));
+        modapp_UserID.setText(String.valueOf(appointment.getUser_ID()));
     }
 
     /**
@@ -244,7 +261,7 @@ public class UpdateAppointment {
             JDBC.makeConnection();
             Connection connection = JDBC.connection;
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, modapp_customerID.getText());
+            statement.setString(1, modapp_CustomerID.getText());
             statement.setString(2, modapp_appointmentID.getText());
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
