@@ -1,12 +1,10 @@
 package main;
-
 /**
  *
  * @author Patrick Barnhardt
  *
  * JAVADOC Location: in the Root of the Project folder - in a folder called JAVADOCS.
  */
-
 import javafx.fxml.FXML;
 import main.JDBC;
 import main.Utils;
