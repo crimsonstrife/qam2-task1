@@ -22,9 +22,9 @@ public class Customers {
     private String phone;
     private int division_ID;
     private String division;
-    private String created_Date;
+    private Timestamp created_Date;
     private String created_By;
-    private String updated_Date;
+    private Timestamp updated_Date;
     private String updated_By;
 
     /**
@@ -42,7 +42,10 @@ public class Customers {
      * @param updated_By
      */
     public Customers(int customer_ID, String customer_Name, String address, String postal, String phone,
-            int division_ID, String created_Date, String created_By, String updated_Date, String updated_By) throws SQLException {
+            int division_ID,
+            Timestamp created_Date, String created_By,
+            Timestamp updated_Date, String updated_By)
+            throws SQLException {
         this.customer_ID = customer_ID;
         this.customer_Name = customer_Name;
         this.address = address;
