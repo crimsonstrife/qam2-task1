@@ -42,7 +42,7 @@ public class Customers {
      * @param updated_By
      */
     public Customers(int customer_ID, String customer_Name, String address, String postal, String phone,
-            int division_ID, String created_Date, String created_By, String updated_Date, String updated_By) {
+            int division_ID, String created_Date, String created_By, String updated_Date, String updated_By) throws SQLException {
         this.customer_ID = customer_ID;
         this.customer_Name = customer_Name;
         this.address = address;
@@ -177,7 +177,7 @@ public class Customers {
      * Sets the division.
      *
      */
-    private void setCustomerDivision() {
+    private void setCustomerDivision() throws SQLException {
         JDBC.makeConnection();
         Connection connection = JDBC.connection; // Get connection
         Statement statement = connection.createStatement(); // Create statement
