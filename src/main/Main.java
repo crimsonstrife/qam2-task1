@@ -26,8 +26,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import javafx.scene.control.*;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Observable;
 import java.util.ResourceBundle;
 
 /**
@@ -373,8 +373,8 @@ public class Main extends Application implements Initializable {
         ObservableList<Appointments> weekFilteredAppointments = FXCollections.observableArrayList();
         LocalDateTime current = LocalDateTime.now().minusWeeks(1);
         LocalDateTime next = LocalDateTime.now().plusWeeks(1);
-        allAppointments.foreach(appointment -> {
-            if (appointment.getStart().isAfter(current) && appointment.getStart().isBefore(next)) {
+        allAppointments.forEach(appointment -> {
+            if (appointment.getStart().toLocalDateTime().isAfter(current) && appointment.getStart().toLocalDateTime().isBefore(next)) {
                 weekFilteredAppointments.add(appointment);
             }
         });
@@ -386,8 +386,8 @@ public class Main extends Application implements Initializable {
         ObservableList<Appointments> monthFilteredAppointments = FXCollections.observableArrayList();
         LocalDateTime current = LocalDateTime.now().minusMonths(1);
         LocalDateTime next = LocalDateTime.now().plusMonths(1);
-        allAppointments.foreach(appointment -> {
-            if (appointment.getStart().isAfter(current) && appointment.getStart().isBefore(next)) {
+        allAppointments.forEach(appointment -> {
+            if (appointment.getStart().toLocalDateTime().isAfter(current) && appointment.getStart().toLocalDateTime().isBefore(next)) {
                 monthFilteredAppointments.add(appointment);
             }
         });
