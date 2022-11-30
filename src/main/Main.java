@@ -138,7 +138,7 @@ public class Main extends Application implements Initializable {
         }
         Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
         primaryStage.setTitle(appTitle);
-        primaryStage.setScene(new Scene(root, 1920, 1080));
+        primaryStage.setScene(new Scene(root, 900, 600));
         primaryStage.show();
     }
 
@@ -234,15 +234,15 @@ public class Main extends Application implements Initializable {
         getAllAppointments();
         allAppointments.stream().forEach(appointments -> {
             col_appointment_ID.setCellValueFactory(new PropertyValueFactory<>("appointment_ID"));
-            col_appointment_title.setCellValueFactory(new PropertyValueFactory<>("appointment_title"));
-            col_appointment_desc.setCellValueFactory(new PropertyValueFactory<>("appointment_desc"));
-            col_appointment_location.setCellValueFactory(new PropertyValueFactory<>("appointment_location"));
-            col_appointment_contact.setCellValueFactory(new PropertyValueFactory<>("appointment_contact"));
-            col_appointment_type.setCellValueFactory(new PropertyValueFactory<>("appointment_type"));
-            col_appointment_startdate.setCellValueFactory(new PropertyValueFactory<>("appointment_startdate"));
-            col_appointment_enddate.setCellValueFactory(new PropertyValueFactory<>("appointment_enddate"));
-            col_appointment_customerID.setCellValueFactory(new PropertyValueFactory<>("appointment_customerID"));
-            col_appointment_userID.setCellValueFactory(new PropertyValueFactory<>("appointment_userID"));
+            col_appointment_title.setCellValueFactory(new PropertyValueFactory<>("title"));
+            col_appointment_desc.setCellValueFactory(new PropertyValueFactory<>("description"));
+            col_appointment_location.setCellValueFactory(new PropertyValueFactory<>("location"));
+            col_appointment_contact.setCellValueFactory(new PropertyValueFactory<>("contact_ID"));
+            col_appointment_type.setCellValueFactory(new PropertyValueFactory<>("type"));
+            col_appointment_startdate.setCellValueFactory(new PropertyValueFactory<>("start"));
+            col_appointment_enddate.setCellValueFactory(new PropertyValueFactory<>("end"));
+            col_appointment_customerID.setCellValueFactory(new PropertyValueFactory<>("customer_ID"));
+            col_appointment_userID.setCellValueFactory(new PropertyValueFactory<>("user_ID"));
             table_appointments.setItems(allAppointments);
         });
     }
