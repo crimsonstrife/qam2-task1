@@ -104,4 +104,21 @@ public class JDBC {
         return 0;
     }
 
+    /**
+     * Get User Name Method - Use the entered user ID to get the user name.
+     */
+    public static String getUserName(int userID) {
+        try {
+            makePreparedStatement("SELECT User_Name FROM users WHERE User_ID = ?", connection);
+            preparedStatement.setInt(1, userID);
+            if (preparedStatement.executeQuery().next()) {
+                // System.out.println("User Name was found"); - DEBUG
+                return preparedStatement.getResultSet().getString("User_Name");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        // System.out.println("User Name not found"); - DEBUG
+        return "";
+    }
 }
