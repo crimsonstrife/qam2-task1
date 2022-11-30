@@ -549,6 +549,28 @@ public class Main extends Application implements Initializable {
      * @param event triggered by the modify customer button
      */
     public void do_updateCustomer(ActionEvent event) {
+        if (table_customers.getSelectionModel().getSelectedItem() == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("No Customer Selected");
+            alert.setContentText("Please select a customer to modify.");
+            alert.showAndWait();
+        } else {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("views/updateCustomer.fxml"));
+                Parent root = loader.load();
+                UpdateCustomer controller = loader.getController();
+                controller.updateCustomer((Customers) table_customers.getSelectionModel().getSelectedItem());
+                controller.setAllCustomers(allCustomers);
+                Stage stage = new Stage();
+                stage.setTitle("Update Customer");
+                stage.setScene(new Scene(root, 600, 312));
+                stage.showAndWait();
+                populateCustomers();
+            } catch (IOException | SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
