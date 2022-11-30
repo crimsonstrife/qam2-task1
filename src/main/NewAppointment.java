@@ -44,7 +44,7 @@ public class NewAppointment {
      *
      * @return
      */
-    public ObservableList<Appointments> getAllAppointments() {
+    public ObservableList<Appointments> getAllAppointments() throws SQLException {
         JDBC.makeConnection(); // Connect to database
         Connection connection = JDBC.connection; // Get connection
         Statement statement = connection.createStatement(); // Create statement
@@ -76,7 +76,7 @@ public class NewAppointment {
      *
      * @return
      */
-    public ObservableList<Contacts> getAllContacts() {
+    public ObservableList<Contacts> getAllContacts() throws SQLException {
         JDBC.makeConnection(); // Connect to database
         Connection connection = JDBC.connection; // Get connection
         Statement statement = connection.createStatement(); // Create statement
@@ -97,20 +97,21 @@ public class NewAppointment {
      * @param contact_Name
      * @return
      */
-    public String getContactID(String contact_Name) {
+    public String getContactID(String contact_Name) throws SQLException {
         String contact_ID = ""; // Initialize the contact ID
         for (int i = 0; i < getAllContacts().size(); i++) { // Loop through all contacts
             if (getAllContacts().get(i).getContact_Name().equals(contact_Name)) { // If the contact name matches
                 contact_ID = String.valueOf(getAllContacts().get(i).getContact_ID()); // Set the contact ID
             }
         } // end for loop
+        return contact_ID;
     }
 
     /**
      * Initialize the Appointment Creation Form
      *
      */
-    public void initialize() {
+    public void initialize() throws SQLException {
         appointments.clear(); // Clear the appointments list
         appointments = getAllAppointments(); // Get all appointments
         newapp_contactbox.getItems().clear(); // clears the choice box
@@ -187,7 +188,7 @@ public class NewAppointment {
                     statement.setInt(12, Integer.parseInt(userID)); // Set user ID
                     statement.setInt(13, Integer.parseInt(contact)); // Set contact ID
                     statement.executeUpdate(); // Execute statement
-                    Stage stage = (Stage) this.title.getScene().getWindow(); // Get stage
+                    Stage stage = (Stage) this.newapp_title.getScene().getWindow(); // Get stage
                     stage.close(); // Close stage
                 }
             }
@@ -235,8 +236,7 @@ public class NewAppointment {
             case WEDNESDAY:
             case THURSDAY:
             case FRIDAY:
-                if (appointment.getStart().toLocalDateTime().atZone(ZoneId.systemDefault())
-                        .withZoneSameInstant(ZoneId.of("US/Eastern")).getHour()) {
+                if (appointment.getStart().toLocalDateTime().atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneId.of("US/Eastern")).getHour()) {
                     valid.set(false); // Set valid to false
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error");
