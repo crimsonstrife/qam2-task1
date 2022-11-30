@@ -38,7 +38,6 @@ public class newCustomer {
     public ChoiceBox newcus_countryChoice;
     @FXML
     public ChoiceBox newcus_divisionLevel;
-    @FXML
     public Integer newcus_userID = Main.loggedInUserID;
 
     /**
@@ -110,10 +109,16 @@ public class newCustomer {
                 JDBC.makeConnection();
                 Connection connection = JDBC.getConnection();
                 Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery("SELECT * FROM client_schedule.first_level_divisions WHERE Division = '" + newcus_divisionLevel.getValue() + "'");
+                ResultSet resultSet = statement
+                        .executeQuery("SELECT * FROM client_schedule.first_level_divisions WHERE Division = '"
+                                + newcus_divisionLevel.getValue() + "'");
                 resultSet.next();
                 int divisionID = resultSet.getInt("Division_ID");
-                statement.executeUpdate("INSERT INTO client_schedule.customers (Customer_Name, Address, Postal_Code, Phone, Create_Date, Created_By, Last_Update, Last_Updated_By, Division_ID) VALUES ('" + newcus_customerName.getText() + "', '" + newcus_address.getText() + "', '" + newcus_postalCode.getText() + "', '" + newcus_phone.getText() + "', NOW(), '" + newcus_userID + "', NOW(), '" + newcus_userID + "', '" + divisionID + "')");
+                statement.executeUpdate(
+                        "INSERT INTO client_schedule.customers (Customer_Name, Address, Postal_Code, Phone, Create_Date, Created_By, Last_Update, Last_Updated_By, Division_ID) VALUES ('"
+                                + newcus_customerName.getText() + "', '" + newcus_address.getText() + "', '"
+                                + newcus_postalCode.getText() + "', '" + newcus_phone.getText() + "', NOW(), '"
+                                + newcus_userID + "', NOW(), '" + newcus_userID + "', '" + divisionID + "')");
                 Stage stage = (Stage) newcus_customerID.getScene().getWindow(); // Get the stage
                 stage.close(); // Close the stage
             }
