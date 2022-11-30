@@ -1,5 +1,13 @@
 package main;
 
+/**
+ *
+ * @author Patrick Barnhardt
+ *
+ *         JAVADOC Location: in the Root of the Project folder - in a folder
+ *         called JAVADOCS.
+ */
+
 public class Contacts {
     private int contact_ID;
     private String contact_Name;
