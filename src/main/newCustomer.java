@@ -7,6 +7,7 @@ package main;
  * JAVADOC Location: in the Root of the Project folder - in a folder called JAVADOCS.
  */
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import main.JDBC;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
@@ -116,6 +117,8 @@ public class newCustomer {
                 Stage stage = (Stage) newcus_customerID.getScene().getWindow(); // Get the stage
                 stage.close(); // Close the stage
             }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
     }
 }
