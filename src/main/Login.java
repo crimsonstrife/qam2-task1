@@ -13,18 +13,17 @@ import javafx.fxml.Initializable;
 import javafx.fxml.*;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.Modality;
 import java.net.URL;
-import java.util.Optional;
-import java.io.FileWriter;
+
 import javafx.scene.control.*;
-import main.JDBC;
-import main.Utils;
+import main.controllers.Main;
+import main.utilities.JDBC;
+
 import java.time.ZoneId;
 import java.util.ResourceBundle;
-import static main.Utils.recordLoginAttempt;
+import static main.utilities.Utils.recordLoginAttempt;
 
 /**
  * The Login controller.
@@ -93,7 +92,7 @@ public class Login extends Application implements Initializable {
         }
         if (JDBC.login(login_username.getText(), login_password.getText())) {
             try {
-                Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
+                Parent root = FXMLLoader.load(getClass().getResource("views/main.fxml"));
                 Stage stage = new Stage();
                 stage.setTitle(appTitle);
                 stage.setScene(new Scene(root, 900, 600));
@@ -148,7 +147,7 @@ public class Login extends Application implements Initializable {
         } else {
             appTitle = "Scheduler";
         }
-        Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("views/login.fxml"));
         primaryStage.setTitle(appTitle);
         primaryStage.setScene(new Scene(root, 640, 480));
         primaryStage.show();
