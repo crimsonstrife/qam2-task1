@@ -198,6 +198,54 @@ public class NewAppointment {
     }
 
     /**
+     * Handle the start date and time
+     *
+     * @param event
+     */
+    public void do_StartTime(ActionEvent event) {
+        newapp_starttime.disableProperty().setValue(false); // Enable the start time
+        ObservableList<LocalDateTime> times = FXCollections.observableArrayList(); // Create observable list
+        LocalDate startDate = newapp_startdate.getValue(); // Get start date
+        for (int i = 8; i < 22; i++) {
+            // add times in 15 minute increments
+            times.add(LocalDateTime.of(startDate, LocalTime.of(i, 0))); // Add times to the list
+            times.add(LocalDateTime.of(startDate, LocalTime.of(i, 15))); // Add times to the list
+            times.add(LocalDateTime.of(startDate, LocalTime.of(i, 30))); // Add times to the list
+            times.add(LocalDateTime.of(startDate, LocalTime.of(i, 45))); // Add times to the list
+        } // end for loop
+        for (int i = 0; i < times.size(); i++) { // Loop through the list
+            newapp_starttime.getItems() // Get the start time items
+                    .add(times.get(i).atZone(ZoneId.of("US/Eastern")).withZoneSameInstant(ZoneId.systemDefault())
+                            .toLocalDateTime().format(DateTimeFormatter.ofPattern("HH:mm")));
+        } // end for loop
+        newapp_starttime.getSelectionModel().selectFirst(); // Select first item by default
+    }
+
+    /**
+     * Handle the end date and time
+     *
+     * @param event
+     */
+    public void do_EndTime(ActionEvent event) {
+        newapp_endtime.disableProperty().setValue(false); // Enable the end time
+        ObservableList<LocalDateTime> times = FXCollections.observableArrayList(); // Create observable list
+        LocalDate endDate = newapp_enddate.getValue(); // Get end date
+        for (int i = 8; i < 22; i++) {
+            // add times in 15 minute increments
+            times.add(LocalDateTime.of(endDate, LocalTime.of(i, 0))); // Add times to the list
+            times.add(LocalDateTime.of(endDate, LocalTime.of(i, 15))); // Add times to the list
+            times.add(LocalDateTime.of(endDate, LocalTime.of(i, 30))); // Add times to the list
+            times.add(LocalDateTime.of(endDate, LocalTime.of(i, 45))); // Add times to the list
+        } // end for loop
+        for (int i = 0; i < times.size(); i++) { // Loop through the list
+            newapp_endtime.getItems() // Get the end time items
+                    .add(times.get(i).atZone(ZoneId.of("US/Eastern")).withZoneSameInstant(ZoneId.systemDefault())
+                            .toLocalDateTime().format(DateTimeFormatter.ofPattern("HH:mm")));
+        } // end for loop
+        newapp_endtime.getSelectionModel().selectFirst(); // Select first item by default
+    }
+
+    /**
      * Validate the appointment
      *
      * @param appointment
@@ -236,7 +284,10 @@ public class NewAppointment {
             case WEDNESDAY:
             case THURSDAY:
             case FRIDAY:
-                if (appointment.getStart().toLocalDateTime().atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneId.of("US/Eastern")).getHour()) {
+                if (appointment.getStart().toLocalDateTime().atZone(ZoneId.systemDefault())
+                        .withZoneSameInstant(ZoneId.of("US/Eastern")).getHour() > 8
+                        || appointment.getEnd().toLocalDateTime().atZone(ZoneId.systemDefault())
+                                .withZoneSameInstant(ZoneId.of("US/Eastern")).getHour() < 22) {
                     valid.set(false); // Set valid to false
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error");
