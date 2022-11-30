@@ -486,6 +486,16 @@ public class Main extends Application implements Initializable {
      * @param event triggered by the new customer button
      */
     public void do_createCustomer(ActionEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("newCustomer.fxml"));
+            Stage stage = new Stage();
+            stage.setTitle("Add a Customer");
+            stage.setScene(new Scene(root, 600, 312));
+            stage.showAndWait();
+            populateCustomers();
+        } catch (IOException | SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -517,61 +527,61 @@ public class Main extends Application implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-            return appointmentCount;
-        }
+        return appointmentCount;
+    }
 
-        /**
-         * Delete the selected customer
-         * Ensure that the customer has no remaining appointments before deleting
-         *
-         * @param event triggered by the delete customer button
-         */
-        public void do_deleteCustomer(ActionEvent event){
-            if (table_customers.getSelectionModel().getSelectedItem() != null) {
-                Customers selectedCustomer = (Customers) table_customers.getSelectionModel().getSelectedItem();
-                int selectedCustomerID = selectedCustomer.getCustomer_ID();
-                String customerIDString = Integer.toString(selectedCustomerID);
-                String customerNameString = selectedCustomer.getCustomer_Name();
-                if (getCustomerAppointmetCount(selectedCustomerID) > 0) {
-                    String appointmentCountString = Integer.toString(getCustomerAppointmetCount(selectedCustomerID));
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error");
-                    alert.setHeaderText("Customer has remaining Appointments");
-                    alert.setContentText("The customer " + customerNameString + " with ID: " + customerIDString
-                            + " has " + appointmentCountString + " remaining appointments and cannot be deleted.");
-                    alert.showAndWait();
-                } else {
-                    Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-                    confirm.setTitle("Are you sure you want to delete customer: " + customerNameString + "?");
-                    confirm.setHeaderText(null);
-                    confirm.setContentText("Please confirm you want to delete this customer.");
-                    confirm.showAndWait();
-                    if (confirm.getResult().getText().equals("OK")) {
-                        try {
-                            JDBC.makeConnection();
-                            Connection connection = JDBC.connection;
-                            Statement statement = (Statement) connection.createStatement();
-                            statement.executeUpdate(
-                                    "DELETE FROM client_schedule.customers WHERE Customer_ID = " + selectedCustomerID);
-                            populateCustomers();
-                            // prepare and alert to notify the user that the customer has been deleted
-                            Alert inform = new Alert(Alert.AlertType.INFORMATION);
-                            inform.setTitle("Customer Deleted");
-                            inform.setHeaderText("Customer Deleted");
-                            inform.setContentText("The customer " + customerNameString + " with ID: " + customerIDString
-                                    + " has been deleted.");
-                            inform.showAndWait();
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            } else {
+    /**
+     * Delete the selected customer
+     * Ensure that the customer has no remaining appointments before deleting
+     *
+     * @param event triggered by the delete customer button
+     */
+    public void do_deleteCustomer(ActionEvent event) {
+        if (table_customers.getSelectionModel().getSelectedItem() != null) {
+            Customers selectedCustomer = (Customers) table_customers.getSelectionModel().getSelectedItem();
+            int selectedCustomerID = selectedCustomer.getCustomer_ID();
+            String customerIDString = Integer.toString(selectedCustomerID);
+            String customerNameString = selectedCustomer.getCustomer_Name();
+            if (getCustomerAppointmetCount(selectedCustomerID) > 0) {
+                String appointmentCountString = Integer.toString(getCustomerAppointmetCount(selectedCustomerID));
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
-                alert.setHeaderText("No Customer Selected");
-                alert.setContentText("Please select a customer to delete.");
+                alert.setHeaderText("Customer has remaining Appointments");
+                alert.setContentText("The customer " + customerNameString + " with ID: " + customerIDString
+                        + " has " + appointmentCountString + " remaining appointments and cannot be deleted.");
                 alert.showAndWait();
+            } else {
+                Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+                confirm.setTitle("Are you sure you want to delete customer: " + customerNameString + "?");
+                confirm.setHeaderText(null);
+                confirm.setContentText("Please confirm you want to delete this customer.");
+                confirm.showAndWait();
+                if (confirm.getResult().getText().equals("OK")) {
+                    try {
+                        JDBC.makeConnection();
+                        Connection connection = JDBC.connection;
+                        Statement statement = (Statement) connection.createStatement();
+                        statement.executeUpdate(
+                                "DELETE FROM client_schedule.customers WHERE Customer_ID = " + selectedCustomerID);
+                        populateCustomers();
+                        // prepare and alert to notify the user that the customer has been deleted
+                        Alert inform = new Alert(Alert.AlertType.INFORMATION);
+                        inform.setTitle("Customer Deleted");
+                        inform.setHeaderText("Customer Deleted");
+                        inform.setContentText("The customer " + customerNameString + " with ID: " + customerIDString
+                                + " has been deleted.");
+                        inform.showAndWait();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("No Customer Selected");
+            alert.setContentText("Please select a customer to delete.");
+            alert.showAndWait();
         }
     }
+}
