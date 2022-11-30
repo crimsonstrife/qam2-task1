@@ -7,6 +7,7 @@ package main;
  * JAVADOC Location: in the Root of the Project folder - in a folder called JAVADOCS.
  */
 import javafx.application.Application;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXMLLoader;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -19,6 +20,9 @@ import javafx.stage.Modality;
 
 import java.net.URL;
 import java.security.Timestamp;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Time;
 import java.util.Optional;
 import java.beans.Statement;
@@ -184,7 +188,6 @@ public class Main extends Application implements Initializable {
      * Load the Appointments Table with data from the database, sorted start date by
      * week. Display the appointments in the table.
      *
-     * @param event
      */
     public void do_appointments_load() {
         allAppointments = getAllAppointments();
@@ -210,10 +213,10 @@ public class Main extends Application implements Initializable {
             String appointment_title = resultSet.getString("Title");
             String appointment_desc = resultSet.getString("Description");
             String appointment_location = resultSet.getString("Location");
-            int appointment_contact = resultSet.getString("Contact_ID");
+            int appointment_contact = resultSet.getInt("Contact_ID");
             String appointment_type = resultSet.getString("Type");
-            Timestamp appointment_startdate = resultSet.getTimeStamp("Start");
-            Timestamp appointment_enddate = resultSet.getTimeStamp("End");
+            Timestamp appointment_startdate = resultSet.getTimestamp("Start");
+            Timestamp appointment_enddate = resultSet.getTimestamp("End");
             int appointment_customerID = resultSet.getInt("Customer_ID");
             int appointment_userID = resultSet.getInt("User_ID");
 
