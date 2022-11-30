@@ -163,7 +163,8 @@ public class Main extends Application implements Initializable {
      * @param event triggered by the sign out button
      */
     public void do_signout(ActionEvent event) {
-        System.exit(0);
+        Stage stage = (Stage) btn_signout.getScene().getWindow();
+        stage.close();
     }
 
     /**
@@ -280,6 +281,15 @@ public class Main extends Application implements Initializable {
      * @param event triggered by the new appointment button
      */
     public void do_createappointment(ActionEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("addappointment.fxml"));
+            Stage stage = new Stage();
+            stage.setTitle("Add Appointment");
+            stage.setScene(new Scene(root, 600, 400));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
