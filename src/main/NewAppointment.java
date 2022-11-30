@@ -120,6 +120,16 @@ public class NewAppointment {
     }
 
     /**
+     * Cancel the appointment creation
+     *
+     * @param event
+     */
+    public void do_newappCancel(ActionEvent event) {
+        Stage stage = (Stage) newapp_title.getScene().getWindow(); // Get the stage
+        stage.close(); // Close the stage
+    }
+
+    /**
      * Save the new appointment
      *
      * @param event triggered by the save button
