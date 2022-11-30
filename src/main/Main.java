@@ -83,6 +83,7 @@ public class Main extends Application implements Initializable {
     public ToggleGroup appointment_filter;
 
     public ObservableList<Appointments> allAppointments = FXCollections.observableArrayList();
+    public ObservableList<Customers> allCustomers = FXCollections.observableArrayList();
 
     /**
      * Configure the Application Panes
@@ -124,6 +125,26 @@ public class Main extends Application implements Initializable {
      */
     @FXML
     private TableView table_customers;
+    @FXML
+    private TableColumn col_customer_ID;
+    @FXML
+    private TableColumn col_customer_name;
+    @FXML
+    private TableColumn col_customer_address;
+    @FXML
+    private TableColumn col_customer_postal;
+    @FXML
+    private TableColumn col_customer_phone;
+    @FXML
+    private TableColumn col_customer_divisionID;
+    @FXML
+    private TableColumn col_customer_creationDate;
+    @FXML
+    private TableColumn col_customer_createdby;
+    @FXML
+    private TableColumn col_customer_lastupdated;
+    @FXML
+    private TableColumn col_customer_lastupdatedby;
 
     /**
      * Initialize method
@@ -260,10 +281,77 @@ public class Main extends Application implements Initializable {
      * @param event triggered by the customers button
      */
     public void do_customers(ActionEvent event) {
+        do_customers_load();
         appointments_pane.setVisible(false);
         appointments_pane.setDisable(true);
         customers_pane.setVisible(true);
         customers_pane.setDisable(false);
+    }
+
+    /**
+     * Load the Customers Table with data from the database.
+     * Display the appointments in the table.
+     *
+     */
+    public void do_customers_load() throws SQLException {
+        allCustomers = getAllCustomers();
+        populateCustomers();
+    }
+
+    /**
+     * Get all customers from the database
+     *
+     * @return all customers
+     * @throws SQLException
+     */
+    public ObservableList<Customers> getAllCustomers() throws SQLException {
+        allCustomers.clear();
+        JDBC.makeConnection();
+        Connection connection = JDBC.connection;
+
+        Statement statement = (Statement) connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM client_schedule.customers");
+
+        while (resultSet.next()) {
+            int customer_ID = resultSet.getInt("Customer_ID");
+            String customer_name = resultSet.getString("Customer_Name");
+            String customer_address = resultSet.getString("Address");
+            String customer_postalcode = resultSet.getString("Postal_Code");
+            String customer_phone = resultSet.getString("Phone");
+            Timestamp customer_createdate = resultSet.getTimestamp("Create_Date");
+            String customer_createdby = resultSet.getString("Created_By");
+            Timestamp customer_lastupdate = resultSet.getTimestamp("Last_Update");
+            String customer_updatedby = resultSet.getString("Last_Updated_By");
+            int customer_divisionID = resultSet.getInt("Division_ID");
+
+            allCustomers.add(new Customers(customer_ID, customer_name, customer_address, customer_postalcode,
+                    customer_phone, customer_divisionID, customer_createdate, customer_createdby, customer_lastupdate,
+                    customer_updatedby));
+        }
+        return allCustomers;
+    }
+
+    /**
+     * Method using a lambda stream to both populate the customers table and
+     * update the customers
+     *
+     * @throws SQLException
+     */
+    public void populateCustomers() throws SQLException {
+        getAllCustomers();
+        allCustomers.stream().forEach(customers -> {
+            col_customer_ID.setCellValueFactory(new PropertyValueFactory<>("Customer_ID"));
+            col_customer_name.setCellValueFactory(new PropertyValueFactory<>("Customer_Name"));
+            col_customer_address.setCellValueFactory(new PropertyValueFactory<>("Address"));
+            col_customer_postalcode.setCellValueFactory(new PropertyValueFactory<>("Postal_Code"));
+            col_customer_phone.setCellValueFactory(new PropertyValueFactory<>("Phone"));
+            col_customer_divisionID.setCellValueFactory(new PropertyValueFactory<>("Division_ID"));
+            col_customer_creationDate.setCellValueFactory(new PropertyValueFactory<>("Create_Date"));
+            col_customer_createdBy.setCellValueFactory(new PropertyValueFactory<>("Created_By"));
+            col_customer_lastUpdate.setCellValueFactory(new PropertyValueFactory<>("Last_Update"));
+            col_customer_lastUpdatedBy.setCellValueFactory(new PropertyValueFactory<>("Last_Updated_By"));
+            table_customers.setItems(allCustomers);
+        });
     }
 
     /**
@@ -374,7 +462,8 @@ public class Main extends Application implements Initializable {
         LocalDateTime current = LocalDateTime.now().minusWeeks(1);
         LocalDateTime next = LocalDateTime.now().plusWeeks(1);
         allAppointments.forEach(appointment -> {
-            if (appointment.getStart().toLocalDateTime().isAfter(current) && appointment.getStart().toLocalDateTime().isBefore(next)) {
+            if (appointment.getStart().toLocalDateTime().isAfter(current)
+                    && appointment.getStart().toLocalDateTime().isBefore(next)) {
                 weekFilteredAppointments.add(appointment);
             }
         });
@@ -387,7 +476,8 @@ public class Main extends Application implements Initializable {
         LocalDateTime current = LocalDateTime.now().minusMonths(1);
         LocalDateTime next = LocalDateTime.now().plusMonths(1);
         allAppointments.forEach(appointment -> {
-            if (appointment.getStart().toLocalDateTime().isAfter(current) && appointment.getStart().toLocalDateTime().isBefore(next)) {
+            if (appointment.getStart().toLocalDateTime().isAfter(current)
+                    && appointment.getStart().toLocalDateTime().isBefore(next)) {
                 monthFilteredAppointments.add(appointment);
             }
         });
