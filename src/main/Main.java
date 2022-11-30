@@ -21,6 +21,8 @@ import javafx.fxml.*;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import javafx.scene.control.*;
@@ -282,7 +284,7 @@ public class Main extends Application implements Initializable {
      */
     public void do_createappointment(ActionEvent event) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("addappointment.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("newAppointment.fxml"));
             Stage stage = new Stage();
             stage.setTitle("Add Appointment");
             stage.setScene(new Scene(root, 600, 400));
