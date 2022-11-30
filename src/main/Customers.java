@@ -9,10 +9,8 @@ package main;
  */
 
 import main.JDBC;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+
+import java.sql.*;
 
 public class Customers {
     private int customer_ID;
@@ -42,9 +40,9 @@ public class Customers {
      * @param updated_By
      */
     public Customers(int customer_ID, String customer_Name, String address, String postal, String phone,
-            int division_ID,
-            Timestamp created_Date, String created_By,
-            Timestamp updated_Date, String updated_By)
+                     int division_ID,
+                     Timestamp created_Date, String created_By,
+                     Timestamp updated_Date, String updated_By)
             throws SQLException {
         this.customer_ID = customer_ID;
         this.customer_Name = customer_Name;
@@ -197,7 +195,7 @@ public class Customers {
      *
      * @return the created_Date
      */
-    public String getCreated_Date() {
+    public Timestamp getCreated_Date() {
         return created_Date;
     }
 
@@ -206,7 +204,7 @@ public class Customers {
      *
      * @param created_Date the created_Date to set
      */
-    public void setCreated_Date(String created_Date) {
+    public void setCreated_Date(Timestamp created_Date) {
         this.created_Date = created_Date;
     }
 
@@ -233,7 +231,7 @@ public class Customers {
      *
      * @return the updated_Date
      */
-    public String getUpdated_Date() {
+    public Timestamp getUpdated_Date() {
         return updated_Date;
     }
 
@@ -242,7 +240,7 @@ public class Customers {
      *
      * @param updated_Date the updated_Date to set
      */
-    public void setUpdated_Date(String updated_Date) {
+    public void setUpdated_Date(Timestamp updated_Date) {
         this.updated_Date = updated_Date;
     }
 
