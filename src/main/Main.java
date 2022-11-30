@@ -27,6 +27,7 @@ import java.net.URL;
 import java.sql.*;
 import javafx.scene.control.*;
 import java.time.ZoneId;
+import java.util.Observable;
 import java.util.ResourceBundle;
 
 /**
@@ -334,6 +335,8 @@ public class Main extends Application implements Initializable {
         if (table_appointments.getSelectionModel().getSelectedItem() != null) {
             Appointments selectedAppointment = (Appointments) table_appointments.getSelectionModel().getSelectedItem();
             int appointmentID = selectedAppointment.getAppointment_ID();
+            String appointmentIDString = Integer.toString(appointmentID);
+            String appointmentTypeString = selectedAppointment.getType();
             try {
                 JDBC.makeConnection();
                 Connection connection = JDBC.connection;
@@ -341,6 +344,13 @@ public class Main extends Application implements Initializable {
                 statement.executeUpdate(
                         "DELETE FROM client_schedule.appointments WHERE Appointment_ID = " + appointmentID);
                 populateAppointments();
+                // prepare and alert to notify the user that the appointment has been deleted
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Appointment Deleted");
+                alert.setHeaderText("Appointment Deleted");
+                alert.setContentText("The " + appointmentTypeString + " appointment with ID: " + appointmentIDString
+                        + " has been deleted.");
+                alert.showAndWait();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -358,10 +368,30 @@ public class Main extends Application implements Initializable {
      *
      * @param event triggered by the month or week radio buttons
      */
+    // Lambda to filter the appointments table by week
     public void do_filterweekly(ActionEvent event) {
+        ObservableList<Appointments> weekFilteredAppointments = FXCollections.observableArrayList();
+        LocalDateTime current = LocalDateTime.now().minusWeeks(1);
+        LocalDateTime next = LocalDateTime.now().plusWeeks(1);
+        allAppointments.foreach(appointment -> {
+            if (appointment.getStart().isAfter(current) && appointment.getStart().isBefore(next)) {
+                weekFilteredAppointments.add(appointment);
+            }
+        });
+        table_appointments.setItems(weekFilteredAppointments);
     }
 
+    // Lambda to filter the appointments table by month
     public void do_filtermonthly(ActionEvent event) {
+        ObservableList<Appointments> monthFilteredAppointments = FXCollections.observableArrayList();
+        LocalDateTime current = LocalDateTime.now().minusMonths(1);
+        LocalDateTime next = LocalDateTime.now().plusMonths(1);
+        allAppointments.foreach(appointment -> {
+            if (appointment.getStart().isAfter(current) && appointment.getStart().isBefore(next)) {
+                monthFilteredAppointments.add(appointment);
+            }
+        });
+        table_appointments.setItems(monthFilteredAppointments);
     }
 
     /**
