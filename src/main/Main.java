@@ -25,7 +25,7 @@ import java.time.ZoneId;
 /**
  * The Main controller.
  */
-public class Main extends Application {
+public class Main extends Application implements Initializable {
 
     /**
      * Set Application Variables
@@ -85,7 +85,16 @@ public class Main extends Application {
     @FXML
     private TableView table_customers;
 
+    /**
+     * Initialize method
+     *
+     */
     @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        // Use Zone ID to set the location label.
+        login_location.setText(userZone);
+    }
+
     public void start(Stage primaryStage) throws Exception {
         String appTitle = "";
         if (userLanguage.equals("fr")) {
@@ -93,10 +102,16 @@ public class Main extends Application {
         } else {
             appTitle = "Scheduler";
         }
-        Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
         primaryStage.setTitle(appTitle);
-        primaryStage.setScene(new Scene(root, 640, 480));
+        primaryStage.setScene(new Scene(root, 1920, 1080));
         primaryStage.show();
+    }
+
+    /**
+     * Constructor
+     */
+    public Main() {
     }
 
     public static void main(String[] args) {
