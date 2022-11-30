@@ -8,29 +8,22 @@ package main;
  */
 import javafx.application.Application;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.fxml.*;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import javafx.stage.Modality;
-
 import java.net.URL;
-import java.security.Timestamp;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Time;
-import java.util.Optional;
-import java.beans.Statement;
-import java.io.FileWriter;
+import java.sql.*;
 import javafx.scene.control.*;
-import main.JDBC;
-import main.Utils;
-import main.Appointments;
 import java.time.ZoneId;
 import java.util.ResourceBundle;
 
@@ -85,7 +78,7 @@ public class Main extends Application implements Initializable {
     @FXML
     public ToggleGroup appointment_filter;
 
-    public ObservableList<appointments> allAppointments = FXCollections.observableArrayList();
+    public ObservableList<Appointments> allAppointments = FXCollections.observableArrayList();
 
     /**
      * Configure the Application Panes
@@ -177,7 +170,7 @@ public class Main extends Application implements Initializable {
      *
      * @param event triggered by the appointments button
      */
-    public void do_appointments(ActionEvent event) {
+    public void do_appointments(ActionEvent event) throws SQLException {
         do_appointments_load();
         appointments_pane.setVisible(true);
         appointments_pane.setDisable(false);
@@ -190,7 +183,7 @@ public class Main extends Application implements Initializable {
      * week. Display the appointments in the table.
      *
      */
-    public void do_appointments_load() {
+    public void do_appointments_load() throws SQLException {
         allAppointments = getAllAppointments();
         populateAppointments();
     }
@@ -201,7 +194,7 @@ public class Main extends Application implements Initializable {
      * @return all appointments
      * @throws SQLException
      */
-    public ObservableList<appointments> getAllAppointments() throws SQLException {
+    public ObservableList<Appointments> getAllAppointments() throws SQLException {
         allAppointments.clear();
         JDBC.makeConnection();
         Connection connection = JDBC.connection;
@@ -218,12 +211,15 @@ public class Main extends Application implements Initializable {
             String appointment_type = resultSet.getString("Type");
             Timestamp appointment_startdate = resultSet.getTimestamp("Start");
             Timestamp appointment_enddate = resultSet.getTimestamp("End");
+            Timestamp appointment_createdate = resultSet.getTimestamp("Create_Date");
+            String appointment_createdby = resultSet.getString("Created_By");
+            Timestamp appointment_lastupdate = resultSet.getTimestamp("Last_Update");
+            String appointment_updatedby = resultSet.getString("Last_Updated_By");
             int appointment_customerID = resultSet.getInt("Customer_ID");
             int appointment_userID = resultSet.getInt("User_ID");
 
-            allAppointments.add(new appointments(appointment_ID, appointment_title, appointment_desc,
-                    appointment_location, appointment_contact, appointment_type, appointment_startdate,
-                    appointment_enddate, appointment_customerID, appointment_userID));
+            allAppointments.add(new Appointments(appointment_ID, appointment_title, appointment_desc,
+                    appointment_location, appointment_type, appointment_startdate, appointment_enddate, appointment_createdate, appointment_createdby, appointment_lastupdate, appointment_updatedby, appointment_customerID, appointment_userID, appointment_contact));
         }
         return allAppointments;
     }
