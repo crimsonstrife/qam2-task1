@@ -1,9 +1,14 @@
 package main;
 
+/**
+ *
+ * @author Patrick Barnhardt
+ *
+ * JAVADOC Location: in the Root of the Project folder - in a folder called JAVADOCS.
+ */
+
 import javafx.collections.ObservableList;
-
 import java.sql.*;
-
 import main.JDBC;
 import main.Utils;
 import java.time.ZoneId;
@@ -26,7 +31,8 @@ public class Appointments {
     private Integer contact_ID;
 
     public Appointments(Integer appointment_ID, String title, String description, String location, String type,
-                        Timestamp start, Timestamp end, Timestamp createDate, String createdBy, Timestamp lastUpdate, String lastUpdateBy,
+            Timestamp start, Timestamp end, Timestamp createDate, String createdBy, Timestamp lastUpdate,
+            String lastUpdateBy,
             Integer customer_ID, Integer user_ID, Integer contact_ID) {
         this.appointment_ID = appointment_ID;
         this.title = title;
