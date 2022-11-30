@@ -507,7 +507,7 @@ public class Main extends Application implements Initializable {
      * @param customerID the customer ID to check
      * @return the number of appointments the customer has
      */
-    public void getCustomerAppointmetCount(int customerID) {
+    public int getCustomerAppointmetCount(int customerID) {
         int appointmentCount = 0;
         try {
             JDBC.makeConnection();
@@ -535,7 +535,7 @@ public class Main extends Application implements Initializable {
             int customerID = selectedCustomer.getCustomer_ID();
             String customerIDString = Integer.toString(customerID);
             String customerNameString = selectedCustomer.getCustomer_Name();
-            if (getCustomerAppointmetCount(customerID) > 0;) {
+            if (getCustomerAppointmetCount(customerID) > 0) {
                 String appointmentCountString = Integer.toString(getCustomerAppointmetCount(customerID));
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
