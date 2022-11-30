@@ -102,4 +102,23 @@ public class JDBC {
         // System.out.println("User ID not found"); - DEBUG
         return 0;
     }
+
+    /**
+     * Get all Appointments Method
+     *
+     * @param sortedBy - either "Month" or "Week" to sort the appointments by start
+     *                 date
+     */
+    public static void getAppointments(String sortedBy) {
+        try {
+            makePreparedStatement("SELECT * FROM appointments ORDER BY Start " + sortedBy, connection);
+            if (preparedStatement.executeQuery().next()) {
+                // System.out.println("Appointments were found"); - DEBUG
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        // System.out.println("Appointments not found"); - DEBUG
+        // return 0;
+    }
 }
