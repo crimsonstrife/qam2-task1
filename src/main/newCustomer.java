@@ -84,6 +84,7 @@ public class newCustomer {
             while (resultSet.next()) {
                 newcus_divisionLevel.getItems().add(resultSet.getString("Division"));
             }
+            JDBC.closeConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
