@@ -30,6 +30,7 @@ import java.io.FileWriter;
 import javafx.scene.control.*;
 import main.JDBC;
 import main.Utils;
+import main.Appointments;
 import java.time.ZoneId;
 import java.util.ResourceBundle;
 
