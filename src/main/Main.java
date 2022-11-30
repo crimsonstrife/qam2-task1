@@ -16,11 +16,14 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.Modality;
+
+import java.net.URL;
 import java.util.Optional;
 import java.io.FileWriter;
 import javafx.scene.control.*;
 import main.JDBC;
 import java.time.ZoneId;
+import java.util.ResourceBundle;
 
 /**
  * The Main controller.
@@ -68,10 +71,10 @@ public class Main extends Application implements Initializable {
      * Configure the Application Panes
      */
     @FXML
-    private Pane appointments_pane;
+    private TitledPane appointments_pane;
 
     @FXML
-    private Pane customers_pane;
+    private TitledPane customers_pane;
 
     /**
      * Configure the Appointments Table
@@ -91,8 +94,6 @@ public class Main extends Application implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // Use Zone ID to set the location label.
-        login_location.setText(userZone);
     }
 
     public void start(Stage primaryStage) throws Exception {
@@ -207,7 +208,7 @@ public class Main extends Application implements Initializable {
      *
      * @param event triggered by the new customer button
      */
-    public void do_createcustomer(ActionEvent event) {
+    public void do_createCustomer(ActionEvent event) {
     }
 
     /**
@@ -215,7 +216,7 @@ public class Main extends Application implements Initializable {
      *
      * @param event triggered by the modify customer button
      */
-    public void do_updatecustomer(ActionEvent event) {
+    public void do_updateCustomer(ActionEvent event) {
     }
 
     /**
@@ -223,6 +224,6 @@ public class Main extends Application implements Initializable {
      *
      * @param event triggered by the delete customer button
      */
-    public void do_deletecustomer(ActionEvent event) {
+    public void do_deleteCustomer(ActionEvent event) {
     }
 }
