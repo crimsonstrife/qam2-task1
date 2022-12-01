@@ -56,7 +56,7 @@
       </ToolBar>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" VBox.vgrow="ALWAYS">
          <children>
-            <TitledPane fx:id="appointments_pane" alignment="CENTER" animated="false" collapsible="false" text="Appointments" visible="false">
+            <TitledPane fx:id="appointments_pane" alignment="CENTER" animated="false" collapsible="false" text="Appointments">
                <content>
                   <AnchorPane>
                      <children>
