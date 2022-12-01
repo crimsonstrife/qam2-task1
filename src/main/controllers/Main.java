@@ -561,7 +561,7 @@ public class Main extends Application implements Initializable {
                 Parent root = loader.load();
                 UpdateCustomer controller = loader.getController();
                 controller.updateCustomer((Customers) table_customers.getSelectionModel().getSelectedItem());
-                controller.setAllCustomers(allCustomers);
+                Customers.setAllCustomers(allCustomers);
                 controller.Stage stage = new Stage();
                 stage.setTitle("Update Customer");
                 stage.setScene(new Scene(root, 600, 312));
