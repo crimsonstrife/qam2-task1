@@ -50,6 +50,7 @@
         <items>
           <Button fx:id="btn_appointments" mnemonicParsing="false" onAction="#do_appointments" text="Appointments" />
             <Button fx:id="btn_customers" layoutX="10.0" layoutY="13.0" mnemonicParsing="false" onAction="#do_customers" text="Customers" />
+            <Button layoutX="183.0" layoutY="10.0" mnemonicParsing="false" onAction="#do_reports" text="Reports" />
             <Button fx:id="btn_users" disable="true" layoutX="106.0" layoutY="13.0" mnemonicParsing="false" text="Users" />
             <Button fx:id="btn_signout" layoutX="183.0" layoutY="13.0" mnemonicParsing="false" onAction="#do_signout" text="Sign Out" />
         </items>
