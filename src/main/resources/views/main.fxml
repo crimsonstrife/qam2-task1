@@ -44,7 +44,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Main">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Main">
   <children>
       <ToolBar>
         <items>
@@ -99,44 +99,6 @@
                      </children>
                   </AnchorPane>
                </content>
-            </TitledPane>
-            <TitledPane fx:id="customers_pane" alignment="CENTER" animated="false" collapsible="false" disable="true" text="Customers" visible="false">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0">
-                     <children>
-                        <VBox alignment="CENTER">
-                           <children>
-                              <ToolBar prefHeight="40.0">
-                                <items>
-                                  <Button fx:id="btn_createCustomer" mnemonicParsing="false" onAction="#do_createCustomer" text="New Customer" />
-                                    <Button fx:id="btn_updateCustomer" layoutX="10.0" layoutY="13.0" mnemonicParsing="false" onAction="#do_updateCustomer" text="Modify Customer" />
-                                    <Button fx:id="btn_deleteCustomer" layoutX="109.0" layoutY="13.0" mnemonicParsing="false" onAction="#do_deleteCustomer" text="Delete Customer" />
-                                    <Text fx:id="txt_customerMessage" strokeType="OUTSIDE" strokeWidth="0.0" translateX="40.0" wrappingWidth="514.0" />
-                                </items>
-                              </ToolBar>
-                              <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" pannable="true" prefHeight="500.0" prefWidth="800.0" vbarPolicy="ALWAYS">
-                                 <content>
-                                    <TableView fx:id="table_customers" prefHeight="699.0" prefWidth="850.0">
-                                      <columns>
-                                        <TableColumn fx:id="col_customer_ID" prefWidth="78.0" text="Customer ID" />
-                                        <TableColumn fx:id="col_customer_name" prefWidth="110.0" text="Customer Name" />
-                                          <TableColumn fx:id="col_customer_address" prefWidth="127.0" text="Address" />
-                                          <TableColumn fx:id="col_customer_postal" prefWidth="121.0" text="Postal Code" />
-                                          <TableColumn fx:id="col_customer_phone" prefWidth="101.0" text="Phone" />
-                                          <TableColumn fx:id="col_customer_creationdate" prefWidth="121.0" text="Created Date" />
-                                          <TableColumn fx:id="col_customer_createdby" prefWidth="94.0" text="Created By" />
-                                          <TableColumn fx:id="col_customer_lastupdated" prefWidth="113.0" text="Last Updated" />
-                                          <TableColumn fx:id="col_customer_lastupdatedby" prefWidth="89.0" text="Updated By" />
-                                          <TableColumn fx:id="col_customer_divisionID" prefWidth="83.0" text="Division ID" />
-                                      </columns>
-                                    </TableView>
-                                 </content>
-                              </ScrollPane>
-                           </children>
-                        </VBox>
-                     </children>
-                  </AnchorPane>
-              </content>
             </TitledPane>
          </children>
     </AnchorPane>
