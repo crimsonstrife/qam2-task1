@@ -18,7 +18,6 @@ import javafx.stage.Modality;
 import java.net.URL;
 
 import javafx.scene.control.*;
-import main.controllers.Main;
 import main.utilities.JDBC;
 
 import java.time.ZoneId;

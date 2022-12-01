@@ -1,4 +1,4 @@
-package main.controllers;
+package main;
 
 /**
  *
@@ -20,14 +20,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.fxml.*;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import javafx.scene.control.*;
-import main.controllers.UpdateAppointment;
 import main.models.Appointments;
 import main.models.Customers;
 import main.utilities.JDBC;
@@ -416,10 +414,10 @@ public class Main extends Application implements Initializable {
     public void do_createappointment(ActionEvent event) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("resources/views/newAppointment.fxml"));
-            Stage stage = new Stage();
-            stage.setTitle("Add Appointment");
-            stage.setScene(new Scene(root, 600, 400));
-            stage.showAndWait();
+            Stage createAppstage = new Stage();
+            createAppstage.setTitle("Add Appointment");
+            createAppstage.setScene(new Scene(root, 600, 400));
+            createAppstage.showAndWait();
             populateAppointments();
         } catch (IOException | SQLException e) {
             e.printStackTrace();
@@ -445,10 +443,10 @@ public class Main extends Application implements Initializable {
                 UpdateAppointment controller = loader.getController();
                 controller.updateAppointment((Appointments) table_appointments.getSelectionModel().getSelectedItem());
                 controller.setAllAppointments(allAppointments);
-                Stage stage = new Stage();
-                stage.setTitle("Update Appointment");
-                stage.setScene(new Scene(root, 600, 400));
-                stage.showAndWait();
+                Stage modifyAppstage = new Stage();
+                modifyAppstage.setTitle("Update Appointment");
+                modifyAppstage.setScene(new Scene(root, 600, 400));
+                modifyAppstage.showAndWait();
                 populateAppointments();
             } catch (IOException | SQLException e) {
                 e.printStackTrace();
@@ -560,13 +558,12 @@ public class Main extends Application implements Initializable {
         } else {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/views/updateAppointment.fxml"));
-                Parent root = loader.load();
                 UpdateCustomer updateCustomer = loader.getController();
                 updateCustomer.updateCustomer((Customers) table_customers.getSelectionModel().getSelectedItem());
-                Stage stage = new Stage();
-                stage.setTitle("Update Customer");
-                stage.setScene(new Scene(root, 600, 312));
-                stage.showAndWait();
+                Stage updateCustomerstage = new Stage();
+                updateCustomerstage.setTitle("Update Customer");
+                updateCustomerstage.setScene(new Scene(root, 600, 312));
+                updateCustomerstage.showAndWait();
                 populateCustomers();
             } catch (IOException | SQLException e) {
                 e.printStackTrace();
