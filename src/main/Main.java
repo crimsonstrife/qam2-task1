@@ -293,8 +293,15 @@ public class Main extends Application implements Initializable {
      * @param event triggered by the reports button
      */
     public void do_reports(ActionEvent event) {
-        appointments_pane.setVisible(false);
-        appointments_pane.setDisable(true);
+        try {
+            Parent viewReports = FXMLLoader.load(getClass().getResource("resources/views/reports.fxml"));
+            Stage viewReportsStage = new Stage();
+            viewReportsStage.setTitle("Reports");
+            viewReportsStage.setScene(new Scene(viewReports, 600, 481));
+            viewReportsStage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
