@@ -180,9 +180,9 @@ public class Main extends Application implements Initializable {
         } else {
             appTitle = "Scheduler";
         }
-        Parent root = FXMLLoader.load(getClass().getResource("resources/views/main.fxml"));
+        Parent main = FXMLLoader.load(getClass().getResource("resources/views/main.fxml"));
         primaryStage.setTitle(appTitle);
-        primaryStage.setScene(new Scene(root, 900, 600));
+        primaryStage.setScene(new Scene(main, 900, 600));
         primaryStage.show();
     }
 
@@ -413,10 +413,10 @@ public class Main extends Application implements Initializable {
      */
     public void do_createappointment(ActionEvent event) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("resources/views/newAppointment.fxml"));
+            Parent createapp = FXMLLoader.load(getClass().getResource("resources/views/newAppointment.fxml"));
             Stage createAppstage = new Stage();
             createAppstage.setTitle("Add Appointment");
-            createAppstage.setScene(new Scene(root, 600, 400));
+            createAppstage.setScene(new Scene(createapp, 600, 400));
             createAppstage.showAndWait();
             populateAppointments();
         } catch (IOException | SQLException e) {
@@ -440,33 +440,13 @@ public class Main extends Application implements Initializable {
             alert.setContentText("Please select an appointment to modify.");
             alert.showAndWait();
         } else {
-            Parent root = FXMLLoader.load(getClass().getResource("resources/views/modifyAppointment.fxml"));
-            Scene scene = new Scene(root, 600, 400); // Create a new scene with the root node
+            Parent modapp = FXMLLoader.load(getClass().getResource("resources/views/modifyAppointment.fxml"));
+            Scene scene = new Scene(modapp, 600, 400); // Create a new scene with the root node
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow(); // Get the current window
             window.setTitle("Modify Appointment"); // Set the title
             window.setScene(scene); // Set the scene to the stage
             window.showAndWait(); // Show the Modify Part Window
             populateAppointments();
-        }
-    }
-
-    /**
-     * Modify Part Button Event Handler - Open the Modify Part Window
-     *
-     * @param event the event triggered by the modify part button
-     * @throws IOException if the FXML file cannot be loaded
-     */
-    public void ModifyPartBtnAction(ActionEvent event) throws IOException {
-        int selectedPart;
-        selectedPart = parts_table.getSelectionModel().getFocusedIndex(); // Get the selected part
-        if (selectedPart >= 0) { // If a part is selected
-            ModifyPartController.setSelectedPartID(selectedPart); // Set the selected part ID
-            Parent root = FXMLLoader.load(getClass().getResource("modifypart-form.fxml")); // Load the Modify Part
-                                                                                           // Window
-            Scene scene = new Scene(root); // Create a new scene with the root node
-            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow(); // Get the current window
-            window.setScene(scene); // Set the scene to the stage
-            window.show(); // Show the Modify Part Window
         }
     }
 
@@ -547,10 +527,10 @@ public class Main extends Application implements Initializable {
      */
     public void do_createCustomer(ActionEvent event) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("resources/views/newCustomer.fxml"));
+            Parent createcus = FXMLLoader.load(getClass().getResource("resources/views/newCustomer.fxml"));
             Stage stage = new Stage();
             stage.setTitle("Add a Customer");
-            stage.setScene(new Scene(root, 600, 312));
+            stage.setScene(new Scene(createcus, 600, 312));
             stage.showAndWait();
             populateCustomers();
         } catch (IOException | SQLException e) {
