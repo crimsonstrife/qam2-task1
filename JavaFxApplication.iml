@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="JAVA_MODULE" version="4">
-  <component name="NewModuleRootManager" inherit-compiler-output="true">
+  <component name="NewModuleRootManager">
+    <output url="file://$MODULE_DIR$/out/production/JavaFxApplication" />
+    <output-test url="file://$MODULE_DIR$/out/test/JavaFxApplication" />
     <exclude-output />
+    <javadoc-paths>
+      <root url="file://$MODULE_DIR$/JAVADOCS" />
+    </javadoc-paths>
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="mysql-connector-java-8.0.25" level="project" />
-    <orderEntry type="library" name="lib" level="project" />
-    <orderEntry type="library" name="JavaFX" level="project" />
+    <orderEntry type="library" exported="" name="mysql-connector-java-8.0.25" level="project" />
+    <orderEntry type="library" exported="" name="lib" level="project" />
+    <orderEntry type="library" exported="" name="JavaFX" level="project" />
   </component>
 </module>
