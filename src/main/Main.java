@@ -440,9 +440,10 @@ public class Main extends Application implements Initializable {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/views/updateAppointment.fxml"));
                 Parent modapp = loader.load();
-                UpdateAppointment controller = loader.getController();
-                controller.updateAppointment((Appointments) table_appointments.getSelectionModel().getSelectedItem());
-                controller.setAllAppointments(allAppointments);
+                UpdateAppointment updateAppointment = loader.getController();
+                updateAppointment
+                        .updateAppointment((Appointments) table_appointments.getSelectionModel().getSelectedItem());
+                updateAppointment.setAllAppointments(allAppointments);
                 Stage modifyAppstage = new Stage();
                 modifyAppstage.setTitle("Update Appointment");
                 modifyAppstage.setScene(new Scene(modapp, 600, 400));
