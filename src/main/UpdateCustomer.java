@@ -40,7 +40,6 @@ public class UpdateCustomer {
     @FXML
     public ChoiceBox modcus_divisionLevel;
     @FXML
-    private Appointments appointment;
     public Customers customer;
 
     /**
