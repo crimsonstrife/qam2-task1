@@ -546,6 +546,7 @@ public class Main extends Application implements Initializable {
 
     /**
      * Open the Modify Selected Customer window
+     * Use selected customer to populate the fields
      *
      * @param event triggered by the modify customer button
      */
@@ -557,6 +558,20 @@ public class Main extends Application implements Initializable {
             alert.setContentText("Please select a customer to modify.");
             alert.showAndWait();
         } else {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("views/updateCustomer.fxml"));
+                Parent root = loader.load();
+                UpdateCustomer controller = loader.getController();
+                controller.updateCustomer((Customers) table_customers.getSelectionModel().getSelectedItem());
+                controller.setAllCustomers(allCustomers);
+                Stage stage = new Stage();
+                stage.setTitle("Update Customer");
+                stage.setScene(new Scene(root, 600, 312));
+                stage.showAndWait();
+                populateCustomers();
+            } catch (IOException | SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
