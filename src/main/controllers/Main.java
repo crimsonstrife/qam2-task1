@@ -20,6 +20,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.fxml.*;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -556,18 +557,6 @@ public class Main extends Application implements Initializable {
             alert.setContentText("Please select a customer to modify.");
             alert.showAndWait();
         } else {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("views/updateCustomer.fxml"));
-                Parent root = loader.load();
-                UpdateCustomer updateCustomer = loader.getController();
-                updateCustomer.setCustomer((customers) customerTable.getSelectionModel().getSelectedItem());
-                Scene scene = new Scene(root);
-                Stage stage = new Stage();
-                stage.setScene(scene);
-                stage.initModality(Modality.APPLICATION_MODAL);
-                stage.showAndWait();
-                populateCustomers();
-            } catch (IOException | SQLException e) {
         }
     }
 
