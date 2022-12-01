@@ -38,6 +38,8 @@ public class UpdateCustomer {
     public ChoiceBox modcus_countryChoice;
     @FXML
     public ChoiceBox modcus_divisionLevel;
+    @FXML
+    private Appointments appointment;
     public Customers customer;
 
     /**
