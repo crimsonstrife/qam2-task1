@@ -532,6 +532,10 @@ public class Main extends Application implements Initializable {
                 Parent modcus = customerLoader.load();
                 // get the selection model from the table and get the selected item
                 Customers selectedCustomer = (Customers) table_customers.getSelectionModel().getSelectedItem();
+                // get the controller from the loader
+                UpdateCustomerController controller = customerLoader.getController();
+                // pass the selected customer to the controller
+                controller.setCustomer(selectedCustomer);
                 Stage updateCustomerstage = new Stage();
                 updateCustomerstage.setTitle("Update Customer");
                 updateCustomerstage.setScene(new Scene(modcus, 600, 312));
