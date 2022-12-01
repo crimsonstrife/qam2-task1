@@ -438,9 +438,9 @@ public class Main extends Application implements Initializable {
             alert.showAndWait();
         } else {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/views/updateAppointment.fxml"));
-                Parent modapp = loader.load();
-                UpdateAppointment updateAppointment = loader.getController();
+                FXMLLoader appointmentLoader = new FXMLLoader(getClass().getResource("resources/views/updateAppointment.fxml"));
+                Parent modapp = appointmentLoader.load();
+                UpdateAppointment updateAppointment = appointmentLoader.getController();
                 updateAppointment
                         .updateAppointment((Appointments) table_appointments.getSelectionModel().getSelectedItem());
                 updateAppointment.setAllAppointments(allAppointments);
@@ -558,9 +558,9 @@ public class Main extends Application implements Initializable {
             alert.showAndWait();
         } else {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/views/updateAppointment.fxml"));
-                Parent modcus = loader.load();
-                UpdateCustomer updateCustomer = loader.getController();
+                FXMLLoader customerLoader = new FXMLLoader(getClass().getResource("resources/views/updateAppointment.fxml"));
+                Parent modcus = customerLoader.load();
+                UpdateCustomer updateCustomer = customerLoader.getController();
                 updateCustomer.updateCustomer((Customers) table_customers.getSelectionModel().getSelectedItem());
                 Stage updateCustomerstage = new Stage();
                 updateCustomerstage.setTitle("Update Customer");
