@@ -215,9 +215,10 @@ public class CustomersView extends Application implements Initializable {
             alert.showAndWait();
         } else {
             try {
-                Parent createcus = FXMLLoader.load(getClass().getResource("resources/views/updateCustomer.fxml"));
-                // get the selection model from the table and get the selected item
-                Customers selectedCustomer = table_customers.getSelectionModel().getSelectedItem();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/views/updateCustomer.fxml"));
+                Parent createcus = loader.load();
+                UpdateCustomer updateCustomer = loader.getController();
+                updateCustomer.updateCustomer((Customers) table_customers.getSelectionModel().getSelectedItem());
                 Stage stage = new Stage();
                 stage.setTitle("Update Customer");
                 stage.setScene(new Scene(createcus, 600, 312));
