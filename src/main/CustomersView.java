@@ -1,4 +1,5 @@
 package main;
+
 /**
  *
  * @author Patrick Barnhardt
@@ -37,7 +38,8 @@ import java.util.ResourceBundle;
 /**
  * The CustomersView controller.
  *
- * Created this to abvoid a casting issue I was having in Main with both appointments and customer updates
+ * Created this to abvoid a casting issue I was having in Main with both
+ * appointments and customer updates
  */
 public class CustomersView extends Application implements Initializable {
     @FXML
@@ -70,7 +72,6 @@ public class CustomersView extends Application implements Initializable {
     private TableColumn col_customer_lastupdated;
     @FXML
     private TableColumn col_customer_lastupdatedby;
-
 
     public ObservableList<Customers> allCustomers = FXCollections.observableArrayList();
 
@@ -214,25 +215,20 @@ public class CustomersView extends Application implements Initializable {
             alert.showAndWait();
         } else {
             try {
-                FXMLLoader customerLoader = new FXMLLoader(
-                        getClass().getResource("resources/views/updateAppointment.fxml"));
-                Parent modcus = customerLoader.load();
+                Parent createcus = FXMLLoader.load(getClass().getResource("resources/views/updateCustomer.fxml"));
                 // get the selection model from the table and get the selected item
-                Customers selectedCustomer = (Customers) table_customers.getSelectionModel().getSelectedItem();
-                // get the controller from the loader
-                UpdateCustomer CustomerController = customerLoader.getController();
-                // pass the selected customer to the controller
-                CustomerController.updateCustomer(selectedCustomer);
-                Stage updateCustomerstage = new Stage();
-                updateCustomerstage.setTitle("Update Customer");
-                updateCustomerstage.setScene(new Scene(modcus, 600, 312));
-                updateCustomerstage.showAndWait();
+                Customers selectedCustomer = table_customers.getSelectionModel().getSelectedItem();
+                Stage stage = new Stage();
+                stage.setTitle("Update Customer");
+                stage.setScene(new Scene(createcus, 600, 312));
+                stage.showAndWait();
                 populateCustomers();
             } catch (IOException | SQLException e) {
                 e.printStackTrace();
             }
         }
     }
+
     /**
      * Determine if the selected customer has any appointments and return the
      * amount.
