@@ -1,4 +1,5 @@
 package main;
+
 /**
  *
  * @author Patrick Barnhardt
@@ -24,17 +25,24 @@ import main.models.Customers;
 import main.models.Types;
 import main.utilities.JDBC;
 import main.models.Contacts;
+
 /**
  * The Reports controller.
+ * This class is the controller for the Reports screen.
+ *
  */
 public class Reports extends Application implements Initializable {
-    public ObservableList<Appointments> allAppointments = FXCollections.observableArrayList();
-    public ObservableList<Contacts> allContacts = FXCollections.observableArrayList();
+    public ObservableList<Appointments> allAppointments = FXCollections.observableArrayList(); // This is the list of
+                                                                                               // all appointments.
+    public ObservableList<Contacts> allContacts = FXCollections.observableArrayList(); // This is the list of all
+                                                                                       // contacts.
     @FXML
     public ComboBox ContactBox;
-    @FXML public TableView table_reports;
+    @FXML
+    public TableView table_reports;
 
     /**
+     * This method to get all appointments. for the reports screen.
      *
      * @throws SQLException
      */
@@ -59,13 +67,13 @@ public class Reports extends Application implements Initializable {
                     resultSet.getString("Last_Updated_By"),
                     resultSet.getInt("Customer_ID"),
                     resultSet.getInt("User_ID"),
-                    resultSet.getInt("Contact_ID")
-            ));
+                    resultSet.getInt("Contact_ID")));
         }
     }
 
     /**
      * Get all contacts
+     * 
      * @throws SQLException
      */
     public void getAllContacts() throws SQLException {
@@ -78,13 +86,13 @@ public class Reports extends Application implements Initializable {
             allContacts.add(new Contacts(
                     resultSet.getInt("Contact_ID"),
                     resultSet.getString("Contact_Name"),
-                    resultSet.getString("Email")
-            ));
+                    resultSet.getString("Email")));
         }
     }
 
     /**
      * Fill the contact box with list of contacts
+     * 
      * @throws SQLException
      */
     public void populateContacts() throws SQLException {
@@ -118,12 +126,16 @@ public class Reports extends Application implements Initializable {
     }
 
     /**
-     *
+     * This is the method to setup the schedule for the selected contact and render
+     * it to the table.
+     * 
      * @param actionEvent
      */
     public void do_ContactSchedule(ActionEvent actionEvent) {
-        table_reports.getColumns().clear();
-        TableColumn<Appointments, String> appointmentID = new TableColumn<>("Appointment_ID");
+        table_reports.getColumns().clear(); // Clear the table
+        // Create the columns and set the names
+        TableColumn<Appointments, String> appointmentID = new TableColumn<>("Appointment_ID"); // Create a new column
+                                                                                               // for the table
         TableColumn<Appointments, String> title = new TableColumn<>("Title");
         TableColumn<Appointments, String> description = new TableColumn<>("Description");
         TableColumn<Appointments, String> location = new TableColumn<>("Location");
@@ -133,7 +145,8 @@ public class Reports extends Application implements Initializable {
         TableColumn<Appointments, String> customer_ID = new TableColumn<>("Customer_ID");
         TableColumn<Appointments, String> user_ID = new TableColumn<>("User_ID");
 
-        appointmentID.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
+        appointmentID.setCellValueFactory(new PropertyValueFactory<>("appointmentID")); // set the value factory for the
+                                                                                        // column
         description.setCellValueFactory(new PropertyValueFactory<>("Description"));
         location.setCellValueFactory(new PropertyValueFactory<>("Location"));
         type.setCellValueFactory(new PropertyValueFactory<>("Type"));
@@ -143,7 +156,12 @@ public class Reports extends Application implements Initializable {
         user_ID.setCellValueFactory(new PropertyValueFactory<>("user_ID"));
         title.setCellValueFactory(new PropertyValueFactory<>("Title"));
 
-        table_reports.getColumns().addAll(title, description, location, type, start, end, customer_ID, user_ID);
+        table_reports.getColumns().addAll(title, description, location, type, start, end, customer_ID, user_ID); // Add
+                                                                                                                 // the
+                                                                                                                 // columns
+                                                                                                                 // to
+                                                                                                                 // the
+                                                                                                                 // table
         table_reports.getItems().clear();
         for (Appointments appointment : allAppointments) {
             if (appointment.getContact_ID() == ContactBox.getSelectionModel().getSelectedIndex() + 1) {
@@ -154,7 +172,8 @@ public class Reports extends Application implements Initializable {
     }
 
     /**
-     *
+     * This is the method for reporting the number of appointments by type and month
+     * 
      * @param actionEvent
      * @throws SQLException
      */
@@ -167,11 +186,8 @@ public class Reports extends Application implements Initializable {
         type.setCellValueFactory(new PropertyValueFactory<>("Type"));
         Month.setCellValueFactory(new PropertyValueFactory<>("Month"));
         count.setCellValueFactory(new PropertyValueFactory<>("Count"));
-
         table_reports.getColumns().addAll(type, Month, count);
-
         table_reports.getItems().clear();
-
         ObservableList<Types> allTypes = FXCollections.observableArrayList();
 
         String query = "SELECT Type, MONTHNAME(Start) AS Month, COUNT(*) AS Count FROM client_schedule.appointments GROUP BY Type, MONTHNAME(Start)";
@@ -184,8 +200,7 @@ public class Reports extends Application implements Initializable {
             allTypes.add(new Types(
                     resultSet.getString("Type"),
                     resultSet.getString("Month"),
-                    resultSet.getInt("Count")
-            ));
+                    resultSet.getInt("Count")));
         }
         table_reports.getItems().addAll(allTypes);
     }
