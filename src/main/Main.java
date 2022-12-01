@@ -425,38 +425,6 @@ public class Main extends Application implements Initializable {
     }
 
     /**
-     * Open the Modify Selected Appointment window
-     *
-     * @param event triggered by the modify appointment button
-     */
-    public void do_modifyappointment(ActionEvent event) {
-        if (table_appointments.getSelectionModel().getSelectedItem() == null) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("No Appointment Selected");
-            alert.setContentText("Please select an appointment to modify.");
-            alert.showAndWait();
-        } else {
-            try {
-                FXMLLoader appointmentLoader = new FXMLLoader(
-                        getClass().getResource("resources/views/updateAppointment.fxml"));
-                Parent modapp = appointmentLoader.load();
-                UpdateAppointment updateAppointment = appointmentLoader.getController();
-                updateAppointment
-                        .updateAppointment((Appointments) table_appointments.getSelectionModel().getSelectedItem());
-                updateAppointment.setAllAppointments(allAppointments);
-                Stage modifyAppstage = new Stage();
-                modifyAppstage.setTitle("Update Appointment");
-                modifyAppstage.setScene(new Scene(modapp, 600, 400));
-                modifyAppstage.showAndWait();
-                populateAppointments();
-            } catch (IOException | SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    /**
      * Delete the selected appointment
      *
      * @param event triggered by the delete appointment button
@@ -564,11 +532,43 @@ public class Main extends Application implements Initializable {
                 Parent modcus = customerLoader.load();
                 UpdateCustomer updateCustomer = customerLoader.getController();
                 updateCustomer.updateCustomer((Customers) table_customers.getSelectionModel().getSelectedItem());
-                Stage updateCustomerstage = new Stage();
+                updateCustomer.Stage updateCustomerstage = new Stage();
                 updateCustomerstage.setTitle("Update Customer");
                 updateCustomerstage.setScene(new Scene(modcus, 600, 312));
                 updateCustomerstage.showAndWait();
                 populateCustomers();
+            } catch (IOException | SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * Open the Modify Selected Appointment window
+     *
+     * @param event triggered by the modify appointment button
+     */
+    public void do_modifyappointment(ActionEvent event) {
+        if (table_appointments.getSelectionModel().getSelectedItem() == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("No Appointment Selected");
+            alert.setContentText("Please select an appointment to modify.");
+            alert.showAndWait();
+        } else {
+            try {
+                FXMLLoader appointmentLoader = new FXMLLoader(
+                        getClass().getResource("resources/views/updateAppointment.fxml"));
+                Parent modapp = appointmentLoader.load();
+                UpdateAppointment updateAppointment = appointmentLoader.getController();
+                updateAppointment
+                        .updateAppointment((Appointments) table_appointments.getSelectionModel().getSelectedItem());
+                updateAppointment.setAllAppointments(allAppointments);
+                Stage modifyAppstage = new Stage();
+                modifyAppstage.setTitle("Update Appointment");
+                modifyAppstage.setScene(new Scene(modapp, 600, 400));
+                modifyAppstage.showAndWait();
+                populateAppointments();
             } catch (IOException | SQLException e) {
                 e.printStackTrace();
             }
