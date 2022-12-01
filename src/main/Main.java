@@ -530,8 +530,8 @@ public class Main extends Application implements Initializable {
                 FXMLLoader customerLoader = new FXMLLoader(
                         getClass().getResource("resources/views/updateAppointment.fxml"));
                 Parent modcus = customerLoader.load();
-                UpdateCustomer updateCustomer = customerLoader.getController();
-                updateCustomer.updateCustomer((Customers) table_customers.getSelectionModel().getSelectedItem());
+                // get the selection model from the table and get the selected item
+                Customers selectedCustomer = (Customers) table_customers.getSelectionModel().getSelectedItem();
                 Stage updateCustomerstage = new Stage();
                 updateCustomerstage.setTitle("Update Customer");
                 updateCustomerstage.setScene(new Scene(modcus, 600, 312));
