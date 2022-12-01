@@ -21,7 +21,8 @@ import javafx.fxml.*;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
+import main.UpdateCustomer;
+import main.UpdateAppointment;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
@@ -29,7 +30,6 @@ import javafx.scene.control.*;
 import main.models.Appointments;
 import main.models.Customers;
 import main.utilities.JDBC;
-
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ResourceBundle;
@@ -438,7 +438,8 @@ public class Main extends Application implements Initializable {
             alert.showAndWait();
         } else {
             try {
-                FXMLLoader appointmentLoader = new FXMLLoader(getClass().getResource("resources/views/updateAppointment.fxml"));
+                FXMLLoader appointmentLoader = new FXMLLoader(
+                        getClass().getResource("resources/views/updateAppointment.fxml"));
                 Parent modapp = appointmentLoader.load();
                 UpdateAppointment updateAppointment = appointmentLoader.getController();
                 updateAppointment
@@ -558,7 +559,8 @@ public class Main extends Application implements Initializable {
             alert.showAndWait();
         } else {
             try {
-                FXMLLoader customerLoader = new FXMLLoader(getClass().getResource("resources/views/updateAppointment.fxml"));
+                FXMLLoader customerLoader = new FXMLLoader(
+                        getClass().getResource("resources/views/updateAppointment.fxml"));
                 Parent modcus = customerLoader.load();
                 UpdateCustomer updateCustomer = customerLoader.getController();
                 updateCustomer.updateCustomer((Customers) table_customers.getSelectionModel().getSelectedItem());
