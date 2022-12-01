@@ -36,17 +36,18 @@ import java.util.ResourceBundle;
 
 /**
  * The Main controller.
+ * This class is the controller for the Main screen.
  */
 public class Main extends Application implements Initializable {
 
     /**
      * Set Application Variables
      */
-    private static String userLoggedIn = "";
-    private static Integer userLoggedInID = null;
-    private static String userZone = ZoneId.systemDefault().toString();
-    public static String userLanguage = System.getProperty("user.language");
-    public static Integer loggedInUserID = null;
+    private static String userLoggedIn = ""; // This is the user that is logged in.
+    private static Integer userLoggedInID = null; // This is the user ID that is logged in.
+    private static String userZone = ZoneId.systemDefault().toString(); // This is the user's time zone.
+    public static String userLanguage = System.getProperty("user.language"); // This is the user's language.
+    public static Integer loggedInUserID = null; // This is the user ID that is logged in.
 
     /**
      * Configure the Application Fields
@@ -57,35 +58,26 @@ public class Main extends Application implements Initializable {
      */
     @FXML
     private Button btn_appointments;
-
     @FXML
     private Button btn_customers;
-
     @FXML
     private Button btn_users;
-
     @FXML
     private Button btn_signout;
-
     @FXML
     private Button btn_appointmentcreate;
-
     @FXML
     private Button btn_appointmentmodify;
-
     @FXML
     private Button btn_appointmentdelete;
-
     @FXML
     private RadioButton weekly_radio;
-
     @FXML
     private RadioButton monthly_radio;
-
     @FXML
     public ToggleGroup appointment_filter;
-
-    public ObservableList<Appointments> allAppointments = FXCollections.observableArrayList();
+    public ObservableList<Appointments> allAppointments = FXCollections.observableArrayList(); // This is the list of
+                                                                                               // all appointments.
 
     /**
      * Configure the Application Panes
@@ -121,17 +113,23 @@ public class Main extends Application implements Initializable {
 
     /**
      * Initialize method
+     * This method is called when the Main screen is loaded.
+     * 
+     * @param url
+     * @param rb
+     *
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            if (checkAppointmentTimes() == true) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Appointment Alert");
-                alert.setHeaderText("Appointment Alert");
-                alert.setContentText("There is an appointment due within the next 15 minutes.");
+            if (checkAppointmentTimes() == true) { // Check if there are any appointments in the next 15 minutes.
+                Alert alert = new Alert(Alert.AlertType.INFORMATION); // Create an alert.
+                alert.setTitle("Appointment Alert"); // Set the alert title.
+                alert.setHeaderText("Appointment Alert"); // Set the alert header.
+                alert.setContentText("There is an appointment due within the next 15 minutes."); // Set the alert
+                                                                                                 // content.
                 alert.showAndWait();
-            } else {
+            } else { // If there are no appointments in the next 15 minutes.
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Appointment Alert");
                 alert.setHeaderText("Appointment Alert");
@@ -148,6 +146,11 @@ public class Main extends Application implements Initializable {
         }
     }
 
+    /**
+     * Start method
+     * 
+     * @throws Exception
+     */
     public void start(Stage primaryStage) throws Exception {
         String appTitle = "";
         if (userLanguage.equals("fr")) {
@@ -177,16 +180,24 @@ public class Main extends Application implements Initializable {
      * return true if there is an appointment within the next 15 minutes.
      */
     public boolean checkAppointmentTimes() throws SQLException {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime fifteenMinutesFromNow = now.plusMinutes(15);
-        boolean appointmentWithin15Minutes = false;
-        JDBC.makeConnection();
-        Connection connection = JDBC.getConnection();
-        Statement statement = (Statement) connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM client_schedule.appointments");
+        LocalDateTime now = LocalDateTime.now(); // Get the current date and time.
+        LocalDateTime fifteenMinutesFromNow = now.plusMinutes(15); // Get the date and time 15 minutes from now.
+        boolean appointmentWithin15Minutes = false; // Set the appointment within 15 minutes flag to false.
+        JDBC.makeConnection(); // Make a connection to the database.
+        Connection connection = JDBC.getConnection(); // Get the connection.
+        Statement statement = (Statement) connection.createStatement(); // Create a statement.
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM client_schedule.appointments"); // Execute the
+                                                                                                    // query.
         while (resultSet.next()) {
-            LocalDateTime appointmentStart = resultSet.getTimestamp("start").toLocalDateTime();
-            if (appointmentStart.isAfter(now) && appointmentStart.isBefore(fifteenMinutesFromNow)) {
+            LocalDateTime appointmentStart = resultSet.getTimestamp("start").toLocalDateTime(); // Get the appointment
+                                                                                                // start date and time.
+            if (appointmentStart.isAfter(now) && appointmentStart.isBefore(fifteenMinutesFromNow)) { // If the
+                                                                                                     // appointment
+                                                                                                     // start date and
+                                                                                                     // time is after
+                                                                                                     // now and before
+                                                                                                     // 15 minutes from
+                                                                                                     // now.
                 appointmentWithin15Minutes = true;
             } else {
                 appointmentWithin15Minutes = false;
@@ -345,17 +356,24 @@ public class Main extends Application implements Initializable {
      * @param event triggered by the delete appointment button
      */
     public void do_deleteappointment(ActionEvent event) {
-        if (table_appointments.getSelectionModel().getSelectedItem() != null) {
-            Appointments selectedAppointment = (Appointments) table_appointments.getSelectionModel().getSelectedItem();
-            int appointmentID = selectedAppointment.getAppointment_ID();
-            String appointmentIDString = Integer.toString(appointmentID);
-            String appointmentTypeString = selectedAppointment.getType();
+        if (table_appointments.getSelectionModel().getSelectedItem() != null) { // if an appointment is selected
+            Appointments selectedAppointment = (Appointments) table_appointments.getSelectionModel().getSelectedItem(); // get
+                                                                                                                        // the
+                                                                                                                        // selected
+                                                                                                                        // appointment
+            int appointmentID = selectedAppointment.getAppointment_ID(); // get the appointment ID
+            String appointmentIDString = Integer.toString(appointmentID); // convert the appointment ID to a string
+            String appointmentTypeString = selectedAppointment.getType(); // get the appointment type
             try {
-                JDBC.makeConnection();
-                Connection connection = JDBC.connection;
-                Statement statement = (Statement) connection.createStatement();
+                JDBC.makeConnection(); // make a connection to the database
+                Connection connection = JDBC.connection; // get the connection
+                Statement statement = (Statement) connection.createStatement(); // create a statement
                 statement.executeUpdate(
-                        "DELETE FROM client_schedule.appointments WHERE Appointment_ID = " + appointmentID);
+                        "DELETE FROM client_schedule.appointments WHERE Appointment_ID = " + appointmentID); // delete
+                                                                                                             // the
+                                                                                                             // appointment
+                                                                                                             // from the
+                                                                                                             // database
                 populateAppointments();
                 // prepare and alert to notify the user that the appointment has been deleted
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -367,7 +385,7 @@ public class Main extends Application implements Initializable {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        } else {
+        } else { // if no appointment is selected
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("No Appointment Selected");
@@ -415,15 +433,15 @@ public class Main extends Application implements Initializable {
      * @param event triggered by the modify appointment button
      */
     public void do_modifyappointment(ActionEvent event) {
-        if (table_appointments.getSelectionModel().getSelectedItem() == null) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
+        if (table_appointments.getSelectionModel().getSelectedItem() == null) { // if no appointment is selected
+            Alert alert = new Alert(Alert.AlertType.ERROR); // prepare an alert to notify the user
             alert.setTitle("Error");
             alert.setHeaderText("No Appointment Selected");
             alert.setContentText("Please select an appointment to modify.");
             alert.showAndWait();
         } else {
             try {
-                FXMLLoader appointmentLoader = new FXMLLoader(
+                FXMLLoader appointmentLoader = new FXMLLoader( // load the modify appointment window
                         getClass().getResource("resources/views/updateAppointment.fxml"));
                 Parent modapp = appointmentLoader.load();
                 UpdateAppointment updateAppointment = appointmentLoader.getController();
