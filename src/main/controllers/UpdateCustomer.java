@@ -13,6 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import main.models.Appointments;
 import main.models.Countries;
 import main.models.Customers;
 import main.models.Divisions;
