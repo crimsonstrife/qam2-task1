@@ -559,8 +559,8 @@ public class Main extends Application implements Initializable {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("views/updateCustomer.fxml"));
                 Parent root = loader.load();
-        UpdateCustomer modifyCustomerController = loader.getController();
-        UpdateCustomer.setCustomer((customers) customerTable.getSelectionModel().getSelectedItem());
+                UpdateCustomer modifyCustomerController = loader.getController();
+                UpdateCustomer.setCustomer((customers) customerTable.getSelectionModel().getSelectedItem());
                 Scene scene = new Scene(root);
                 Stage stage = new Stage();
                 stage.setScene(scene);
