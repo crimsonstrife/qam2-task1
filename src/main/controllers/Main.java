@@ -559,17 +559,15 @@ public class Main extends Application implements Initializable {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("views/updateCustomer.fxml"));
                 Parent root = loader.load();
-                UpdateCustomer controller = loader.getController();
-                controller.updateCustomer((Customers) table_customers.getSelectionModel().getSelectedItem());
-                controller.setAllCustomers(allCustomers);
-                controller.Stage stage = new Stage();
-                stage.setTitle("Update Customer");
-                stage.setScene(new Scene(root, 600, 312));
+        UpdateCustomer modifyCustomerController = loader.getController();
+        UpdateCustomer.setCustomer((customers) customerTable.getSelectionModel().getSelectedItem());
+                Scene scene = new Scene(root);
+                Stage stage = new Stage();
+                stage.setScene(scene);
+                stage.initModality(Modality.APPLICATION_MODAL);
                 stage.showAndWait();
                 populateCustomers();
             } catch (IOException | SQLException e) {
-                e.printStackTrace();
-            }
         }
     }
 
