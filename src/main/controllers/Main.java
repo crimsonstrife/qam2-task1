@@ -182,7 +182,7 @@ public class Main extends Application implements Initializable {
         } else {
             appTitle = "Scheduler";
         }
-        Parent root = FXMLLoader.load(getClass().getResource("views/main.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("resources/views/main.fxml"));
         primaryStage.setTitle(appTitle);
         primaryStage.setScene(new Scene(root, 900, 600));
         primaryStage.show();
@@ -415,7 +415,7 @@ public class Main extends Application implements Initializable {
      */
     public void do_createappointment(ActionEvent event) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("views/newAppointment.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("resources/views/newAppointment.fxml"));
             Stage stage = new Stage();
             stage.setTitle("Add Appointment");
             stage.setScene(new Scene(root, 600, 400));
@@ -440,7 +440,7 @@ public class Main extends Application implements Initializable {
             alert.showAndWait();
         } else {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("views/updateAppointment.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/views/updateAppointment.fxml"));
                 Parent root = loader.load();
                 UpdateAppointment controller = loader.getController();
                 controller.updateAppointment((Appointments) table_appointments.getSelectionModel().getSelectedItem());
@@ -533,7 +533,7 @@ public class Main extends Application implements Initializable {
      */
     public void do_createCustomer(ActionEvent event) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("views/newCustomer.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("resources/views/newCustomer.fxml"));
             Stage stage = new Stage();
             stage.setTitle("Add a Customer");
             stage.setScene(new Scene(root, 600, 312));
@@ -559,11 +559,10 @@ public class Main extends Application implements Initializable {
             alert.showAndWait();
         } else {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("views/updateCustomer.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/views/updateAppointment.fxml"));
                 Parent root = loader.load();
-                UpdateCustomer controller = loader.getController();
-                controller.updateCustomer((Customers) table_customers.getSelectionModel().getSelectedItem());
-                controller.setAllCustomers(allCustomers);
+                UpdateCustomer updateCustomer = loader.getController();
+                updateCustomer.updateCustomer((Customers) table_customers.getSelectionModel().getSelectedItem());
                 Stage stage = new Stage();
                 stage.setTitle("Update Customer");
                 stage.setScene(new Scene(root, 600, 312));

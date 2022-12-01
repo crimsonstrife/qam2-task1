@@ -92,7 +92,7 @@ public class Login extends Application implements Initializable {
         }
         if (JDBC.login(login_username.getText(), login_password.getText())) {
             try {
-                Parent root = FXMLLoader.load(getClass().getResource("views/main.fxml"));
+                Parent root = FXMLLoader.load(getClass().getResource("resources/views/main.fxml"));
                 Stage stage = new Stage();
                 stage.setTitle(appTitle);
                 stage.setScene(new Scene(root, 900, 600));
@@ -147,7 +147,7 @@ public class Login extends Application implements Initializable {
         } else {
             appTitle = "Scheduler";
         }
-        Parent root = FXMLLoader.load(getClass().getResource("views/login.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("resources/views/login.fxml"));
         primaryStage.setTitle(appTitle);
         primaryStage.setScene(new Scene(root, 640, 480));
         primaryStage.show();
