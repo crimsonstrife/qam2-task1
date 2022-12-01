@@ -428,25 +428,29 @@ public class Main extends Application implements Initializable {
      * Open the Modify Selected Appointment window
      *
      * @param event triggered by the modify appointment button
-     * @throws IOException
      */
-    public void do_modifyappointment(ActionEvent event) throws IOException {
-        int selectedAppointment;
-        selectedAppointment = table_appointments.getSelectionModel().getSelectedItem().getAppointment_ID();
-        if (selectedAppointment == 0) {
+    public void do_modifyappointment(ActionEvent event) {
+        if (table_appointments.getSelectionModel().getSelectedItem() == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("No Appointment Selected");
             alert.setContentText("Please select an appointment to modify.");
             alert.showAndWait();
         } else {
-            Parent modapp = FXMLLoader.load(getClass().getResource("resources/views/modifyAppointment.fxml"));
-            Scene scene = new Scene(modapp, 600, 400); // Create a new scene with the root node
-            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow(); // Get the current window
-            window.setTitle("Modify Appointment"); // Set the title
-            window.setScene(scene); // Set the scene to the stage
-            window.showAndWait(); // Show the Modify Part Window
-            populateAppointments();
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/views/updateAppointment.fxml"));
+                Parent modapp = loader.load();
+                UpdateAppointment controller = loader.getController();
+                controller.updateAppointment((Appointments) table_appointments.getSelectionModel().getSelectedItem());
+                controller.setAllAppointments(allAppointments);
+                Stage modifyAppstage = new Stage();
+                modifyAppstage.setTitle("Update Appointment");
+                modifyAppstage.setScene(new Scene(modapp, 600, 400));
+                modifyAppstage.showAndWait();
+                populateAppointments();
+            } catch (IOException | SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
