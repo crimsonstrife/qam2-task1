@@ -7,22 +7,37 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="600.0" spacing="30.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ReportsContoller">
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="481.0" prefWidth="600.0" spacing="30.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Reports">
    <children>
-      <Label text="Reports" />
+      <Label text="Reports">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font></Label>
       <Separator prefWidth="200.0" />
-      <TableView prefHeight="200.0" prefWidth="200.0" fx:id="reportTable">
+      <TableView fx:id="table_reports" prefHeight="200.0" prefWidth="200.0">
         <columns>
           <TableColumn prefWidth="75.0" text="C1" />
           <TableColumn prefWidth="75.0" text="C2" />
         </columns>
       </TableView>
-      <Button mnemonicParsing="false" onAction="#handleAppointmentsByTypeMonth" text="Appointments by Type and Month" />
-       <Button mnemonicParsing="false" onAction="#handleQuantityofAppointments" text="total appointments per user" />
-
-        <ComboBox onAction="#handleContactSchedule" promptText="Choose Contact" fx:id="ContactBox" />
+      <HBox>
+         <children>
+            <VBox>
+               <children>
+                  <Button mnemonicParsing="false" onAction="#do_AppointmentsBy" text="Appointment Totals by Type and Month" />
+                  <Separator prefHeight="30.0" prefWidth="228.0" visible="false" />
+                   <Button mnemonicParsing="false" onAction="#do_Quantity" text="Total Appointments Per User" />
+               </children>
+            </VBox>
+            <Separator orientation="VERTICAL" prefHeight="122.0" prefWidth="121.0" visible="false" />
+      
+              <ComboBox fx:id="ContactBox" onAction="#do_ContactSchedule" promptText="Choose Contact to view Schedule" />
+         </children>
+      </HBox>
 
 
    </children>
