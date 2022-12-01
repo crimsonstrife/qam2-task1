@@ -428,29 +428,45 @@ public class Main extends Application implements Initializable {
      * Open the Modify Selected Appointment window
      *
      * @param event triggered by the modify appointment button
+     * @throws IOException
      */
-    public void do_modifyappointment(ActionEvent event) {
-        if (table_appointments.getSelectionModel().getSelectedItem() == null) {
+    public void do_modifyappointment(ActionEvent event) throws IOException {
+        int selectedAppointment;
+        selectedAppointment = table_appointments.getSelectionModel().getSelectedItem().getAppointment_ID();
+        if (selectedAppointment == 0) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("No Appointment Selected");
             alert.setContentText("Please select an appointment to modify.");
             alert.showAndWait();
         } else {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/views/updateAppointment.fxml"));
-                Parent root = loader.load();
-                UpdateAppointment controller = loader.getController();
-                controller.updateAppointment((Appointments) table_appointments.getSelectionModel().getSelectedItem());
-                controller.setAllAppointments(allAppointments);
-                Stage modifyAppstage = new Stage();
-                modifyAppstage.setTitle("Update Appointment");
-                modifyAppstage.setScene(new Scene(root, 600, 400));
-                modifyAppstage.showAndWait();
-                populateAppointments();
-            } catch (IOException | SQLException e) {
-                e.printStackTrace();
-            }
+            Parent root = FXMLLoader.load(getClass().getResource("resources/views/modifyAppointment.fxml"));
+            Scene scene = new Scene(root, 600, 400); // Create a new scene with the root node
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow(); // Get the current window
+            window.setTitle("Modify Appointment"); // Set the title
+            window.setScene(scene); // Set the scene to the stage
+            window.showAndWait(); // Show the Modify Part Window
+            populateAppointments();
+        }
+    }
+
+    /**
+     * Modify Part Button Event Handler - Open the Modify Part Window
+     *
+     * @param event the event triggered by the modify part button
+     * @throws IOException if the FXML file cannot be loaded
+     */
+    public void ModifyPartBtnAction(ActionEvent event) throws IOException {
+        int selectedPart;
+        selectedPart = parts_table.getSelectionModel().getFocusedIndex(); // Get the selected part
+        if (selectedPart >= 0) { // If a part is selected
+            ModifyPartController.setSelectedPartID(selectedPart); // Set the selected part ID
+            Parent root = FXMLLoader.load(getClass().getResource("modifypart-form.fxml")); // Load the Modify Part
+                                                                                           // Window
+            Scene scene = new Scene(root); // Create a new scene with the root node
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow(); // Get the current window
+            window.setScene(scene); // Set the scene to the stage
+            window.show(); // Show the Modify Part Window
         }
     }
 
