@@ -1,9 +1,7 @@
 package main;
-
 /**
- *
+ * UpdateAppointment.java
  * @author Patrick Barnhardt
- *
  *         JAVADOC Location: in the Root of the Project folder - in a folder
  *         called JAVADOCS.
  */
@@ -36,7 +34,7 @@ public class UpdateAppointment {
     @FXML
     private TextField modapp_location;
     @FXML
-    private ChoiceBox modapp_contactbox;
+    private ChoiceBox<String> modapp_contactbox;
     @FXML
     private TextField modapp_type;
     @FXML
@@ -44,9 +42,9 @@ public class UpdateAppointment {
     @FXML
     private DatePicker modapp_endDate;
     @FXML
-    private ChoiceBox modapp_startTime;
+    private ChoiceBox<java.io.Serializable> modapp_startTime;
     @FXML
-    private ChoiceBox modapp_endTime;
+    private ChoiceBox<java.io.Serializable> modapp_endTime;
     @FXML
     private TextField modapp_CustomerID;
     @FXML
@@ -69,7 +67,7 @@ public class UpdateAppointment {
     /**
      * Cancel the appointment update
      *
-     * @param event
+     * @param event the cancel button is clicked
      */
     public void do_modappCancel(ActionEvent event) {
         Stage stage = (Stage) modapp_title.getScene().getWindow(); // Get the stage
@@ -79,8 +77,8 @@ public class UpdateAppointment {
     /**
      * Get the Contact ID from the contact name
      *
-     * @param contact_Name
-     * @return
+     * @param contact_Name the contact's name
+     * @return contact_ID the contact's ID
      */
     public String getContactID(String contact_Name) throws SQLException {
         String contact_ID = ""; // Initialize the contact ID
@@ -115,7 +113,7 @@ public class UpdateAppointment {
                 String description = modapp_description.getText();
                 String location = modapp_location.getText();
                 String type = modapp_type.getText();
-                String contact = getContactID(modapp_contactbox.getValue().toString()); // Get contact ID
+                String contact = getContactID(modapp_contactbox.getValue()); // Get contact ID
                 LocalTime localtimestart = LocalTime.parse(modapp_startTime.getValue().toString()); // Get start time
                 LocalDateTime localdatetimestart = LocalDateTime.of(modapp_startDate.getValue(), localtimestart);
                 Timestamp startTimeStamp = Timestamp.valueOf(localdatetimestart); // Convert to timestamp
@@ -159,16 +157,16 @@ public class UpdateAppointment {
     /**
      * ObservableList of All Appointments
      *
-     * @param appointments
+     * @param appointments the appointments to set
      */
     public void setAllAppointments(ObservableList<Appointments> appointments) {
-        appointments = appointments;
+        this.appointments = appointments;
     }
 
     /**
      * Set Individual Appointment
      *
-     * @param appointment
+     * @param appointment the appointment to set
      */
     public void updateAppointment(Appointments appointment) throws SQLException {
         this.appointment = appointment;
@@ -204,8 +202,6 @@ public class UpdateAppointment {
     public void addUpdateTime() {
         ObservableList<LocalDateTime> startTimes = FXCollections.observableArrayList();
         ObservableList<LocalDateTime> endTimes = FXCollections.observableArrayList();
-        LocalDateTime start = appointment.getStart().toLocalDateTime();
-        LocalDateTime end = appointment.getEnd().toLocalDateTime();
         LocalDate startDate = appointment.getStart().toLocalDateTime().toLocalDate();
         LocalDate endDate = appointment.getEnd().toLocalDateTime().toLocalDate();
 
@@ -216,15 +212,15 @@ public class UpdateAppointment {
             }
         }
 
-        for (int i = 0; i < startTimes.size(); i++) {
+        for (LocalDateTime startTime : startTimes) {
             modapp_startTime.getItems()
-                    .add(startTimes.get(i).atZone(ZoneId.of("US/Eastern")).withZoneSameInstant(ZoneId.systemDefault())
+                    .add(startTime.atZone(ZoneId.of("US/Eastern")).withZoneSameInstant(ZoneId.systemDefault())
                             .toLocalDateTime().format(DateTimeFormatter.ofPattern("HH:mm")));
         }
 
-        for (int i = 0; i < endTimes.size(); i++) {
+        for (LocalDateTime endTime : endTimes) {
             modapp_endTime.getItems()
-                    .add(endTimes.get(i).atZone(ZoneId.of("US/Eastern")).withZoneSameInstant(ZoneId.systemDefault())
+                    .add(endTime.atZone(ZoneId.of("US/Eastern")).withZoneSameInstant(ZoneId.systemDefault())
                             .toLocalDateTime().format(DateTimeFormatter.ofPattern("HH:mm")));
         }
     }
@@ -250,8 +246,8 @@ public class UpdateAppointment {
     /**
      * Validate the appointment update
      *
-     * @param appointment
-     * @return
+     * @param appointment the appointment to validate and update
+     * @return true if valid, false if not
      */
     public boolean validateUpdateToAppointment(Appointments appointment) {
         AtomicBoolean isValid = new AtomicBoolean(true);
@@ -282,15 +278,11 @@ public class UpdateAppointment {
          * Verify the appointment is within business hours
          */
         switch (appointment.getStart().toLocalDateTime().getDayOfWeek()) {
-            case MONDAY:
-            case TUESDAY:
-            case WEDNESDAY:
-            case THURSDAY:
-            case FRIDAY:
+            case MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY -> {
                 if (appointment.getStart().toLocalDateTime().atZone(ZoneId.systemDefault())
                         .withZoneSameInstant(ZoneId.of("US/Eastern")).getHour() < 8
                         || appointment.getEnd().toLocalDateTime().atZone(ZoneId.systemDefault())
-                                .withZoneSameInstant(ZoneId.of("US/Eastern")).getHour() > 22) {
+                        .withZoneSameInstant(ZoneId.of("US/Eastern")).getHour() > 22) {
                     isValid.set(false); // Set valid to false
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error");
@@ -298,16 +290,15 @@ public class UpdateAppointment {
                     alert.setContentText("Start and End Times are outside 8:00 AM - 10:00 PM EST");
                     alert.showAndWait();
                 }
-                break;
-            case SATURDAY:
-            case SUNDAY:
+            }
+            case SATURDAY, SUNDAY -> {
                 isValid.set(false); // Set valid to false
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setHeaderText("Invalid Appointment Day");
                 alert.setContentText("Appointments may only be scheduled on weekdays.");
                 alert.showAndWait();
-                break;
+            }
         }
         return isValid.get(); // Return valid
     }
