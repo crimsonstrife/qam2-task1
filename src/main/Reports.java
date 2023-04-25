@@ -1,9 +1,8 @@
 package main;
-
 /**
- *
+ * Reports.java
+ * This is the Reports class.
  * @author Patrick Barnhardt
- *
  * JAVADOC Location: in the Root of the Project folder - in a folder called JAVADOCS.
  */
 import javafx.application.Application;
@@ -21,7 +20,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import main.models.Appointments;
-import main.models.Customers;
 import main.models.Types;
 import main.utilities.JDBC;
 import main.models.Contacts;
@@ -37,14 +35,14 @@ public class Reports extends Application implements Initializable {
     public ObservableList<Contacts> allContacts = FXCollections.observableArrayList(); // This is the list of all
                                                                                        // contacts.
     @FXML
-    public ComboBox ContactBox;
+    public ComboBox<String> ContactBox;
     @FXML
     public TableView table_reports;
 
     /**
      * This method to get all appointments. for the reports screen.
      *
-     * @throws SQLException
+     * @throws SQLException the sql exception
      */
     public void getAllAppointments() throws SQLException {
         String query = "SELECT * FROM client_schedule.appointments";
@@ -74,7 +72,7 @@ public class Reports extends Application implements Initializable {
     /**
      * Get all contacts
      * 
-     * @throws SQLException
+     * @throws SQLException the sql exception
      */
     public void getAllContacts() throws SQLException {
         String query = "SELECT * FROM client_schedule.contacts";
@@ -93,7 +91,7 @@ public class Reports extends Application implements Initializable {
     /**
      * Fill the contact box with list of contacts
      * 
-     * @throws SQLException
+     * @throws SQLException the sql exception
      */
     public void populateContacts() throws SQLException {
         for (Contacts contact : allContacts) {
@@ -129,7 +127,7 @@ public class Reports extends Application implements Initializable {
      * This is the method to setup the schedule for the selected contact and render
      * it to the table.
      * 
-     * @param actionEvent
+     * @param actionEvent The event that triggers the method.
      */
     public void do_ContactSchedule(ActionEvent actionEvent) {
         table_reports.getColumns().clear(); // Clear the table
@@ -174,8 +172,8 @@ public class Reports extends Application implements Initializable {
     /**
      * This is the method for reporting the number of appointments by type and month
      * 
-     * @param actionEvent
-     * @throws SQLException
+     * @param actionEvent The event that triggers the method.
+     * @throws SQLException the sql exception
      */
     public void do_AppointmentsBy(ActionEvent actionEvent) throws SQLException {
         table_reports.getColumns().clear();

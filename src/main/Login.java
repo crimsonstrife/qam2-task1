@@ -21,6 +21,7 @@ import javafx.scene.control.*;
 import main.utilities.JDBC;
 
 import java.time.ZoneId;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import static main.utilities.Utils.recordLoginAttempt;
 
@@ -83,7 +84,7 @@ public class Login extends Application implements Initializable {
         String loginDate = java.time.LocalDate.now().toString(); // get the current date
         String loginTime = java.time.LocalTime.now().toString(); // get the current time
         // translate the app title based on system language //
-        String appTitle = "";
+        String appTitle;
         if (userLanguage.equals("fr")) { // if the user's language is French
             appTitle = "Planificateur"; // set the app title to French
         } else {
@@ -91,7 +92,7 @@ public class Login extends Application implements Initializable {
         }
         if (JDBC.login(login_username.getText(), login_password.getText())) { // if the login is successful
             try { // try to open the main application window
-                Parent login = FXMLLoader.load(getClass().getResource("resources/views/main.fxml"));
+                Parent login = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("resources/views/main.fxml")));
                 Stage stage = new Stage();
                 stage.setTitle(appTitle);
                 stage.setScene(new Scene(login, 900, 600));
@@ -105,9 +106,9 @@ public class Login extends Application implements Initializable {
                 e.printStackTrace();
             }
         } else { // if the login is unsuccessful
-            String alertTitle = "";
-            String alertHeader = "";
-            String alertContext = "";
+            String alertTitle;
+            String alertHeader;
+            String alertContext;
             // translate the alert content based on system language //
             if (userLanguage.equals("fr")) {
                 alertTitle = "Erreur d'identification";
@@ -143,16 +144,16 @@ public class Login extends Application implements Initializable {
     /**
      * Start the application.
      *
-     * @throws Exception
+     * @throws Exception exception
      */
     public void start(Stage primaryStage) throws Exception {
-        String appTitle = ""; // set the app title
+        String appTitle; // set the app title
         if (userLanguage.equals("fr")) { // if the user's language is French
             appTitle = "Planificateur"; // set the app title to French
         } else {
             appTitle = "Scheduler"; // otherwise, set the app title to English
         }
-        Parent login = FXMLLoader.load(getClass().getResource("resources/views/login.fxml")); // load the login screen
+        Parent login = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("resources/views/login.fxml"))); // load the login screen
         primaryStage.setTitle(appTitle); // set the app title
         primaryStage.setScene(new Scene(login, 640, 480));
         primaryStage.show(); // show the login screen
@@ -161,8 +162,8 @@ public class Login extends Application implements Initializable {
     /**
      * Initialize method
      * 
-     * @param url
-     * @param rb
+     * @param url url
+     * @param rb resource bundle
      *
      */
     @Override

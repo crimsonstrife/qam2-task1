@@ -12,33 +12,26 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.fxml.*;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import main.UpdateCustomer;
-import main.UpdateAppointment;
-import main.Main;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import javafx.scene.control.*;
-import main.models.Appointments;
 import main.models.Customers;
 import main.utilities.JDBC;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 /**
  * The CustomersView controller.
- *
- * Created this to abvoid a casting issue I was having in Main with both
+ * Created this to avoid a casting issue I was having in Main with both
  * appointments and customer updates
  */
 public class CustomersView extends Application implements Initializable {
@@ -51,39 +44,39 @@ public class CustomersView extends Application implements Initializable {
      * Configure the Customers Table
      */
     @FXML
-    private TableView table_customers;
+    private TableView<Customers> table_customers;
     @FXML
-    private TableColumn col_customer_ID;
+    private TableColumn<Object, Object> col_customer_ID;
     @FXML
-    private TableColumn col_customer_name;
+    private TableColumn<Object, Object> col_customer_name;
     @FXML
-    private TableColumn col_customer_address;
+    private TableColumn<Object, Object> col_customer_address;
     @FXML
-    private TableColumn col_customer_postal;
+    private TableColumn<Object, Object> col_customer_postal;
     @FXML
-    private TableColumn col_customer_phone;
+    private TableColumn<Object, Object> col_customer_phone;
     @FXML
-    private TableColumn col_customer_divisionID;
+    private TableColumn<Object, Object> col_customer_divisionID;
     @FXML
-    private TableColumn col_customer_creationdate;
+    private TableColumn<Object, Object> col_customer_creationdate;
     @FXML
-    private TableColumn col_customer_createdby;
+    private TableColumn<Object, Object> col_customer_createdby;
     @FXML
-    private TableColumn col_customer_lastupdated;
+    private TableColumn<Object, Object> col_customer_lastupdated;
     @FXML
-    private TableColumn col_customer_lastupdatedby;
+    private TableColumn<Object, Object> col_customer_lastupdatedby;
 
     public ObservableList<Customers> allCustomers = FXCollections.observableArrayList();
 
     @Override
     public void start(Stage secondaryStage) throws Exception {
-        String appTitle = "";
+        String appTitle;
         if (Main.userLanguage.equals("fr")) {
             appTitle = "Planificateur";
         } else {
             appTitle = "Scheduler";
         }
-        Parent customerview = FXMLLoader.load(getClass().getResource("resources/views/main.fxml"));
+        Parent customerview = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("resources/views/main.fxml")));
         secondaryStage.setTitle(appTitle);
         secondaryStage.setScene(new Scene(customerview, 900, 600));
         secondaryStage.show();
@@ -130,14 +123,14 @@ public class CustomersView extends Application implements Initializable {
      * Get all customers from the database
      *
      * @return all customers
-     * @throws SQLException
+     * @throws SQLException if there is an error with the SQL call
      */
     public ObservableList<Customers> getAllCustomers() throws SQLException {
         allCustomers.clear();
         JDBC.makeConnection();
         Connection connection = JDBC.connection;
 
-        Statement statement = (Statement) connection.createStatement();
+        Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM client_schedule.customers");
 
         while (resultSet.next()) {
@@ -163,11 +156,11 @@ public class CustomersView extends Application implements Initializable {
      * Method using a lambda stream to both populate the customers table and
      * update the customers accurately
      *
-     * @throws SQLException
+     * @throws SQLException if there is an error with the SQL call
      */
     public void populateCustomers() throws SQLException {
         getAllCustomers();
-        allCustomers.stream().forEach(customers -> {
+        allCustomers.forEach(customers -> {
             col_customer_ID.setCellValueFactory(new PropertyValueFactory<>("Customer_ID"));
             col_customer_name.setCellValueFactory(new PropertyValueFactory<>("Customer_Name"));
             col_customer_address.setCellValueFactory(new PropertyValueFactory<>("Address"));
@@ -189,7 +182,7 @@ public class CustomersView extends Application implements Initializable {
      */
     public void do_createCustomer(ActionEvent event) {
         try {
-            Parent createcus = FXMLLoader.load(getClass().getResource("resources/views/newCustomer.fxml"));
+            Parent createcus = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("resources/views/newCustomer.fxml")));
             Stage stage = new Stage();
             stage.setTitle("Add a Customer");
             stage.setScene(new Scene(createcus, 600, 312));
@@ -218,7 +211,7 @@ public class CustomersView extends Application implements Initializable {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/views/updateCustomer.fxml"));
                 Parent createcus = loader.load();
                 UpdateCustomer updateCustomer = loader.getController();
-                updateCustomer.updateCustomer((Customers) table_customers.getSelectionModel().getSelectedItem());
+                updateCustomer.updateCustomer(table_customers.getSelectionModel().getSelectedItem());
                 Stage stage = new Stage();
                 stage.setTitle("Update Customer");
                 stage.setScene(new Scene(createcus, 600, 312));
@@ -242,7 +235,7 @@ public class CustomersView extends Application implements Initializable {
         try {
             JDBC.makeConnection();
             Connection connection = JDBC.connection;
-            Statement statement = (Statement) connection.createStatement();
+            Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(
                     "SELECT COUNT(*) FROM client_schedule.appointments WHERE Customer_ID = " + customerID);
             while (resultSet.next()) {
@@ -262,7 +255,7 @@ public class CustomersView extends Application implements Initializable {
      */
     public void do_deleteCustomer(ActionEvent event) {
         if (table_customers.getSelectionModel().getSelectedItem() != null) {
-            Customers selectedCustomer = (Customers) table_customers.getSelectionModel().getSelectedItem();
+            Customers selectedCustomer = table_customers.getSelectionModel().getSelectedItem();
             int selectedCustomerID = selectedCustomer.getCustomer_ID();
             String customerIDString = Integer.toString(selectedCustomerID);
             String customerNameString = selectedCustomer.getCustomer_Name();
@@ -284,7 +277,7 @@ public class CustomersView extends Application implements Initializable {
                     try {
                         JDBC.makeConnection();
                         Connection connection = JDBC.connection;
-                        Statement statement = (Statement) connection.createStatement();
+                        Statement statement = connection.createStatement();
                         statement.executeUpdate(
                                 "DELETE FROM client_schedule.customers WHERE Customer_ID = " + selectedCustomerID);
                         populateCustomers();

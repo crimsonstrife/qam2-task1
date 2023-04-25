@@ -1,11 +1,12 @@
 package main;
-
 /**
- *
+ * Main.java
+ * This is the Main class.
  * @author Patrick Barnhardt
  *
  * JAVADOC Location: in the Root of the Project folder - in a folder called JAVADOCS.
  */
+
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,17 +22,15 @@ import javafx.fxml.*;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import main.UpdateCustomer;
-import main.UpdateAppointment;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import javafx.scene.control.*;
 import main.models.Appointments;
-import main.models.Customers;
 import main.utilities.JDBC;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 /**
@@ -48,10 +47,6 @@ public class Main extends Application implements Initializable {
     private static String userZone = ZoneId.systemDefault().toString(); // This is the user's time zone.
     public static String userLanguage = System.getProperty("user.language"); // This is the user's language.
     public static Integer loggedInUserID = null; // This is the user ID that is logged in.
-
-    /**
-     * Configure the Application Fields
-     */
 
     /**
      * Configure the Application Buttons
@@ -89,40 +84,40 @@ public class Main extends Application implements Initializable {
      * Configure the Appointments Table
      */
     @FXML
-    private TableView table_appointments;
+    private TableView<Appointments> table_appointments;
     @FXML
-    private TableColumn col_appointment_ID;
+    private TableColumn<Object, Object> col_appointment_ID;
     @FXML
-    private TableColumn col_appointment_title;
+    private TableColumn<Object, Object> col_appointment_title;
     @FXML
-    private TableColumn col_appointment_desc;
+    private TableColumn<Object, Object> col_appointment_desc;
     @FXML
-    private TableColumn col_appointment_location;
+    private TableColumn<Object, Object> col_appointment_location;
     @FXML
-    private TableColumn col_appointment_contact;
+    private TableColumn<Object, Object> col_appointment_contact;
     @FXML
-    private TableColumn col_appointment_type;
+    private TableColumn<Object, Object> col_appointment_type;
     @FXML
-    private TableColumn col_appointment_startdate;
+    private TableColumn<Object, Object> col_appointment_startdate;
     @FXML
-    private TableColumn col_appointment_enddate;
+    private TableColumn<Object, Object> col_appointment_enddate;
     @FXML
-    private TableColumn col_appointment_customerID;
+    private TableColumn<Object, Object> col_appointment_customerID;
     @FXML
-    private TableColumn col_appointment_userID;
+    private TableColumn<Object, Object> col_appointment_userID;
 
     /**
      * Initialize method
      * This method is called when the Main screen is loaded.
      * 
-     * @param url
-     * @param rb
+     * @param url url
+     * @param rb resource bundle
      *
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            if (checkAppointmentTimes() == true) { // Check if there are any appointments in the next 15 minutes.
+            if (checkAppointmentTimes()) { // Check if there are any appointments in the next 15 minutes.
                 Alert alert = new Alert(Alert.AlertType.INFORMATION); // Create an alert.
                 alert.setTitle("Appointment Alert"); // Set the alert title.
                 alert.setHeaderText("Appointment Alert"); // Set the alert header.
@@ -149,16 +144,16 @@ public class Main extends Application implements Initializable {
     /**
      * Start method
      * 
-     * @throws Exception
+     * @throws Exception exception
      */
     public void start(Stage primaryStage) throws Exception {
-        String appTitle = "";
+        String appTitle;
         if (userLanguage.equals("fr")) {
             appTitle = "Planificateur";
         } else {
             appTitle = "Scheduler";
         }
-        Parent main = FXMLLoader.load(getClass().getResource("resources/views/main.fxml"));
+        Parent main = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("resources/views/main.fxml")));
         primaryStage.setTitle(appTitle);
         primaryStage.setScene(new Scene(main, 900, 600));
         primaryStage.show();
@@ -185,34 +180,21 @@ public class Main extends Application implements Initializable {
         boolean appointmentWithin15Minutes = false; // Set the appointment within 15 minutes flag to false.
         JDBC.makeConnection(); // Make a connection to the database.
         Connection connection = JDBC.getConnection(); // Get the connection.
-        Statement statement = (Statement) connection.createStatement(); // Create a statement.
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM client_schedule.appointments"); // Execute the
-                                                                                                    // query.
+        Statement statement = connection.createStatement(); // Create a statement.
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM client_schedule.appointments"); // Execute the query.
         while (resultSet.next()) {
-            LocalDateTime appointmentStart = resultSet.getTimestamp("start").toLocalDateTime(); // Get the appointment
-                                                                                                // start date and time.
-            if (appointmentStart.isAfter(now) && appointmentStart.isBefore(fifteenMinutesFromNow)) { // If the
-                                                                                                     // appointment
-                                                                                                     // start date and
-                                                                                                     // time is after
-                                                                                                     // now and before
-                                                                                                     // 15 minutes from
-                                                                                                     // now.
-                appointmentWithin15Minutes = true;
-            } else {
-                appointmentWithin15Minutes = false;
-            }
+            LocalDateTime appointmentStart = resultSet.getTimestamp("start").toLocalDateTime(); // Get the appointment start date and time.
+            // If the appointment start date and time is after now and before 15 minutes from now.
+            appointmentWithin15Minutes = appointmentStart.isAfter(now) && appointmentStart.isBefore(fifteenMinutesFromNow);
         }
         return appointmentWithin15Minutes;
     }
 
-    /**
-     * Application Methods
-     */
+    // Application Methods
     /**
      * Sign Out Button Event Handler - Close the application.
      *
-     * @param event triggered by the sign out button
+     * @param event triggered by the sign-out button
      */
     public void do_signout(ActionEvent event) {
         Stage stage = (Stage) btn_signout.getScene().getWindow();
@@ -241,14 +223,14 @@ public class Main extends Application implements Initializable {
      * Get all appointments from the database
      *
      * @return all appointments
-     * @throws SQLException
+     * @throws SQLException if there is an error getting the appointments from the database
      */
     public ObservableList<Appointments> getAllAppointments() throws SQLException {
         allAppointments.clear();
         JDBC.makeConnection();
         Connection connection = JDBC.connection;
 
-        Statement statement = (Statement) connection.createStatement();
+        Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM client_schedule.appointments");
 
         while (resultSet.next()) {
@@ -279,11 +261,11 @@ public class Main extends Application implements Initializable {
      * Method using a lambda stream to both populate the appointments table and
      * update the appointments
      *
-     * @throws SQLException
+     * @throws SQLException if there is an error getting the appointments from the database
      */
     public void populateAppointments() throws SQLException {
         getAllAppointments();
-        allAppointments.stream().forEach(appointments -> {
+        allAppointments.forEach(appointments -> {
             col_appointment_ID.setCellValueFactory(new PropertyValueFactory<>("appointment_ID"));
             col_appointment_title.setCellValueFactory(new PropertyValueFactory<>("title"));
             col_appointment_desc.setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -305,7 +287,7 @@ public class Main extends Application implements Initializable {
      */
     public void do_reports(ActionEvent event) {
         try {
-            Parent viewReports = FXMLLoader.load(getClass().getResource("resources/views/reports.fxml"));
+            Parent viewReports = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("resources/views/reports.fxml")));
             Stage viewReportsStage = new Stage();
             viewReportsStage.setTitle("Reports");
             viewReportsStage.setScene(new Scene(viewReports, 600, 481));
@@ -322,7 +304,7 @@ public class Main extends Application implements Initializable {
      */
     public void do_customers(ActionEvent event) throws IOException {
         try {
-            Parent viewCustomers = FXMLLoader.load(getClass().getResource("resources/views/customers.fxml"));
+            Parent viewCustomers = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("resources/views/customers.fxml")));
             Stage viewCustomerStage = new Stage();
             viewCustomerStage.setTitle("Customers");
             viewCustomerStage.setScene(new Scene(viewCustomers, 600, 400));
@@ -339,7 +321,7 @@ public class Main extends Application implements Initializable {
      */
     public void do_createappointment(ActionEvent event) {
         try {
-            Parent createapp = FXMLLoader.load(getClass().getResource("resources/views/newAppointment.fxml"));
+            Parent createapp = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("resources/views/newAppointment.fxml")));
             Stage createAppstage = new Stage();
             createAppstage.setTitle("Add Appointment");
             createAppstage.setScene(new Scene(createapp, 600, 400));
@@ -357,23 +339,16 @@ public class Main extends Application implements Initializable {
      */
     public void do_deleteappointment(ActionEvent event) {
         if (table_appointments.getSelectionModel().getSelectedItem() != null) { // if an appointment is selected
-            Appointments selectedAppointment = (Appointments) table_appointments.getSelectionModel().getSelectedItem(); // get
-                                                                                                                        // the
-                                                                                                                        // selected
-                                                                                                                        // appointment
+            Appointments selectedAppointment = table_appointments.getSelectionModel().getSelectedItem(); // get the selected appointment
             int appointmentID = selectedAppointment.getAppointment_ID(); // get the appointment ID
             String appointmentIDString = Integer.toString(appointmentID); // convert the appointment ID to a string
             String appointmentTypeString = selectedAppointment.getType(); // get the appointment type
             try {
                 JDBC.makeConnection(); // make a connection to the database
                 Connection connection = JDBC.connection; // get the connection
-                Statement statement = (Statement) connection.createStatement(); // create a statement
+                Statement statement = connection.createStatement(); // create a statement
                 statement.executeUpdate(
-                        "DELETE FROM client_schedule.appointments WHERE Appointment_ID = " + appointmentID); // delete
-                                                                                                             // the
-                                                                                                             // appointment
-                                                                                                             // from the
-                                                                                                             // database
+                        "DELETE FROM client_schedule.appointments WHERE Appointment_ID = " + appointmentID); // delete the appointment from the database
                 populateAppointments();
                 // prepare and alert to notify the user that the appointment has been deleted
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -446,7 +421,7 @@ public class Main extends Application implements Initializable {
                 Parent modapp = appointmentLoader.load();
                 UpdateAppointment updateAppointment = appointmentLoader.getController();
                 updateAppointment
-                        .updateAppointment((Appointments) table_appointments.getSelectionModel().getSelectedItem());
+                        .updateAppointment(table_appointments.getSelectionModel().getSelectedItem());
                 updateAppointment.setAllAppointments(allAppointments);
                 Stage modifyAppstage = new Stage();
                 modifyAppstage.setTitle("Update Appointment");

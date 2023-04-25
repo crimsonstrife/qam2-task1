@@ -1,6 +1,5 @@
 package main;
 
-import main.utilities.JDBC;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

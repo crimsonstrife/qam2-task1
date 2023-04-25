@@ -1,9 +1,7 @@
 package main;
-
 /**
- *
+ * UpdateCustomer.java
  * @author Patrick Barnhardt
- *
  *         JAVADOC Location: in the Root of the Project folder - in a folder
  *         called JAVADOCS.
  */
@@ -13,7 +11,6 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import main.models.Appointments;
 import main.models.Countries;
 import main.models.Customers;
 import main.models.Divisions;
@@ -36,16 +33,16 @@ public class UpdateCustomer {
     @FXML
     private TextField modcus_phone;
     @FXML
-    public ChoiceBox modcus_countryChoice;
+    public ChoiceBox<String> modcus_countryChoice;
     @FXML
-    public ChoiceBox modcus_divisionLevel;
+    public ChoiceBox<String> modcus_divisionLevel;
     @FXML
     public Customers customer;
 
     /**
      * Updates the customer and populates the fields
      *
-     * @param customer
+     * @param customer customer to update
      */
     public void updateCustomer(Customers customer) throws SQLException {
         this.customer = customer;
@@ -55,7 +52,7 @@ public class UpdateCustomer {
     /**
      * Cancels the Customer update
      *
-     * @param event
+     * @param event cancel button clicked
      */
     public void do_modcusCancel(ActionEvent event) {
         Stage stage = (Stage) modcus_customerID.getScene().getWindow(); // Get the stage
@@ -119,8 +116,7 @@ public class UpdateCustomer {
         ResultSet resultSet = statement
                 .executeQuery("SELECT * FROM client_schedule.countries WHERE Country_ID = '" + countryID + "'");
         resultSet.next();
-        Countries country = new Countries(resultSet.getInt("Country_ID"), resultSet.getString("Country"));
-        return country;
+        return new Countries(resultSet.getInt("Country_ID"), resultSet.getString("Country"));
     }
 
     /**
@@ -136,16 +132,15 @@ public class UpdateCustomer {
                 .executeQuery("SELECT * FROM client_schedule.first_level_divisions WHERE Division_ID = '"
                         + customer.getDivision_ID() + "'");
         resultSetDivision.next();
-        Divisions division = new Divisions(resultSetDivision.getInt("Division_ID"),
+        return new Divisions(resultSetDivision.getInt("Division_ID"),
                 resultSetDivision.getString("Division"),
                 resultSetDivision.getInt("COUNTRY_ID"));
-        return division;
     }
 
     /**
      * Set the Division Level based on the Country selected
      *
-     * @param event
+     * @param event country selected from the choice box
      */
     public void do_modcusDivision(ActionEvent event) {
         modcus_divisionLevel.getItems().clear();
@@ -168,7 +163,7 @@ public class UpdateCustomer {
     /**
      * Save the new Customer
      *
-     * @param event
+     * @param event save button clicked
      */
     public void do_modcusSave(ActionEvent event) {
         try {
@@ -189,7 +184,7 @@ public class UpdateCustomer {
                         .executeQuery("SELECT * FROM client_schedule.first_level_divisions WHERE Division = '"
                                 + modcus_divisionLevel.getValue() + "'");
                 resultSet.next();
-                int divisionID = resultSet.getInt("Division_ID");
+                // int divisionID = resultSet.getInt("Division_ID"); -- This is not needed after the IDE suggested simplification of the below statement
                 statement.executeUpdate("UPDATE client_schedule.customers SET Customer_Name = '"
                         + modcus_customerName.getText() + "', Address = '" + modcus_address.getText()
                         + "', Postal_Code = '"

@@ -1,7 +1,7 @@
 package main;
-
 /**
- *
+ * newCustomer.java
+ * Purpose: This class is used to create a new Customer.
  * @author Patrick Barnhardt
  *
  * JAVADOC Location: in the Root of the Project folder - in a folder called JAVADOCS.
@@ -31,9 +31,9 @@ public class newCustomer {
     @FXML
     private TextField newcus_phone;
     @FXML
-    public ChoiceBox newcus_countryChoice;
+    public ChoiceBox<String> newcus_countryChoice;
     @FXML
-    public ChoiceBox newcus_divisionLevel;
+    public ChoiceBox<String> newcus_divisionLevel;
     public Integer newcus_userID = Main.loggedInUserID;
 
     /**
@@ -56,7 +56,7 @@ public class newCustomer {
     /**
      * Cancel the Customer creation
      *
-     * @param event
+     * @param event the customer creation is cancelled
      */
     public void do_newcusCancel(ActionEvent event) {
         Stage stage = (Stage) newcus_customerID.getScene().getWindow(); // Get the stage
@@ -66,7 +66,7 @@ public class newCustomer {
     /**
      * Set the Division Level based on the Country selected
      *
-     * @param event
+     * @param event the country is selected
      */
     public void do_newcusDivision(ActionEvent event) {
         newcus_divisionLevel.getItems().clear();
@@ -89,7 +89,7 @@ public class newCustomer {
     /**
      * Save the new Customer
      *
-     * @param event
+     * @param event the save button is clicked
      */
     public void do_newcusSave(ActionEvent event) {
         try {
