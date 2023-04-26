@@ -13,11 +13,7 @@
     <orderEntry type="jdk" jdkName="17" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="mysql-connector-java-8.0.25" level="project" />
-    <orderEntry type="library" exported="" name="openjfx.javafx.base" level="project" />
-    <orderEntry type="library" exported="" name="controlsfx.openjfx.dialogs" level="project" />
-    <orderEntry type="library" exported="" name="openjfx.javafx.controls" level="project" />
-    <orderEntry type="library" exported="" name="openjfx.javafx.fxml" level="project" />
-    <orderEntry type="library" exported="" name="openjfx.javafx.graphics" level="project" />
     <orderEntry type="library" exported="" name="javafx" level="project" />
+    <orderEntry type="library" exported="" name="lib" level="project" />
   </component>
 </module>
