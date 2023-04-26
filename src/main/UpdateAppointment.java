@@ -190,8 +190,8 @@ public class UpdateAppointment {
         modapp_type.setText(appointment.getType());
         modapp_startDate.setValue(appointment.getStart().toLocalDateTime().toLocalDate());
         modapp_endDate.setValue(appointment.getEnd().toLocalDateTime().toLocalDate());
-        modapp_startTime.setValue(appointment.getStart().toLocalDateTime().toLocalTime());
-        modapp_endTime.setValue(appointment.getEnd().toLocalDateTime().toLocalTime());
+        modapp_startTime.setValue(appointment.getStart().toLocalDateTime().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
+        modapp_endTime.setValue(appointment.getEnd().toLocalDateTime().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
         modapp_CustomerID.setText(String.valueOf(appointment.getCustomer_ID()));
         modapp_UserID.setText(String.valueOf(appointment.getUser_ID()));
     }
