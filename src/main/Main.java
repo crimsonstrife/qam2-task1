@@ -42,8 +42,6 @@ public class Main extends Application implements Initializable {
     /**
      * Set Application Variables
      */
-    private static String userLoggedIn = ""; // This is the user that is logged in.
-    private static Integer userLoggedInID = null; // This is the user ID that is logged in.
     private static String userZone = ZoneId.systemDefault().toString(); // This is the user's time zone.
     public static String userLanguage = System.getProperty("user.language"); // This is the user's language.
     public static Integer loggedInUserID = null; // This is the user ID that is logged in.
@@ -66,13 +64,14 @@ public class Main extends Application implements Initializable {
     @FXML
     private Button btn_appointmentdelete;
     @FXML
+    private Button btn_appointmentrefresh;
+    @FXML
     private RadioButton weekly_radio;
     @FXML
     private RadioButton monthly_radio;
     @FXML
     public ToggleGroup appointment_filter;
-    public ObservableList<Appointments> allAppointments = FXCollections.observableArrayList(); // This is the list of
-                                                                                               // all appointments.
+    public ObservableList<Appointments> allAppointments = FXCollections.observableArrayList(); // This is the list of all appointments.
 
     /**
      * Configure the Application Panes
@@ -171,7 +170,7 @@ public class Main extends Application implements Initializable {
     }
 
     /**
-     * Check appointment times for any occurring within the next 15 minutes.
+     * Check appointment times for any occurring within the next 15 minutes for the logged-in user.
      * return true if there is an appointment within the next 15 minutes.
      */
     public boolean checkAppointmentTimes() throws SQLException {
@@ -181,7 +180,7 @@ public class Main extends Application implements Initializable {
         JDBC.makeConnection(); // Make a connection to the database.
         Connection connection = JDBC.getConnection(); // Get the connection.
         Statement statement = connection.createStatement(); // Create a statement.
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM client_schedule.appointments"); // Execute the query.
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM client_schedule.appointments WHERE User_ID = " + loggedInUserID); // Execute the query.
         while (resultSet.next()) {
             LocalDateTime appointmentStart = resultSet.getTimestamp("start").toLocalDateTime(); // Get the appointment start date and time.
             // If the appointment start date and time is after now and before 15 minutes from now.
@@ -217,6 +216,14 @@ public class Main extends Application implements Initializable {
     public void do_appointments_load() throws SQLException {
         allAppointments = getAllAppointments();
         populateAppointments();
+    }
+
+    /**
+     * Refresh the Appointments Table with data from the database, sorted start date by
+     * week. Display the appointments in the table.
+     */
+    public void do_refreshappointments(ActionEvent event) throws SQLException {
+        do_appointments_load();
     }
 
     /**
