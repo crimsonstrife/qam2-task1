@@ -8,5 +8,5 @@ IDE: IntelliJ IDEA 2021.1.3 (Community Edition)
 JDK: 17.0.1
 JavaFX: 11.0.2
 MySQL: mysql-connector-java-8.0.25
-How to run: Run Login.java
-Description of additional report: Total Appointments by User counts the number of appointments per userID and lists the username, count and userID.
+How to run: Upon running the Main configuration a login screen will be shown.  The user must have valid login credentials, username and password, that match the local database.  Once entered, the user can press login to enter the main screen.
+Description of additional report: Total Appointments by User counts the number of appointments per user_ID and lists the username, count and userID.  I had SQL handle the bulk of the work by creating a JOIN between the appointments and users tables based on user_ID. SQL also handles the counts.
