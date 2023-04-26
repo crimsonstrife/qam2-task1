@@ -74,6 +74,8 @@
                                   <Button fx:id="btn_appointmentcreate" mnemonicParsing="false" onAction="#do_createappointment" text="New Appointment" />
                                     <Button fx:id="btn_appointmentmodify" layoutX="300.0" layoutY="13.0" mnemonicParsing="false" onAction="#do_modifyappointment" text="Update Appointment" />
                                     <Button fx:id="btn_appointmentdelete" layoutX="433.0" layoutY="13.0" mnemonicParsing="false" onAction="#do_deleteappointment" text="Delete Appointment" />
+                                    <!-- Refresh Button -->
+                                    <Button fx:id="btn_appointmentrefresh" layoutX="566.0" layoutY="13.0" mnemonicParsing="false" onAction="#do_refreshappointments" text="Refresh" />
                                     <Text fx:id="txt_appointmentMessage" strokeType="OUTSIDE" strokeWidth="0.0" translateX="40.0" wrappingWidth="165.0" />
                                 </items>
                               </ToolBar>
