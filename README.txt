@@ -9,4 +9,4 @@ JDK: 17.0.1
 JavaFX: 11.0.2
 MySQL: mysql-connector-java-8.0.25
 How to run: Run Login.java
-Description of additional report: I intended to add a report that displayed the number of appointments created by each user but ran out of time.
+Description of additional report: Total Appointments by User counts the number of appointments per userID and lists the username, count and userID.
