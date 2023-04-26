@@ -21,6 +21,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import main.models.Appointments;
 import main.models.Types;
+import main.models.Users;
 import main.utilities.JDBC;
 import main.models.Contacts;
 
@@ -203,6 +204,37 @@ public class Reports extends Application implements Initializable {
         table_reports.getItems().addAll(allTypes);
     }
 
-    public void do_Quantity(ActionEvent actionEvent) {
+    /**
+     * This is the method for reporting the number of appointments by user
+     *
+     * @param actionEvent The event that triggers the method.
+     * @throws SQLException the sql exception
+     */
+    public void do_Quantity(ActionEvent actionEvent) throws SQLException {
+        table_reports.getColumns().clear();
+        TableColumn<Users, String> userID = new TableColumn<>("User_ID");
+        TableColumn<Users, String> userName = new TableColumn<>("User_Name");
+        TableColumn<Users, String> count = new TableColumn<>("Count");
+
+        userID.setCellValueFactory(new PropertyValueFactory<>("userID"));
+        userName.setCellValueFactory(new PropertyValueFactory<>("userName"));
+        count.setCellValueFactory(new PropertyValueFactory<>("Count"));
+        table_reports.getColumns().addAll(userID, userName, count);
+        table_reports.getItems().clear();
+        ObservableList<Users> allUsers = FXCollections.observableArrayList();
+
+        String query = "SELECT appointments.User_ID, users.User_Name, COUNT(*) AS Count FROM client_schedule.appointments JOIN client_schedule.users ON appointments.User_ID = users.User_ID GROUP BY appointments.User_ID";
+        JDBC.makeConnection();
+        Connection connection = JDBC.connection;
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(query);
+
+        while (resultSet.next()) {
+            allUsers.add(new Users(
+                    resultSet.getInt("User_ID"),
+                    resultSet.getString("User_Name"),
+                    resultSet.getInt("Count")));
+        }
+        table_reports.getItems().addAll(allUsers);
     }
 }
