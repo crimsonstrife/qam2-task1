@@ -37,6 +37,9 @@ public class Login extends Application implements Initializable {
     private static Integer userLoggedInID = null; // This is the user ID that is logged in.
     private static String userZone = ZoneId.systemDefault().toString(); // This is the user's time zone.
     private static String userLanguage = System.getProperty("user.language"); // This is the user's language.
+    public static Integer userID = null;
+    public static String userName = null;
+
     /**
      * Configure the Login Fields.
      */
@@ -99,6 +102,8 @@ public class Login extends Application implements Initializable {
                 stage.show();
                 userLoggedIn = login_username.getText();
                 userLoggedInID = JDBC.getUserID(userLoggedIn);
+                userName = login_username.getText();
+                userID = JDBC.getUserID(userName);
                 recordLoginAttempt(userLoggedIn, true, userZone, loginDate, loginTime);
                 // store the logged in user ID
                 Main.loggedInUserID = userLoggedInID;

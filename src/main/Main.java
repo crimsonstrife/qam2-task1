@@ -22,14 +22,19 @@ import javafx.fxml.*;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import javafx.scene.control.*;
 import main.models.Appointments;
 import main.utilities.JDBC;
+import main.utilities.Utils;
+
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -116,12 +121,23 @@ public class Main extends Application implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
+            // get the most recent username from the login_activity text file.
+            String username = Utils.getLoginAttempt();
+            // set the logged in user ID from the username
+            loggedInUserID = JDBC.getUserID(username);
             if (checkAppointmentTimes()) { // Check if there are any appointments in the next 15 minutes.
+                String contentText;
                 Alert alert = new Alert(Alert.AlertType.INFORMATION); // Create an alert.
                 alert.setTitle("Appointment Alert"); // Set the alert title.
                 alert.setHeaderText("Appointment Alert"); // Set the alert header.
-                alert.setContentText("There is an appointment due within the next 15 minutes."); // Set the alert
-                                                                                                 // content.
+                // get the upcoming appointment and assign it to a variable.
+                String[] upcomingAppointment = getUpcomingAppointment();
+                // cycle through the upcoming appointment and assemble the message string.
+                contentText = "There is an appointment due within the next 15 minutes.\n\n";
+                for (String info : upcomingAppointment) {
+                    contentText += info + "\n";
+                }
+                alert.setContentText(contentText); // Set the alert content.
                 alert.showAndWait();
             } else { // If there are no appointments in the next 15 minutes.
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -130,7 +146,7 @@ public class Main extends Application implements Initializable {
                 alert.setContentText("There are no appointments due within the next 15 minutes.");
                 alert.showAndWait();
             }
-        } catch (SQLException throwables) {
+        } catch (SQLException | FileNotFoundException throwables) {
             throwables.printStackTrace();
         }
         try {
@@ -180,13 +196,60 @@ public class Main extends Application implements Initializable {
         JDBC.makeConnection(); // Make a connection to the database.
         Connection connection = JDBC.getConnection(); // Get the connection.
         Statement statement = connection.createStatement(); // Create a statement.
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM client_schedule.appointments WHERE User_ID = " + loggedInUserID); // Execute the query.
+        // ResultSet resultSet = statement.executeQuery("SELECT * FROM client_schedule.appointments WHERE User_ID = " + loggedInUserID); -- received clarification that this should be all appointments, not just the logged in user, which was actually easier.  Had issues tracking the user ID at initial login, subsequent logins without closing the app worked however.
+        // Execute the query.
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM client_schedule.appointments");
         while (resultSet.next()) {
             LocalDateTime appointmentStart = resultSet.getTimestamp("start").toLocalDateTime(); // Get the appointment start date and time.
             // If the appointment start date and time is after now and before 15 minutes from now.
             appointmentWithin15Minutes = appointmentStart.isAfter(now) && appointmentStart.isBefore(fifteenMinutesFromNow);
         }
         return appointmentWithin15Minutes;
+    }
+
+    /**
+     * Get the upcoming appointment information. Return the three strings.
+     *
+     * @return array of the three strings
+     */
+    public String[] getUpcomingAppointment() throws SQLException {
+        String[] upcomingAppointment = new String[4]; // Create an array of three strings.
+        LocalDateTime now = LocalDateTime.now(); // Get the current date and time.
+        LocalDateTime fifteenMinutesFromNow = now.plusMinutes(15); // Get the date and time 15 minutes from now.
+        boolean appointmentWithin15Minutes = false; // Set the appointment within 15 minutes flag to false.
+        if (checkAppointmentTimes()) { // Check if there are any appointments in the next 15 minutes.
+            appointmentWithin15Minutes = true; // Set the appointment within 15 minutes flag to true.
+        } else { // If there are no appointments in the next 15 minutes.
+            appointmentWithin15Minutes = false; // Set the appointment within 15 minutes flag to false.
+        }
+        if (appointmentWithin15Minutes == true) {
+            JDBC.makeConnection(); // Make a connection to the database.
+            Connection connection = JDBC.getConnection(); // Get the connection.
+            Statement statement = connection.createStatement(); // Create a statement.
+            // ResultSet resultSet = statement.executeQuery("SELECT * FROM client_schedule.appointments WHERE User_ID = " + loggedInUserID); -- received clarification that this should be all appointments, not just the logged in user, which was actually easier.  Had issues tracking the user ID at initial login, subsequent logins without closing the app worked however.
+            // Execute the query.
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM client_schedule.appointments");
+            while (resultSet.next()) {
+                LocalDateTime appointmentStart = resultSet.getTimestamp("start").toLocalDateTime(); // Get the appointment start date and time.
+                String appointmentID = String.valueOf(resultSet.getInt("Appointment_ID")); // Get the appointment ID as a string.
+                // Get the Local Time as a string from the appointmentStart date and time.
+                String appointmentStartTime = appointmentStart.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"));
+                // Get the Local Date as a string from the appointmentStart date and time.
+                String appointmentStartDate = appointmentStart.toLocalDate().toString();
+                // Get the userID of the appointment
+                Integer userID = resultSet.getInt("User_ID");
+                // Get the username
+                String appointmentUser = JDBC.getUserName(userID);
+                // If the appointment start date and time is after now and before 15 minutes from now.
+                if (appointmentStart.isAfter(now) && appointmentStart.isBefore(fifteenMinutesFromNow)) {
+                    upcomingAppointment[0] = "Appointment ID: " + appointmentID; // Set the appointment ID string.
+                    upcomingAppointment[1] = "Date: " + appointmentStartDate; // Set the appointment start date string.
+                    upcomingAppointment[2] = "Time: " + appointmentStartTime; // Set the appointment start time string.
+                    upcomingAppointment[3] = "User: " + appointmentUser;
+                }
+            }
+        }
+        return upcomingAppointment;
     }
 
     // Application Methods
